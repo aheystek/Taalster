@@ -1626,16 +1626,16 @@ function renderSinonieme(el){
       <div style="font-size:11px;color:var(--mut);margin-top:4px">${isSin?`Gee 'n sinoniem EN antoniem`:`Gee 'n antoniem`}</div>
     </div>
     <div style="font-size:12px;font-weight:700;color:var(--mut);margin-bottom:5px">🟢 Skryf 'n <strong>sinoniem</strong> (selfde betekenis):</div>
-    <input id="sin_inp" type="text" placeholder="bv. ${sinArr[0]||'...'}"
+    <input id="sin_inp" type="text" placeholder="Skryf jou sinoniem hier..."
       style="width:100%;padding:11px;border-radius:11px;border:2px solid var(--bor);font-size:15px;font-family:inherit;box-sizing:border-box;margin-bottom:12px;outline:none">
     ${isSin?`<div style="font-size:12px;font-weight:700;color:var(--mut);margin-bottom:5px">🔴 Skryf 'n <strong>antoniem</strong> (teenoorgestelde):</div>
-    <input id="ant_inp" type="text" placeholder="bv. ${antArr[0]||'...'}"
+    <input id="ant_inp" type="text" placeholder="Skryf jou antoniem hier..."
       style="width:100%;padding:11px;border-radius:11px;border:2px solid var(--bor);font-size:15px;font-family:inherit;box-sizing:border-box;margin-bottom:12px;outline:none">`:''}
     <div id="sinfb" style="display:none" class="fb"></div>
     <div class="arow" style="margin-top:4px;flex-wrap:wrap;gap:8px">
       <button class="cbtn" onclick="chkSinonieme(${sinI})">Kontroleer ✓</button>
-      <button class="nbtn" id="sin_toon" onclick="toonSinonieme(${sinI})" style="background:#f0f4ff;color:var(--ind);border:1.5px solid var(--ind)">Wys Antwoord 👁️</button>
-      <button class="nbtn on" onclick="document.getElementById('meerarea').dataset.sinI=${sinI+1};renderSinonieme(document.getElementById('meerarea'))">Volgende ➜</button>
+      <button class="nbtn" id="sin_toon" onclick="toonSinonieme(${sinI})">Wys Antwoord 👁️</button>
+      <button class="nbtn" id="sin_nxt" onclick="document.getElementById('meerarea').dataset.sinI=${sinI+1};renderSinonieme(document.getElementById('meerarea'))">Volgende ➜</button>
     </div>
   </div>`;
 }
@@ -1659,6 +1659,8 @@ function chkSinonieme(sinI){
       🟢 Sinonieme: <strong>${q.b.replace('Sinonieme: ','')}</strong><br>
       ${isSin?`🔴 Antoniem: <strong>${q.e.replace('Antoniem: ','').replace('Antonieme: ','')}</strong>`:''}
     </div>`;
+  document.getElementById('sin_toon').className='nbtn on';
+  document.getElementById('sin_nxt').className='nbtn on';
   if(ok)addXP(20); else addXP(2);
 }
 
@@ -2111,3 +2113,4 @@ function goMod(modId, dest, msub) {
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
 </script>
 </body>
+</html>
