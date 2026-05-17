@@ -65,6 +65,9 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 .cscr::-webkit-scrollbar{display:none}
 .cpill{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;border:1.5px solid var(--bor);background:#fff;color:var(--mut);white-space:nowrap;transition:all .15s;font-family:'Nunito',sans-serif}
 .cpill.on{background:var(--ind);color:#fff;border-color:var(--ind)}
+.cscr-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.cpill-wrap{padding:8px 14px;border-radius:14px;font-size:12px;font-weight:800;cursor:pointer;border:1.5px solid var(--bor);background:#fff;color:var(--mut);transition:all .15s;font-family:'Nunito',sans-serif;flex:1 1 calc(50% - 7px);text-align:center;box-sizing:border-box}
+.cpill-wrap.on{background:var(--ind);color:#fff;border-color:var(--ind)}
 .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px}
 .mc{background:#fff;border-radius:15px;padding:13px;cursor:pointer;border:2px solid var(--bor);transition:all .18s}
 .mc:active{transform:scale(.95)}
@@ -167,7 +170,7 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 .fcagain{background:var(--red-l);color:#7f1d1d}
 .fcknow{background:var(--grn-l);color:#14532d}
 .sinbig{background:var(--ind-l);border-radius:13px;padding:13px;font-size:16px;font-weight:700;line-height:2;margin-bottom:13px;text-align:center}
-.sw{display:inline-block;padding:2px 7px;border-radius:7px;cursor:pointer;margin:2px;border:2px solid transparent;transition:all .13s}
+.sw{display:inline-block;padding:2px 7px;border-radius:7px;cursor:pointer;margin:2px;border:2px solid transparent;transition:all .13s}.kliek-w{padding:4px 10px;margin:3px;font-size:inherit;border:2px solid #e0e7ff;background:#fff;border-radius:10px;transition:all .15s}.kliek-w:hover{background:#e0e7ff;border-color:#6366f1;transform:scale(1.07)}
 .sw:hover{background:var(--bor)}
 .sw.pick{border-color:var(--ind);background:var(--ind-l)}
 .ogrid2{display:grid;gap:7px;margin-bottom:11px}
@@ -240,9 +243,12 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
   </div>
 </div>
 <div id="pbar">
-  <div class="av" id="avbtn" onclick="openAv()">🦁</div>
+  <div class="av" id="avbtn" onclick="openProfiles()">🦁</div>
   <div class="pmeta">
-    <div class="pname" id="pname">Taalster Leerder!</div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <div class="pname" id="pname">Taalster Leerder!</div>
+      <button onclick="openProfiles()" style="font-size:10px;padding:2px 7px;border-radius:8px;background:var(--ind-l);color:var(--ind);border:none;font-weight:800;cursor:pointer;font-family:inherit">Wissel ▾</button>
+    </div>
     <div class="lvrow">
       <div class="lvbadge" id="lvb">Vlak 1</div>
       <div class="lvbar"><div class="lvfill" id="lvf" style="width:5%"></div></div>
@@ -312,10 +318,12 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 <!-- SINSONTLEDING -->
 <div class="scr" id="s-sin">
   <div class="stit" style="margin-top:0">📝 Sinne</div>
-  <div class="cscr" id="sintabs">
-    <div class="cpill on" onclick="setSinTab('ontleed',this)">🔍 Ontleding</div>
-    <div class="cpill" onclick="setSinTab('direkte',this)">💬 Direkte &amp; Indirekte Rede</div>
-    <div class="cpill" onclick="setSinTab('ontken',this)">❌ Ontkennende Vorm</div>
+  <div class="cscr-wrap" id="sintabs">
+    <div class="cpill-wrap on" onclick="setSinTab('ontleed',this)">🔍 Ontleding</div>
+    <div class="cpill-wrap" onclick="setSinTab('direkte',this)">💬 Direkte &amp; Indirekte Rede</div>
+    <div class="cpill-wrap" onclick="setSinTab('ontken',this)">❌ Ontkennende Vorm</div>
+    <div class="cpill-wrap" onclick="setSinTab('tye',this)">⏰ Werkwoordtye</div>
+    <div class="cpill-wrap" onclick="setSinTab('lydende',this)">🔄 Lydend &amp; Bedrywend</div>
   </div>
   <div id="sinarea"></div>
 </div>
@@ -376,12 +384,15 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 <!-- MEER -->
 <div class="scr" id="s-meer">
   <div class="stit" style="margin-top:0">📖 Meer Afdelings</div>
-  <div class="cscr" id="meercats">
-    <div class="cpill on" onclick="setMeer('spelling',this)">Spelling</div>
-    <div class="cpill" onclick="setMeer('begrip',this)">Begripslees</div>
-    <div class="cpill" onclick="setMeer('meervoude',this)">Meervoude</div>
-    <div class="cpill" onclick="setMeer('tye',this)">Werkwoordtye</div>
-    <div class="cpill" onclick="setMeer('verklein',this)">Verkleinwoorde</div>
+  <div class="cscr-wrap" id="meercats">
+    <div class="cpill-wrap on" onclick="setMeer('spelling',this)">✏️ Spelling</div>
+    <div class="cpill-wrap" onclick="setMeer('lettergrepe',this)">🎵 Lettergrepe</div>
+    <div class="cpill-wrap" onclick="setMeer('punktuasie',this)">❓ Punktuasie</div>
+    <div class="cpill-wrap" onclick="setMeer('begrip',this)">📖 Begripslees</div>
+    <div class="cpill-wrap" onclick="setMeer('idiome',this)">🦊 Idiome</div>
+    <div class="cpill-wrap" onclick="setMeer('sinonieme',this)">🔄 Sinonieme</div>
+    <div class="cpill-wrap" onclick="setMeer('meervoude',this)">📊 Meervoude</div>
+    <div class="cpill-wrap" onclick="setMeer('verklein',this)">🐭 Verkleinwoorde</div>
   </div>
   <div id="meerarea"></div>
 </div>
@@ -411,27 +422,141 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 </div>
 
 <div id="toast"></div>
+<!-- PROFIEL WISSEL MODAL -->
 <div id="mov" onclick="closeM()">
   <div id="mbox" onclick="event.stopPropagation()">
-    <div class="mem">🦁</div>
-    <div class="mtt">Kies Jou Avatar</div>
-    <div class="msb">Watter dier is jy?</div>
-    <div class="avgrid" id="avgrid"></div>
-    <button class="mclose" onclick="closeM()">Klaar!</button>
+    <div id="mbox-inner"></div>
+  </div>
+</div>
+
+<!-- NUWE KIND MODAL -->
+<div id="addkid-ov" onclick="closeAddKid()" style="position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:150;display:none;align-items:flex-end;justify-content:center">
+  <div onclick="event.stopPropagation()" style="background:#fff;border-radius:19px 19px 0 0;padding:22px 18px calc(22px + var(--si-bot));width:100%;max-width:480px;animation:su .28s ease">
+    <div style="font-size:36px;text-align:center;margin-bottom:6px" id="newkid-av">🦁</div>
+    <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;text-align:center;margin-bottom:4px">Nuwe Kind</div>
+    <div style="font-size:12px;color:var(--mut);text-align:center;margin-bottom:14px">Voer die kind se naam in en kies 'n avatar</div>
+    <input id="newkid-name" type="text" placeholder="Kind se naam..." maxlength="20"
+      style="width:100%;padding:12px;border-radius:12px;border:2px solid var(--bor);font-size:15px;font-family:inherit;box-sizing:border-box;margin-bottom:12px;outline:none">
+    <div style="font-size:12px;font-weight:700;color:var(--mut);margin-bottom:8px">Kies Avatar:</div>
+    <div class="avgrid" id="newkid-avgrid" style="margin-bottom:14px"></div>
+    <div style="display:flex;gap:8px">
+      <button onclick="closeAddKid()" style="flex:1;padding:12px;border-radius:12px;background:var(--bor);color:var(--txt);border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Kanselleer</button>
+      <button onclick="saveNewKid()" style="flex:2;padding:12px;border-radius:12px;background:var(--ind);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Voeg By ✓</button>
+    </div>
   </div>
 </div>
 
 <script>
 const AVS=['🦁','🐯','🦊','🐼','🦋','🦄','🐬','🦅','🐸','🦖','🐺','🦒','🐨','🦓','🐙','🦜'];
-let ST={xp:0,streak:0,level:1,av:'🦁',name:'Taalster Leerder!',
+
+const EMPTY_PROF=()=>({xp:0,streak:0,level:1,av:'🦁',name:'Nuwe Kind',
   prog:{werkwoorde:0,naamwoorde:0,byvoeglik:0,voornaamwoorde:0,
     bywoorde:0,voegwoorde:0,voorsetsel:0,lidwoorde:0,telwoorde:0,
     meervoude:0,verkleinwoorde:0,sinsontleding:0,direkte_rede:0,ontkennende:0,
     tye:0,lydende:0,idiome:0,spelling:0,begripslees:0,sinonieme:0,
-    punktuasie:0,kreatief:0,lettergrepe:0}};
-try{const s=localStorage.getItem('ts3');if(s)ST={...ST,...JSON.parse(s)};}catch(e){}
-function save(){try{localStorage.setItem('ts3',JSON.stringify(ST));}catch(e){}}
-function addXP(n){ST.xp+=n;save();const lx=ST.level*200;if(ST.xp>=lx){ST.level++;toast('Vlak '+ST.level+' bereik!');}updP();}
+    punktuasie:0,kreatief:0,lettergrepe:0}});
+
+// Load all profiles from localStorage
+let PROFS=[], curProf=0;
+try{
+  const raw=localStorage.getItem('ts4_profs');
+  if(raw){const p=JSON.parse(raw);if(Array.isArray(p)&&p.length){PROFS=p;}}
+}catch(e){}
+try{const ci=localStorage.getItem('ts4_cur');if(ci!==null)curProf=parseInt(ci)||0;}catch(e){}
+if(!PROFS.length){const p=EMPTY_PROF();p.name='Kind 1';PROFS=[p];}
+if(curProf>=PROFS.length)curProf=0;
+let ST=PROFS[curProf];
+
+function saveAll(){
+  try{
+    PROFS[curProf]=ST;
+    localStorage.setItem('ts4_profs',JSON.stringify(PROFS));
+    localStorage.setItem('ts4_cur',curProf);
+  }catch(e){}
+}
+function save(){saveAll();}
+
+function switchProf(idx){
+  PROFS[curProf]=ST;
+  curProf=idx; ST=PROFS[curProf];
+  saveAll(); updP(); closeM();
+  filterM('alle',document.querySelector('#hcats .cpill.on'));
+  toast('Welkom '+ST.name+'! 👋');
+}
+
+function deleteProf(idx){
+  if(PROFS.length<=1){toast('Kan nie die laaste profiel uitvee nie!');return;}
+  if(!confirm('Verwyder '+PROFS[idx].name+' se profiel? Dit kan nie ontgedaan word nie.'))return;
+  PROFS.splice(idx,1);
+  if(curProf>=PROFS.length)curProf=PROFS.length-1;
+  ST=PROFS[curProf];
+  saveAll(); updP(); closeM();
+  filterM('alle',document.querySelector('#hcats .cpill.on'));
+}
+
+// ── PROFILE SWITCHER MODAL ──────────────────────────────────────
+function openProfiles(){
+  const inner=document.getElementById('mbox-inner');
+  inner.innerHTML=`
+    <div style="font-size:13px;font-weight:800;color:var(--mut);margin-bottom:12px;text-align:center">👨‍👩‍👧‍👦 Kies Kind</div>
+    <div id="prof-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+      ${PROFS.map((p,i)=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:13px;border:2px solid ${i===curProf?'var(--ind)':'var(--bor)'};background:${i===curProf?'var(--ind-l)':'#fff'};cursor:pointer" onclick="switchProf(${i})">
+          <div style="font-size:28px">${p.av}</div>
+          <div style="flex:1">
+            <div style="font-weight:800;font-size:14px;color:var(--txt)">${p.name} ${i===curProf?'<span style="font-size:10px;background:var(--ind);color:#fff;padding:1px 6px;border-radius:6px">Aktief</span>':''}</div>
+            <div style="font-size:11px;color:var(--mut)">Vlak ${p.level} · ${p.xp} XP</div>
+          </div>
+          ${PROFS.length>1?`<button onclick="event.stopPropagation();deleteProf(${i})" style="font-size:14px;background:none;border:none;cursor:pointer;color:var(--mut);padding:4px">🗑️</button>`:''}
+        </div>`).join('')}
+    </div>
+    ${PROFS.length<6?`<button onclick="openAddKid()" style="width:100%;padding:12px;border-radius:13px;background:var(--ind);color:#fff;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:10px">➕ Voeg Kind By</button>`:''}
+    <button onclick="openAv()" style="width:100%;padding:10px;border-radius:13px;background:var(--bor);color:var(--txt);border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px">🦁 Verander Avatar</button>
+    <button class="mclose" onclick="closeM()">Klaar</button>`;
+  document.getElementById('mov').classList.add('on');
+}
+
+function openAv(){
+  const inner=document.getElementById('mbox-inner');
+  inner.innerHTML=`
+    <div style="font-size:36px;text-align:center;margin-bottom:6px">${ST.av}</div>
+    <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;text-align:center;margin-bottom:4px">Kies Avatar</div>
+    <div style="font-size:12px;color:var(--mut);text-align:center;margin-bottom:14px">Watter dier is jy?</div>
+    <div class="avgrid" id="avgrid" style="margin-bottom:14px">
+      ${AVS.map(a=>`<div class="avo${a===ST.av?' on':''}" onclick="pickAv('${a}')">${a}</div>`).join('')}
+    </div>
+    <button class="mclose" onclick="closeM()">Klaar!</button>`;
+  document.getElementById('mov').classList.add('on');
+}
+  // ── ADD NEW KID ──────────────────────────────────────────────────
+let newKidAv='🦁';
+function openAddKid(){
+  closeM();
+  newKidAv='🦁';
+  document.getElementById('newkid-name').value='';
+  document.getElementById('newkid-av').textContent='🦁';
+  document.getElementById('newkid-avgrid').innerHTML=
+    AVS.map(a=>`<div class="avo${a===newKidAv?' on':''}" onclick="pickNewAv('${a}')">${a}</div>`).join('');
+  document.getElementById('addkid-ov').style.display='flex';
+}
+function closeAddKid(){document.getElementById('addkid-ov').style.display='none';}
+function pickNewAv(a){
+  newKidAv=a;
+  document.getElementById('newkid-av').textContent=a;
+  document.querySelectorAll('#newkid-avgrid .avo').forEach(e=>e.classList.toggle('on',e.textContent===a));
+}
+function saveNewKid(){
+  const nm=(document.getElementById('newkid-name').value||'').trim();
+  if(!nm){alert('Voer asseblief die kind se naam in.');return;}
+  const p=EMPTY_PROF(); p.name=nm; p.av=newKidAv;
+  PROFS.push(p);
+  curProf=PROFS.length-1; ST=PROFS[curProf];
+  saveAll(); updP(); closeAddKid();
+  filterM('alle',document.querySelector('#hcats .cpill.on'));
+  toast('Welkom '+nm+'! 🎉');
+}
+
+function addXP(n){ST.xp+=n;save();const lx=ST.level*200;if(ST.xp>=lx){ST.level++;toast('Vlak '+ST.level+' bereik! 🎉');}updP();}
 function updP(){
   document.getElementById('xpv').textContent=ST.xp;
   document.getElementById('strv').textContent=ST.streak;
@@ -442,6 +567,7 @@ function updP(){
   document.getElementById('lvf').style.width=Math.min(100,Math.round(cur/lx*100))+'%';
   document.getElementById('lvt').textContent=cur+'/'+lx;
 }
+function pickAv(a){ST.av=a;save();updP();document.querySelectorAll('#avgrid .avo').forEach(e=>e.classList.toggle('on',e.textContent===a));document.getElementById('avbtn').textContent=a;}
 function go(id){
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
@@ -460,10 +586,7 @@ function go(id){
 }
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2500);}
 // goMod defined later with full routing
-function openM(body){document.getElementById('avgrid').innerHTML=body;document.getElementById('mov').classList.add('on');}
 function closeM(){document.getElementById('mov').classList.remove('on');}
-function openAv(){openM(AVS.map(a=>`<div class="avo${a===ST.av?' on':''}" onclick="pickAv('${a}')">${a}</div>`).join(''));}
-function pickAv(a){ST.av=a;save();updP();document.querySelectorAll('.avo').forEach(e=>{e.classList.toggle('on',e.textContent===a);});}
 
 const MODS=[
   {id:'werkwoorde',nm:'Werkwoorde',ic:'⚡',cat:'woordsoort'},
@@ -504,13 +627,17 @@ function filterM(cat,el){
     else if(m.id==='sinsontleding'){dest='sin';msub='ontleed';}
     else if(m.id==='direkte_rede'){dest='sin';msub='direkte';}
     else if(m.id==='ontkennende'){dest='sin';msub='ontken';}
-    else if(m.cat==='sinne'){dest='sin';}
+    else if(m.id==='tye'){dest='sin';msub='tye';}
+    else if(m.id==='lydende'){dest='sin';msub='lydende';}
     else if(m.id==='meervoude'){dest='meer';msub='meervoude';}
     else if(m.id==='verkleinwoorde'){dest='meer';msub='verklein';}
-    else if(m.id==='spelling'||m.id==='lettergrepe'||m.id==='punktuasie'){dest='meer';msub='spelling';}
+    else if(m.id==='spelling'){dest='meer';msub='spelling';}
+    else if(m.id==='lettergrepe'){dest='meer';msub='lettergrepe';}
+    else if(m.id==='punktuasie'){dest='meer';msub='punktuasie';}
     else if(m.id==='begripslees'){dest='meer';msub='begrip';}
-    else if(m.id==='idiome'||m.id==='sinonieme'||m.id==='kreatief'){dest='meer';msub='begrip';}
-    else if(m.id==='tye'){dest='meer';msub='tye';}
+    else if(m.id==='idiome'){dest='meer';msub='idiome';}
+    else if(m.id==='sinonieme'){dest='meer';msub='sinonieme';}
+    else if(m.id==='kreatief'){dest='meer';msub='begrip';}
     else{dest='toets';}
     return`<div class="mc" onclick="goMod('${m.id}','${dest}','${msub}')"><div class="mc-i">${m.ic}</div><div class="mc-n">${m.nm}</div><div class="mc-s">${s}</div><div class="mc-bw"><div class="mc-b" style="width:${p}%"></div></div><div class="mc-p">${p}% voltooi</div></div>`;
   }).join('');
@@ -948,7 +1075,7 @@ let dredeI=0, dredeAns=false;
 let ontkenI=0, ontkenAns=false;
 
 function setSinTab(tab, el){
-  document.querySelectorAll('#sintabs .cpill').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('#sintabs .cpill-wrap').forEach(p=>p.classList.remove('on'));
   el.classList.add('on');
   sinTab=tab; sinI=0; dredeI=0; ontkenI=0;
   renderSin();
@@ -960,6 +1087,8 @@ function renderSin(){
   if(sinTab==='ontleed') renderOntleed(el);
   else if(sinTab==='direkte') renderDirekte(el);
   else if(sinTab==='ontken') renderOntken(el);
+  else if(sinTab==='tye') renderTye(el);
+  else if(sinTab==='lydende') renderLydende(el);
 }
 
 /* ── ONTLEDING (Onderwerp / Gesegde / Voorwerp) ─────────────── */
@@ -1286,17 +1415,143 @@ const TYED=[
 let meerSec='spelling',spelI=0,begriI=0,begriQI=0,begriAns=false,meerI=0,tyeI=0,verklI=0;
 function setMeer(sec,el){
   meerSec=sec;
-  document.querySelectorAll('#meercats .cpill').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('#meercats .cpill-wrap').forEach(p=>p.classList.remove('on'));
   if(el)el.classList.add('on');renderMeer(sec);
 }
 function renderMeer(sec){
   const el=document.getElementById('meerarea');if(!el)return;
   if(sec==='spelling')renderSpel(el);
   else if(sec==='begrip')renderBegrip(el);
+  else if(sec==='idiome')renderIdiome(el);
+  else if(sec==='sinonieme')renderSinonieme(el);
   else if(sec==='meervoude')renderMeerv(el);
-  else if(sec==='tye')renderTye(el);
+  else if(sec==='lettergrepe')renderLettergrepe(el);
+  else if(sec==='punktuasie')renderPunktuasie(el);
   else if(sec==='verklein')renderVerklein(el);
 }
+const LETTERGREPEDB=[
+  {w:'on-der-wy-ser',toon:'onderwyser',sil:4},
+  {w:'skool',toon:'skool',sil:1},
+  {w:'ver-jaar-dag',toon:'verjaardag',sil:3},
+  {w:'blom-me-tuin',toon:'blommetuin',sil:3},
+  {w:'ap-pel',toon:'appel',sil:2},
+  {w:'vlieg-tuig',toon:'vliegtuig',sil:2},
+  {w:'re-ken-aar',toon:'rekenaar',sil:3},
+  {w:'win-kel-sen-trum',toon:'winkelsentrum',sil:4},
+  {w:'ge-luk-kig',toon:'gelukkig',sil:3},
+  {w:'ver-ant-woor-de-lik',toon:'verantwoordelik',sil:5},
+  {w:'skoe-ne',toon:'skoene',sil:2},
+  {w:'tand-arts',toon:'tandarts',sil:2},
+  {w:'bi-blio-teek',toon:'biblioteek',sil:3},
+  {w:'ge-meen-skap',toon:'gemeenskap',sil:3},
+  {w:'hard-loop',toon:'hardloop',sil:2},
+];
+let lgI=0;
+
+const PUNKTUASIEDB=[
+  {sin:'Die seun speel rugby___',ant:'.',reël:'Elke sin eindig met \'n punt.',opsies:['.','!','?',',']},
+  {sin:'Waar is my boek___',ant:'?',reël:'\'n Vraagsin eindig met \'n vraagteken.',opsies:['.',',','?','!']},
+  {sin:'Help___ die hond byt___',ant:'! ... !',reël:'\'n Uitroepsin gebruik \'n uitroepteken.',opsies:['!','?','.','...']},
+  {sin:'"Kom hier___ sê Ma.',ant:',"',reël:'Direkte rede gebruik aanhalingstekens en \'n komma.',opsies:[',"','."',',"','!']},
+  {sin:'Ek het appels___ pere en piesangs gekoop.',ant:',',reël:'Kommas skei items in \'n lys.',opsies:[',','.','!',';']},
+  {sin:'Jan___ Piet en Marie speel saam.',ant:',',reël:'Gebruik kommas om name te skei.',opsies:[',','.','?','!']},
+  {sin:'Die volgende kinders is afwesig___ Jan en Marie.',ant:':',reël:'\'n Dubbelpunt stel \'n lys in.',opsies:[':',',','.','!']},
+  {sin:'Dit is Ma___ se motor.',ant:"'",reël:'\'n Apostroof dui besit aan.',opsies:["'",',','.','!']},
+];
+let pkI=0;
+
+function renderLettergrepe(el){
+  const q=LETTERGREPEDB[lgI%LETTERGREPEDB.length];
+  const parts=q.w.split('-');
+  el.innerHTML=`<div class="qcard">
+    <div style="font-size:11px;color:var(--mut);font-weight:700;margin-bottom:8px">Lettergrepe — ${lgI%LETTERGREPEDB.length+1} van ${LETTERGREPEDB.length}</div>
+    <div style="background:#f0f4ff;border-radius:12px;padding:14px;text-align:center;margin-bottom:14px">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:6px">Hoeveel lettergrepe het hierdie woord?</div>
+      <div style="font-size:28px;font-weight:800;color:var(--txt)">${q.toon}</div>
+    </div>
+    <div style="font-size:12px;font-weight:700;color:var(--mut);margin-bottom:8px">Kies die korrekte verdeling:</div>
+    <div class="ogrid">
+      ${[q.w, q.w.split('').reverse().join('-').replace(/-/g,'').split('').join('-'), q.toon.substring(0,3)+'-'+q.toon.substring(3), q.w+'-e'].slice(0,4).map((o,i)=>{
+        const opts=[q.w,
+          parts.length===1?q.toon:parts.slice(0,1).join('')+'-'+parts.slice(1).join(''),
+          parts.slice(0,-1).join('-')+q.toon.slice(-2),
+          q.toon.substring(0,2)+'-'+q.toon.substring(2)];
+        return `<button class="ob" onclick="chkLettergrepe(this,'${q.w}','${q.w}')">${opts[i]||q.toon}</button>`;
+      }).join('')}
+    </div>
+    <div id="lgfb" style="display:none" class="fb"></div>
+    <div class="arow"><button class="nbtn" id="lgnxt" onclick="lgI++;renderLettergrepe(document.getElementById('meerarea'))">Volgende ➜</button></div>
+  </div>
+  <div class="qcard" style="margin-top:12px">
+    <div style="font-size:12px;font-weight:800;color:var(--pri);margin-bottom:8px">📖 Lettergrepe Reëls</div>
+    <div style="font-size:12px;line-height:1.8">
+      • Elke lettergreep het gewoonlik een <strong>vokaal</strong> (a,e,i,o,u)<br>
+      • Klap jou hande by elke lettergreep<br>
+      • <em>on-der-wy-ser</em> = 4 klappies = 4 lettergrepe<br>
+      • <em>skool</em> = 1 klappie = 1 lettergreep
+    </div>
+  </div>`;
+  // Fix options to be meaningful
+  const area=el.querySelector('.ogrid');
+  const correct=q.w;
+  const wrongs=LETTERGREPEDB.filter((_,i)=>i!==lgI%LETTERGREPEDB.length).sort(()=>Math.random()-.5).slice(0,3).map(d=>d.w);
+  const allOpts=[correct,...wrongs].sort(()=>Math.random()-.5);
+  area.innerHTML=allOpts.map(o=>`<button class="ob" onclick="chkLettergrepe(this,'${o}','${correct}')">${o}</button>`).join('');
+}
+function chkLettergrepe(btn,picked,correct){
+  if(btn.classList.contains('ok')||btn.classList.contains('bad'))return;
+  const ok=picked===correct;
+  document.querySelectorAll('#meerarea .ob,#sinarea .ob').forEach(b=>{
+    if(b.textContent===correct)b.classList.add('ok');
+    else if(b===btn&&!ok)b.classList.add('bad');
+  });
+  const fb=document.getElementById('lgfb');
+  fb.style.display='block';fb.className='fb '+(ok?'ok':'bad');
+  fb.innerHTML=`<div class="fbt">${ok?'✅ Korrek!':'❌ Amper!'}</div><div class="fbb">Die korrekte verdeling is: <strong>${correct}</strong></div>`;
+  document.getElementById('lgnxt').className='nbtn on';
+  if(ok)addXP(15);
+}
+
+function renderPunktuasie(el){
+  const q=PUNKTUASIEDB[pkI%PUNKTUASIEDB.length];
+  el.innerHTML=`<div class="qcard">
+    <div style="font-size:11px;color:var(--mut);font-weight:700;margin-bottom:8px">Punktuasie — ${pkI%PUNKTUASIEDB.length+1} van ${PUNKTUASIEDB.length}</div>
+    <div style="background:#fff8e1;border-radius:12px;padding:14px;text-align:center;margin-bottom:14px">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:6px">Kies die korrekte punktuasieteken vir ___:</div>
+      <div style="font-size:20px;font-weight:800;color:var(--txt)">${q.sin}</div>
+    </div>
+    <div class="ogrid">
+      ${q.opsies.map(o=>`<button class="ob" style="font-size:22px;font-weight:900" onclick="chkPunktuasie(this,'${o}','${q.ant}')">${o}</button>`).join('')}
+    </div>
+    <div id="pkfb" style="display:none" class="fb"></div>
+    <div class="arow"><button class="nbtn" id="pknxt" onclick="pkI++;renderPunktuasie(document.getElementById('meerarea'))">Volgende ➜</button></div>
+  </div>
+  <div class="qcard" style="margin-top:12px">
+    <div style="font-size:12px;font-weight:800;color:var(--pri);margin-bottom:8px">📖 Punktuasie Reëls</div>
+    <div style="font-size:12px;line-height:1.9">
+      <strong>.</strong> Punt — gewone sin eindig hier<br>
+      <strong>?</strong> Vraagteken — vraagsinne<br>
+      <strong>!</strong> Uitroepteken — sterk gevoel/bevel<br>
+      <strong>,</strong> Komma — pouse in sin / lys<br>
+      <strong>:</strong> Dubbelpunt — stel lys in<br>
+      <strong>" "</strong> Aanhalingstekens — direkte rede
+    </div>
+  </div>`;
+}
+function chkPunktuasie(btn,picked,correct){
+  if(btn.classList.contains('ok')||btn.classList.contains('bad'))return;
+  const ok=picked===correct;
+  document.querySelectorAll('#meerarea .ob,#sinarea .ob').forEach(b=>{
+    if(b.textContent===correct)b.classList.add('ok');
+    else if(b===btn&&!ok)b.classList.add('bad');
+  });
+  const fb=document.getElementById('pkfb');
+  fb.style.display='block';fb.className='fb '+(ok?'ok':'bad');
+  fb.innerHTML=`<div class="fbt">${ok?'✅ Korrek!':'❌ Amper!'}</div><div class="fbb">Die korrekte teken is: <strong>${correct}</strong><br>💡 ${PUNKTUASIEDB[pkI%PUNKTUASIEDB.length].reël}</div>`;
+  document.getElementById('pknxt').className='nbtn on';
+  if(ok)addXP(15);
+}
+
 function renderSpel(el){
   const q=SPELWOORDE[spelI%SPELWOORDE.length];
   el.innerHTML='<div class="qcard"><div style="font-size:12px;color:var(--mut);font-weight:700;margin-bottom:7px">Spelling Byeenkoms - '+(spelI%SPELWOORDE.length+1)+' van '+SPELWOORDE.length+'</div><div class="spelbeurt"><div style="font-size:14px;font-weight:800;margin-bottom:8px">Spel hierdie woord korrek:</div><div style="font-size:30px;font-weight:800;margin-bottom:6px">'+q.e+'</div><div style="font-size:13px;opacity:.85">Wenk: '+q.h+'</div></div><input class="spelinp" id="spinp" placeholder="Spel die woord korrek..." onkeydown="if(event.key===\'Enter\')chkSpel()"><div id="spfb" style="display:none" class="fb"></div><div class="arow"><button class="cbtn" onclick="chkSpel()">Kontroleer</button><button class="nbtn on" onclick="spelI++;renderSpel(document.getElementById(\'meerarea\'))">Volgende</button></div></div>';
@@ -1323,6 +1578,175 @@ function pickBegrip(p,c){
   fb.innerHTML='<div class="fbt">'+(ok?'Reg!':'Verkeerd!')+'</div><div class="fbb">Die antwoord is: <strong>'+c+'</strong></div>';
   document.getElementById('bnxt').style.display='block';if(ok)addXP(15);
 }
+function renderIdiome(el){
+  const data=FCD.idiome;
+  let idiI=parseInt(el.dataset.idiI||0);
+  const q=data[idiI%data.length];
+  el.dataset.idiI=idiI;
+  // Shuffle options: correct + 3 random others
+  const others=data.filter((_,i)=>i!==idiI%data.length).sort(()=>Math.random()-.5).slice(0,3);
+  const opts=[q,...others].sort(()=>Math.random()-.5);
+  el.innerHTML=`<div class="qcard">
+  <div style="font-size:11px;color:var(--mut);font-weight:700;margin-bottom:8px">Idiome & Spreekwoorde — ${idiI%data.length+1} van ${data.length}</div>
+    <div style="background:var(--ind-l);border-radius:12px;padding:14px;margin-bottom:14px;text-align:center">
+      <div style="font-size:16px;font-weight:800;color:var(--ind)">🦊 ${q.f}</div>
+    </div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--txt)">Wat beteken hierdie idioom?</div>
+    <div class="ogrid">${opts.map(d=>`<button class="ob" onclick="chkIdioom(this,'${d.b.replace(/'/g,'').replace(/"/g,'').substring(0,40)}','${q.b.replace(/'/g,'').replace(/"/g,'').substring(0,40)}','${q.e.replace(/'/g,'').replace(/"/g,'')}')">${d.b.substring(0,45)}</button>`).join('')}</div>
+    <div id="idioomfb" style="display:none" class="fb"></div>
+    <div class="arow"><button class="nbtn" id="idiomnxt" onclick="document.getElementById('meerarea').dataset.idiI=${idiI+1};renderIdiome(document.getElementById('meerarea'))">Volgende ➜</button></div>
+  </div>`;
+}
+function chkIdioom(btn,picked,correct,gebruik){
+  if(btn.classList.contains('ok')||btn.classList.contains('bad'))return;
+  const ok=picked===correct;
+  btn.classList.add(ok?'ok':'bad');
+  if(!ok){document.querySelectorAll('.ob').forEach(b=>{if(b.textContent.substring(0,40)===correct.substring(0,40))b.classList.add('ok');});}
+  const fb=document.getElementById('idioomfb');
+  fb.style.display='block';fb.className='fb '+(ok?'ok':'bad');
+  fb.innerHTML=`<div class="fbt">${ok?'✅ Korrek!':'❌ Nie heeltemal nie'}</div>
+    <div class="fbb"><strong>Betekenis:</strong> ${correct}<br><strong>Gebruik:</strong> ${gebruik}</div>`;
+  document.getElementById('idiomnxt').className='nbtn on';
+  if(ok)addXP(15);
+}
+
+function renderSinonieme(el){
+  const data=[...FCD.sinonieme,...FCD.antonieme];
+  let sinI=parseInt(el.dataset.sinI||0);
+  const q=data[sinI%data.length];
+  const isSin=FCD.sinonieme.includes(q);
+  el.dataset.sinI=sinI;
+  // Split b and e into individual words for checking
+  const sinArr=q.b.replace('Sinonieme: ','').replace('Antonieme: ','').split(',').map(w=>w.trim().toLowerCase());
+  const antArr=q.e.replace('Sinonieme: ','').replace('Antoniem: ','').split(',').map(w=>w.trim().toLowerCase());
+  el.innerHTML=`<div class="qcard">
+    <div style="font-size:11px;color:var(--mut);font-weight:700;margin-bottom:8px">Sinonieme & Antonieme — ${sinI%data.length+1} van ${data.length}</div>
+    <div style="background:#e8f8f0;border-radius:12px;padding:14px;margin-bottom:14px;text-align:center">
+      <div style="font-size:26px;font-weight:800;color:#16a34a">${q.f}</div>
+      <div style="font-size:11px;color:var(--mut);margin-top:4px">${isSin?`Gee 'n sinoniem EN antoniem`:`Gee 'n antoniem`}</div>
+    </div>
+    <div style="font-size:12px;font-weight:700;color:var(--mut);margin-bottom:5px">🟢 Skryf 'n <strong>sinoniem</strong> (selfde betekenis):</div>
+    <input id="sin_inp" type="text" placeholder="bv. ${sinArr[0]||'...'}"
+      style="width:100%;padding:11px;border-radius:11px;border:2px solid var(--bor);font-size:15px;font-family:inherit;box-sizing:border-box;margin-bottom:12px;outline:none">
+    ${isSin?`<div style="font-size:12px;font-weight:700;color:var(--mut);margin-bottom:5px">🔴 Skryf 'n <strong>antoniem</strong> (teenoorgestelde):</div>
+    <input id="ant_inp" type="text" placeholder="bv. ${antArr[0]||'...'}"
+      style="width:100%;padding:11px;border-radius:11px;border:2px solid var(--bor);font-size:15px;font-family:inherit;box-sizing:border-box;margin-bottom:12px;outline:none">`:''}
+    <div id="sinfb" style="display:none" class="fb"></div>
+    <div class="arow" style="margin-top:4px;flex-wrap:wrap;gap:8px">
+      <button class="cbtn" onclick="chkSinonieme(${sinI})">Kontroleer ✓</button>
+      <button class="nbtn" id="sin_toon" onclick="toonSinonieme(${sinI})" style="background:#f0f4ff;color:var(--ind);border:1.5px solid var(--ind)">Wys Antwoord 👁️</button>
+      <button class="nbtn on" onclick="document.getElementById('meerarea').dataset.sinI=${sinI+1};renderSinonieme(document.getElementById('meerarea'))">Volgende ➜</button>
+    </div>
+  </div>`;
+}
+
+function chkSinonieme(sinI){
+  const data=[...FCD.sinonieme,...FCD.antonieme];
+  const q=data[sinI%data.length];
+  const isSin=FCD.sinonieme.includes(q);
+  const sinArr=q.b.replace('Sinonieme: ','').split(',').map(w=>w.trim().toLowerCase());
+  const antArr=q.e.replace('Antoniem: ','').replace('Antonieme: ','').split(',').map(w=>w.trim().toLowerCase());
+  const sinVal=(document.getElementById('sin_inp')?.value||'').trim().toLowerCase();
+  const antVal=(document.getElementById('ant_inp')?.value||'').trim().toLowerCase();
+  const sinOk=sinArr.some(s=>sinVal.includes(s)||s.includes(sinVal)&&sinVal.length>1);
+  const antOk=!isSin||antArr.some(a=>antVal.includes(a)||a.includes(antVal)&&antVal.length>1);
+  const ok=sinOk&&antOk;
+  const fb=document.getElementById('sinfb');
+  fb.style.display='block';
+  fb.className='fb '+(ok?'ok':'bad');
+  fb.innerHTML=`<div class="fbt">${ok?'✅ Uitstekend!':sinOk?'👍 Sinoniem reg, kyk antoniem':'❌ Kyk na die antwoorde'}</div>
+    <div class="fbb">
+      🟢 Sinonieme: <strong>${q.b.replace('Sinonieme: ','')}</strong><br>
+      ${isSin?`🔴 Antoniem: <strong>${q.e.replace('Antoniem: ','').replace('Antonieme: ','')}</strong>`:''}
+    </div>`;
+  if(ok)addXP(20); else addXP(2);
+}
+
+function toonSinonieme(sinI){
+  const data2=[...FCD.sinonieme,...FCD.antonieme];
+  const q=data2[sinI%data2.length];
+  const isSin=FCD.sinonieme.includes(q);
+  const fb=document.getElementById('sinfb');
+  fb.style.display='block';fb.className='fb ok';
+  fb.innerHTML=`<div class="fbt">📖 Antwoorde:</div>
+    <div class="fbb">
+      🟢 Sinonieme: <strong>${q.b.replace('Sinonieme: ','')}</strong><br>
+      ${isSin?`🔴 Antoniem: <strong>${q.e.replace('Antoniem: ','').replace('Antonieme: ','')}</strong>`:''}
+    </div>`;
+}
+
+
+function renderLydende(el){
+  const LYDENDB=[
+    {bedrywend:`Die seun skop die bal.`,lydend:`Die bal word deur die seun geskop.`,wenk:`Voorwerp → Onderwerp. Voeg "word deur" by.`},
+    {bedrywend:`Ma bak die koekies.`,lydend:`Die koekies word deur Ma gebak.`,wenk:`"Koekies" word die nuwe onderwerp. Gebruik "word deur".`},
+    {bedrywend:`Die onderwyser merk die toetse.`,lydend:`Die toetse word deur die onderwyser gemerk.`,wenk:`Voorwerp (toetse) skuif vorentoe. Voeg "word deur" in.`},
+    {bedrywend:`Die kinders eet die vrugte.`,lydend:`Die vrugte word deur die kinders geëet.`,wenk:`"Vrugte" word onderwerp. "Kinders" kom na "deur".`},
+    {bedrywend:`Pa was die motor.`,lydend:`Die motor word deur Pa gewas.`,wenk:`Voorwerp → Onderwerp. Voltooide deelwoord (ge-) aan einde.`},
+    {bedrywend:`Die werkman bou die muur.`,lydend:`Die muur word deur die werkman gebou.`,wenk:`"Muur" word onderwerp. Gebruik "word deur" + voltooide deelwoord.`},
+    {lydend:`Die boek word deur Jan gelees.`,bedrywend:`Jan lees die boek.`,wenk:`Onderwerp na "deur" word nuwe onderwerp. Verwyder "word deur".`,rigting:'lb'},
+    {lydend:`Die taak word deur die leerders gedoen.`,bedrywend:`Die leerders doen die taak.`,wenk:`"Leerders" (na deur) word onderwerp. Verwyder "word deur".`,rigting:'lb'},
+  ];
+  let lydI = parseInt(el.dataset.lydI||0);
+  const q = LYDENDB[lydI % LYDENDB.length];
+  const isLB = q.rigting === 'lb';
+  el.dataset.lydI = lydI;
+  el.innerHTML=`
+    <div class="qcard">
+      <div style="font-size:11px;color:var(--mut);font-weight:700;margin-bottom:8px">Lydende & Bedrywende Vorm — ${lydI%LYDENDB.length+1} van ${LYDENDB.length}</div>
+      <div style="background:#f0f4ff;border-radius:12px;padding:13px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--mut);margin-bottom:5px">${isLB ? '🔄 Verander na BEDRYWENDE vorm:' : '🔄 Verander na LYDENDE vorm:'}</div>
+        <div style="font-size:16px;font-weight:800;color:var(--txt)">${isLB ? q.lydend : q.bedrywend}</div>
+      </div>
+      <textarea id="lyd_ans" style="width:100%;min-height:65px;border-radius:10px;border:2px solid var(--bor,#e0e0e0);padding:10px;font-size:14px;font-family:inherit;resize:vertical;box-sizing:border-box" placeholder="Skryf jou antwoord hier..."></textarea>
+      <div style="font-size:11px;color:var(--mut);margin-top:6px">💡 Wenk: ${q.wenk}</div>
+      <div id="lydfb" style="display:none" class="fb" style="margin-top:10px"></div>
+      <div class="arow" style="margin-top:10px">
+        <button class="cbtn" onclick="chkLydende(${lydI})">Kontroleer</button>
+        <button class="nbtn" id="lydnxt" onclick="document.getElementById('meerarea').dataset.lydI=${lydI+1};renderLydende(document.getElementById('meerarea'))">Volgende ➜</button>
+      </div>
+    </div>
+    <div class="qcard" style="margin-top:12px">
+      <div style="font-size:12px;font-weight:800;color:var(--pri);margin-bottom:8px">📖 Reëls: Lydend vs Bedrywend</div>
+      <div style="font-size:12px;line-height:1.8">
+        <strong>Bedrywende vorm</strong> — onderwerp DOEN die aksie:<br>
+        &nbsp;&nbsp;Die seun <u>skop</u> die bal.<br><br>
+        <strong>Lydende vorm</strong> — voorwerp ONTVANG die aksie:<br>
+        &nbsp;&nbsp;Die bal <u>word</u> deur die seun <u>geskop</u>.<br><br>
+        <strong>Formule Bedrywend → Lydend:</strong><br>
+        &nbsp;&nbsp;Voorwerp + <strong>word deur</strong> + Onderwerp + <strong>ge</strong>-werkwoord<br><br>
+        <strong>Formule Lydend → Bedrywend:</strong><br>
+        &nbsp;&nbsp;Woord na "deur" + werkwoord + voorwerp (verwyder "word deur")
+      </div>
+    </div>`;
+
+  const LYDENDB2=LYDENDB;
+  window._lydendb = LYDENDB2;
+}
+
+function chkLydende(lydI){
+  const LYDENDB=[
+    {bedrywend:`Die seun skop die bal.`,lydend:`Die bal word deur die seun geskop.`},
+    {bedrywend:`Ma bak die koekies.`,lydend:`Die koekies word deur Ma gebak.`},
+    {bedrywend:`Die onderwyser merk die toetse.`,lydend:`Die toetse word deur die onderwyser gemerk.`},
+    {bedrywend:`Die kinders eet die vrugte.`,lydend:`Die vrugte word deur die kinders geëet.`},
+    {bedrywend:`Pa was die motor.`,lydend:`Die motor word deur Pa gewas.`},
+    {bedrywend:`Die werkman bou die muur.`,lydend:`Die muur word deur die werkman gebou.`},
+    {lydend:`Die boek word deur Jan gelees.`,bedrywend:`Jan lees die boek.`,rigting:'lb'},
+    {lydend:`Die taak word deur die leerders gedoen.`,bedrywend:`Die leerders doen die taak.`,rigting:'lb'},
+  ];
+  const q = LYDENDB[lydI % LYDENDB.length];
+  const isLB = q.rigting === 'lb';
+  const correct = (isLB ? q.bedrywend : q.lydend).toLowerCase().replace(/[.,]/g,'').trim();
+  const giv = (document.getElementById('lyd_ans').value||'').toLowerCase().replace(/[.,]/g,'').trim();
+  const ok = giv.length > 4 && (giv === correct || correct.includes(giv.substring(0,15)) || giv.includes(correct.substring(0,15)));
+  const fb = document.getElementById('lydfb');
+  fb.style.display='block'; fb.className='fb '+(ok?'ok':'bad');
+  fb.innerHTML=`<div class="fbt">${ok?'✅ Uitstekend!':'📝 Korrekte antwoord:'}</div><div class="fbb"><strong>${isLB?q.bedrywend:q.lydend}</strong></div>`;
+  document.getElementById('lydnxt').className='nbtn on';
+  if(ok)addXP(20);
+}
+
 function renderMeerv(el){
   const q=MEERV[meerI%MEERV.length];
   el.innerHTML='<div class="qcard"><div style="font-size:12px;color:var(--mut);font-weight:700;margin-bottom:7px">Meervoude - '+(meerI%MEERV.length+1)+' van '+MEERV.length+'</div><div class="qsin">Wat is die meervoud van: <span class="qtgt">'+q.e+'</span></div><input class="tinp" id="mvinp" placeholder="Skryf die meervoud..." onkeydown="if(event.key===\'Enter\')chkMeerv()"><div id="mvfb" style="display:none" class="fb"></div><div class="arow"><button class="cbtn" onclick="chkMeerv()">Kontroleer</button><button class="nbtn on" onclick="meerI++;renderMeerv(document.getElementById(\'meerarea\'))">Volgende</button></div></div>';
@@ -1574,27 +1998,34 @@ function renderLeerOefen(el, d) {
   if (leerVraagI >= d.vrae.length) { renderLeerKlaar(el, d); return; }
   const q = d.vrae[leerVraagI];
   leerAns = false;
-  const sinHtml = q.s.replace('{'+q.t+'}', '<span class="qtgt">'+q.t+'</span>');
   const pct = Math.round((leerVraagI / d.vrae.length) * 100);
-  // Build 4 MCQ options - correct + 3 wrong woordsoorte
-  const wrongWS = Object.keys(WS).filter(k=>k!==q.korrekte_ws).sort(()=>Math.random()-.5).slice(0,3);
-  const opts = [q.korrekte_ws, ...wrongWS].sort(()=>Math.random()-.5);
-  const optBtns = opts.map(o=>`<button class="ob" id="lob_${o}"
-    onclick="checkLeerMCQ('${o}','${q.korrekte_ws}','${q.e.replace(/'/g,"\'").replace(/`/g,"'")}','${d.kleur}')"
-    >${WS[o]}</button>`).join('');
+
+  // Strip { } markers and build clickable word spans
+  const target = q.t.toLowerCase();
+  const cleanSin = q.s.replace('{'+q.t+'}', q.t);
+  const rawWords = cleanSin.split(' ');
+  const wordSpans = rawWords.map((w, i) => {
+    const clean = w.replace(/[{}.,!?;:]/g,'').toLowerCase();
+    const safeUitleg = q.e.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    return `<span class="sw kliek-w" id="kw${i}" data-w="${clean}" onclick="klikWoord(this,'${target}','${safeUitleg}','${d.kleur}')">${w}</span>`;
+  }).join(' ');
+
   el.innerHTML = `
     <div style="background:${d.kleur}22;border-radius:14px;padding:11px 13px;margin-bottom:13px;border-left:4px solid ${d.kleur}">
       <div style="font-size:12px;font-weight:800;color:${d.kleur}">${d.icon} Oefen: ${d.naam}</div>
     </div>
     <div class="qcard">
       <div class="qmeta">
-        <span class="qbadge" style="background:${d.kleur}22;color:${d.kleur}">Oefenvraag</span>
+        <span class="qbadge" style="background:${d.kleur}22;color:${d.kleur}">Klik die Woord</span>
         <span class="qnum">${leerVraagI+1} / ${d.vrae.length}</span>
       </div>
       <div class="qpbar"><div class="qpfill" style="width:${pct}%;background:${d.kleur}"></div></div>
-      <div class="qsin">${sinHtml}</div>
-      <div class="qask">Watter woordsoort is die gemerkte woord <strong>"${q.t}"</strong>?</div>
-      <div class="ogrid">${optBtns}</div>
+      <div style="background:#f8faff;border-radius:12px;padding:16px 14px;margin-bottom:12px;text-align:center">
+        <div style="font-size:12px;font-weight:700;color:var(--mut);margin-bottom:12px">
+          👇 Klik op die <strong style="color:${d.kleur}">${d.naam}</strong> in die sin:
+        </div>
+        <div style="font-size:21px;font-weight:800;line-height:2.2;color:var(--txt)">${wordSpans}</div>
+      </div>
       <div id="leerfb" style="display:none" class="fb"></div>
       <div class="arow" style="margin-top:10px">
         <button class="nbtn" id="lnxtbtn" onclick="leerVraagI++;leerAns=false;renderLeer()">Volgende ▶</button>
@@ -1602,21 +2033,30 @@ function renderLeerOefen(el, d) {
     </div>`;
 }
 
-function checkLeerMCQ(picked, correct, uitleg, kleur) {
+function klikWoord(el, target, uitleg, kleur) {
   if (leerAns) return;
+  const picked = el.dataset.w.toLowerCase().replace(/[.,!?;:]/g,'');
+  const ok = picked === target.toLowerCase();
   leerAns = true;
-  const ok = picked === correct;
-  document.getElementById('lob_'+picked).classList.add(ok ? 'ok' : 'bad');
-  if (!ok) document.getElementById('lob_'+correct).classList.add('ok');
+
+  // Highlight correct word green
+  document.querySelectorAll('.kliek-w').forEach(w => {
+    if (w.dataset.w.toLowerCase() === target.toLowerCase()) {
+      w.style.cssText = 'background:#22c55e;color:#fff;border-radius:8px;padding:2px 10px;cursor:default;';
+    }
+  });
+  // Highlight wrong pick red if incorrect
+  if (!ok) {
+    el.style.cssText = 'background:#ef4444;color:#fff;border-radius:8px;padding:2px 10px;cursor:default;';
+  }
+
   const fb = document.getElementById('leerfb');
   fb.style.display = 'block';
   fb.className = 'fb ' + (ok ? 'ok' : 'bad');
-  fb.innerHTML = `<div class="fbt">${ok ? '✅ Puik! Jy het dit reg!' : `❌ Amper! Dit is 'n ${WS[correct]}`}</div><div class="fbb">${uitleg}</div>`;
+  fb.innerHTML = `<div class="fbt">${ok ? '✅ Puik! Jy het dit reg!' : '❌ Amper! Kyk na die groen woord'}</div><div class="fbb">${uitleg}</div>`;
   document.getElementById('lnxtbtn').className = 'nbtn on';
-  if (ok) addXP(15); else addXP(2);
+  if (ok) addXP(20); else addXP(2);
 }
-
-// checkLeer replaced by checkLeerMCQ above
 
 function renderLeerKlaar(el, d) {
   el.innerHTML = `
@@ -1637,36 +2077,33 @@ function renderLeerKlaar(el, d) {
 
 // ── FIX goMod to open leer screen for woordsoort modules ──────────────────
 function goMod(modId, dest, msub) {
-  // Woordsoort modules: open individual leer screen
   const wsMap = {
     werkwoorde:'werkwoord', naamwoorde:'selfstandige', byvoeglik:'byvoeglike',
     voornaamwoorde:'voornaamwoord', voegwoorde:'voegwoord', voorsetsel:'voorsetsel',
     lidwoorde:'lidwoord', telwoorde:'telwoord', bywoorde:'bywoord',
     bywoord:'bywoord', lidwoord:'lidwoord', telwoord:'telwoord'
   };
-  if (wsMap[modId]) {
-    startLeer(wsMap[modId]);
-    return;
-  }
-  // For sinne, meer, etc
+  if (wsMap[modId]) { startLeer(wsMap[modId]); return; }
   go(dest);
   if (dest === 'sin' && msub) {
     setTimeout(() => {
-      const pills = document.querySelectorAll('#sintabs .cpill');
-      const tabMap = {ontleed:0, direkte:1, ontken:2};
+      const pills = document.querySelectorAll('#sintabs .cpill-wrap');
+      const tabMap = {ontleed:0, direkte:1, ontken:2, tye:3, lydende:4};
       const idx = tabMap[msub] !== undefined ? tabMap[msub] : 0;
-      document.querySelectorAll('#sintabs .cpill').forEach(p => p.classList.remove('on'));
+      document.querySelectorAll('#sintabs .cpill-wrap').forEach(p => p.classList.remove('on'));
       if (pills[idx]) { pills[idx].classList.add('on'); setSinTab(msub, pills[idx]); }
     }, 50);
   }
   if (dest === 'meer' && msub) {
     setTimeout(() => {
-      const pills = document.querySelectorAll('#meercats .cpill');
-      const subMap = {spelling:0, begrip:1, meervoude:2, tye:3, verklein:4};
-      const idx = subMap[msub] || 0;
-      document.querySelectorAll('#meercats .cpill').forEach(p => p.classList.remove('on'));
-      if (pills[idx]) pills[idx].classList.add('on');
-      setMeer(msub, pills[idx]);
+      const pills = document.querySelectorAll('#meercats .cpill-wrap');
+      const subMap = {spelling:0, lettergrepe:1, punktuasie:2, begrip:3, idiome:4, sinonieme:5, meervoude:6, verklein:7};
+      const idx = subMap[msub];
+      if (idx !== undefined) {
+        document.querySelectorAll('#meercats .cpill-wrap').forEach(p => p.classList.remove('on'));
+        if (pills[idx]) pills[idx].classList.add('on');
+        setMeer(msub, pills[idx]);
+      }
     }, 50);
   }
 }
@@ -1674,4 +2111,3 @@ function goMod(modId, dest, msub) {
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
 </script>
 </body>
-</html>
