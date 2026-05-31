@@ -877,10 +877,17 @@ document.getElementById('wvdD').textContent=wv.d;
 document.getElementById('wvdE').textContent=wv.e;
 
 // INIT
-updP();buildHome();restartT();updFC();
+updP();restartT();updFC();
 const sk=localStorage.getItem('ts_k'),sd=localStorage.getItem('ts_d');
-if(sk&&KODES[sk]){const exp=new Date(KODES[sk]),van=new Date();van.setHours(0,0,0,0);if(van<=exp)document.getElementById('s-pw').style.display='none';else localStorage.removeItem('ts_k');}
-else if(sd==='true'){document.getElementById('s-pw').style.display='none';}
+if(sk&&KODES[sk]){
+  const exp=new Date(KODES[sk]),van=new Date();van.setHours(0,0,0,0);
+  if(van<=exp){document.getElementById('s-pw').style.display='none';buildHome();}
+  else{localStorage.removeItem('ts_k');document.getElementById('s-pw').style.display='flex';}
+} else if(sd==='true'){
+  document.getElementById('s-pw').style.display='none';buildHome();
+} else {
+  document.getElementById('s-pw').style.display='flex';
+}
 </script>
 </body>
 </html>
