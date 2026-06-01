@@ -64,12 +64,7 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 .tb-foot{display:flex;align-items:center;justify-content:space-between}
 .tb-stars{font-size:.75rem}
 .tb-arr{font-size:1.1rem;color:rgba(0,0,0,.2)}
-.lock-badge{background:#fee2e2;color:#7f1d1d;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:6px;margin-left:4px}
 .leer-wrap{background:#fff;border-radius:16px;border:1.5px solid var(--bor);padding:14px;margin-bottom:10px}
-.leer-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.leer-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.leer-titel{font-family:'Baloo 2',sans-serif;font-size:17px;font-weight:800}
-.leer-sub{font-size:12px;color:var(--mut)}
 .reel-item{display:flex;gap:9px;align-items:start;margin-bottom:9px;padding:8px 10px;background:#f8faff;border-radius:10px}
 .reel-num{background:var(--ind);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px}
 .reel-txt{font-size:12px;font-weight:600;line-height:1.6;color:var(--txt)}
@@ -85,12 +80,12 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 .qpfill{height:100%;background:var(--ind);border-radius:3px;transition:width .3s}
 .qsin{background:var(--ind-l);border-radius:9px;padding:10px 12px;font-size:15px;font-weight:600;line-height:1.8;margin-bottom:10px}
 .ogrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-  .ob{padding:9px 7px;border-radius:10px;border:2px solid var(--bor);background:#fff;cursor:pointer;font-size:12px;font-weight:700;text-align:center;transition:all .12s;font-family:'Nunito',sans-serif;line-height:1.3}
+.ob{padding:9px 7px;border-radius:10px;border:2px solid var(--bor);background:#fff;cursor:pointer;font-size:12px;font-weight:700;text-align:center;transition:all .12s;font-family:'Nunito',sans-serif;line-height:1.3}
 .ob:hover{border-color:var(--ind);background:var(--ind-l)}
 .ob.ok{background:var(--grn-l);border-color:var(--grn);color:#14532d;animation:bop .3s}
 .ob.bad{background:var(--red-l);border-color:var(--red);color:#7f1d1d;animation:shk .3s}
 .fb{border-radius:10px;padding:10px 12px;margin-top:8px}
-.fb.ok{background:var(--grn-l);border:1.5px solid var(--grn)}
+  .fb.ok{background:var(--grn-l);border:1.5px solid var(--grn)}
 .fb.bad{background:var(--red-l);border:1.5px solid var(--red)}
 .fbt{font-size:13px;font-weight:800;margin-bottom:3px}
 .fbb{font-size:12px;line-height:1.6}
@@ -194,7 +189,6 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
   <div id="homeTopics"></div>
 </div>
 <div class="scr" id="s-leer">
-  <button class="tuis-btn" onclick="go('home')">🏠 Tuis</button>
   <div id="leerarea"></div>
 </div>
 <div class="scr" id="s-toets">
@@ -306,7 +300,7 @@ function closeAddKid(){document.getElementById('addkid-ov').style.display='none'
 function pickNkAv(a){nkAv=a;document.getElementById('newkid-av').textContent=a;document.querySelectorAll('#newkid-avgrid .avo').forEach(e=>e.classList.toggle('on',e.textContent===a));}
 function saveNewKid(){const nm=(document.getElementById('newkid-name').value||'').trim();if(!nm){alert('Naam asseblief.');return;}const p=EP();p.name=nm;p.av=nkAv;PROFS.push(p);cP=PROFS.length-1;ST=PROFS[cP];saveAll();updP();closeAddKid();buildHome();toast('Welkom '+nm+'! 🎉');}
 function addXP(n,sek){ST.xp+=n;if(sek){ST.prog=ST.prog||{};ST.prog[sek]=Math.min(100,(ST.prog[sek]||0)+Math.round(n/2));}saveAll();const lx=ST.level*200;if(ST.xp>=lx){ST.level++;toast('Vlak '+ST.level+' bereik! 🎉');}updP();}
-function updP(){document.getElementById('xpv').textContent=ST.xp;document.getElementById('strv').textContent=ST.streak;document.getElementById('avbtn').textContent=ST.av;document.getElementById('pname').textContent=ST.name;document.getElementById('lvb').textContent='Vlak '+ST.level;const lx=ST.level*200,cur=ST.xp%lx;document.getElementById('lvf').style.width=Math.min(100,Math.round(cur/lx*100))+'%';document.getElementById('lvt').textContent=cur+'/'+lx;}
+  function updP(){document.getElementById('xpv').textContent=ST.xp;document.getElementById('strv').textContent=ST.streak;document.getElementById('avbtn').textContent=ST.av;document.getElementById('pname').textContent=ST.name;document.getElementById('lvb').textContent='Vlak '+ST.level;const lx=ST.level*200,cur=ST.xp%lx;document.getElementById('lvf').style.width=Math.min(100,Math.round(cur/lx*100))+'%';document.getElementById('lvt').textContent=cur+'/'+lx;}
 function pickAv(a){ST.av=a;saveAll();updP();document.querySelectorAll('#avgrid .avo').forEach(e=>e.classList.toggle('on',e.textContent===a));document.getElementById('avbtn').textContent=a;}
 function closeM(){document.getElementById('mov').classList.remove('on');}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2500);}
@@ -323,397 +317,162 @@ function go(id){
 const AFDELINGS=[
   {id:'selfstandige',nm:'Selfstandige Naamwoord',ic:'📦',kl:'#f97316',kat:'woordsoort',
    verd:'n <strong>Selfstandige naamwoord</strong> (s.nw.) benoem n persoon, plek, ding of idee. Dit is die "naam" van iets.',
-   reels:[
-     'Eienaam: spesifieke name — Jan, Pretoria, Sarie (begin met hoofletter)',
-     'Soortnaam: gewone name — kind, skool, tafel, hond',
-     'Abstrakte naamwoord: iets wat jy nie kan aanraak nie — liefde, moed, vreugde',
-     'Massanaam: ontelbaar — sand, water, melk, goud',
-     'Versamelnaam: groep as een — kudde (beeste), swerm (bye), span (spelers)',
-     'Maatnaam: meting — kilometer, kilogram, liter',
-     'Truuk: As jy "die" of "n" voor die woord kan sit — dit is n naamwoord!'
-   ],
-   voorb:[
-     {s:'Die <u>seun</u> loop skool toe.',u:'SEUN = soortnaam (gewone persoon)'},
-     {s:'<u>Pretoria</u> is ons hoofstad.',u:'PRETORIA = eienaam (hoofletter!)'},
-     {s:'Die <u>swerm</u> bye vlieg verby.',u:'SWERM = versamelnaam'},
-     {s:'Sy het baie <u>moed</u> getoon.',u:'MOED = abstrakte naamwoord'}
-   ],
+   reels:['Eienaam: spesifieke name — Jan, Pretoria, Sarie (begin met hoofletter)','Soortnaam: gewone name — kind, skool, tafel, hond','Abstrakte naamwoord: iets wat jy nie kan aanraak nie — liefde, moed, vreugde','Massanaam: ontelbaar — sand, water, melk, goud','Versamelnaam: groep as een — kudde (beeste), swerm (bye), span (spelers)','Maatnaam: meting — kilometer, kilogram, liter','Truuk: As jy "die" of "n" voor die woord kan sit — dit is n naamwoord!'],
+   voorb:[{s:'Die <u>seun</u> loop skool toe.',u:'SEUN = soortnaam (gewone persoon)'},{s:'<u>Pretoria</u> is ons hoofstad.',u:'PRETORIA = eienaam (hoofletter!)'},{s:'Die <u>swerm</u> bye vlieg verby.',u:'SWERM = versamelnaam'},{s:'Sy het baie <u>moed</u> getoon.',u:'MOED = abstrakte naamwoord'}],
    prog:'naamwoorde'},
   {id:'werkwoord',nm:'Werkwoord',ic:'⚡',kl:'#6366f1',kat:'woordsoort',
    verd:'n <strong>Werkwoord</strong> is n doenwoord — dit vertel wat iemand DOEN, WORD of IS.',
-   reels:[
-     'Hoofwerkwoord (staan alleen): hardloop, eet, slaap, sing',
-     'Hulpwerkwoord (help die hoofww.): het, sal, kan, mag, moet, wil',
-     'Koppelwerkwoord (verbind): is, was, word, lyk, bly, skyn',
-     'Verlede tyd: het + ge + werkwoord (het geloop, het gesing)',
-     'Toekomende tyd: sal + werkwoord (sal loop, sal sing)',
-     'Truuk: Vra "Wat DOEN ___?" — die antwoord is die werkwoord!'
-   ],
-   voorb:[
-     {s:'Die kind <u>hardloop</u> vinnig.',u:'HARDLOOP = hoofwerkwoord (aksie)'},
-     {s:'Sy <u>het</u> gister <u>gesing</u>.',u:'HET = hulpww + GESING = verlede tyd'},
-     {s:'Hy <u>sal</u> more kom.',u:'SAL = hulpww vir toekomende tyd'},
-     {s:'Die blomme <u>is</u> pragtig.',u:'IS = koppelwerkwoord'}
-   ],
+   reels:['Hoofwerkwoord (staan alleen): hardloop, eet, slaap, sing','Hulpwerkwoord (help die hoofww.): het, sal, kan, mag, moet, wil','Koppelwerkwoord (verbind): is, was, word, lyk, bly, skyn','Verlede tyd: het + ge + werkwoord (het geloop, het gesing)','Toekomende tyd: sal + werkwoord (sal loop, sal sing)','Truuk: Vra "Wat DOEN ___?" — die antwoord is die werkwoord!'],
+   voorb:[{s:'Die kind <u>hardloop</u> vinnig.',u:'HARDLOOP = hoofwerkwoord (aksie)'},{s:'Sy <u>het</u> gister <u>gesing</u>.',u:'HET = hulpww + GESING = verlede tyd'},{s:'Hy <u>sal</u> more kom.',u:'SAL = hulpww vir toekomende tyd'},{s:'Die blomme <u>is</u> pragtig.',u:'IS = koppelwerkwoord'}],
    prog:'werkwoorde'},
   {id:'byvoeglike',nm:'Byvoeglike Naamwoord',ic:'🎨',kl:'#eab308',kat:'woordsoort',
    verd:'n <strong>Byvoeglike naamwoord</strong> (b.nw.) beskryf n naamwoord — HOE iets lyk, voel of is.',
-   reels:[
-     'Attributief (voor naamwoord): Die GROOT hond. n ROOI appel.',
-     'Predikatief (na koppelww.): Die hond IS groot. Die appel LYK rooi.',
-     'Stellende trap (gewoon): groot, mooi, lank',
-     'Vergelykende trap (+er): groter, mooier, langer',
-     'Oortreffende trap (die +ste): die grootste, die mooiste, die langste',
-     'Intensiewe vorme: BLOEDROOI, PIKSWART, SPIERWIT, DOODMOEG',
-     'Truuk: Vra "Hoe LYKIS die naamwoord?"'
-   ],
-   voorb:[
-     {s:'Die <u>groot</u> hond byt.',u:'GROOT = attributief (voor naamwoord)'},
-     {s:'Die seun is <u>slim</u>.',u:'SLIM = predikatief (na "is")'},
-     {s:'Sy is <u>groter</u> as haar suster.',u:'GROTER = vergelykende trap'},
-     {s:'Hy is <u>bloedrooi</u> van skaamte.',u:'BLOEDROOI = intensiewe vorm'}
-   ],
+   reels:['Attributief (voor naamwoord): Die GROOT hond. n ROOI appel.','Predikatief (na koppelww.): Die hond IS groot. Die appel LYK rooi.','Stellende trap (gewoon): groot, mooi, lank','Vergelykende trap (+er): groter, mooier, langer','Oortreffende trap (die +ste): die grootste, die mooiste, die langste','Intensiewe vorme: BLOEDROOI, PIKSWART, SPIERWIT, DOODMOEG','Truuk: Vra "Hoe LYKIS die naamwoord?"'],
+   voorb:[{s:'Die <u>groot</u> hond byt.',u:'GROOT = attributief (voor naamwoord)'},{s:'Die seun is <u>slim</u>.',u:'SLIM = predikatief (na "is")'},{s:'Sy is <u>groter</u> as haar suster.',u:'GROTER = vergelykende trap'},{s:'Hy is <u>bloedrooi</u> van skaamte.',u:'BLOEDROOI = intensiewe vorm'}],
    prog:'byvoeglik'},
   {id:'voornaamwoord',nm:'Voornaamwoord',ic:'👤',kl:'#a855f7',kat:'woordsoort',
    verd:'n <strong>Voornaamwoord</strong> vervang n naamwoord sodat ons nie herhaal nie.',
-   reels:[
-     'Persoonlik: ek, jy/u, hy, sy, dit, ons, julle, hulle',
-     'Besitlik: my, jou, sy, haar, ons, julle, hulle',
-     'Aanwysend: hierdie (naby), daardie (ver), dit',
-     'Betreklik: wat (dinge), wie (persone)',
-     'Vraend: wie? wat? watter? hoeveel?',
-     'Onbepaald: iemand, niemand, almal, elkeen',
-     'Wederkerend: myself, jouself, homself, haarself',
-     'Wederkerig: mekaar, mekaaronthalwe'
-   ],
-   voorb:[
-     {s:'<u>Hy</u> speel rugby.',u:'HY = persoonlike voornaamwoord (vervang n mansnaam)'},
-     {s:'Dit is <u>my</u> boek.',u:'MY = besitlike voornaamwoord'},
-     {s:'Die hond <u>wat</u> byt, blaf nie.',u:'WAT = betreklike voornaamwoord'},
-     {s:'<u>Niemand</u> weet waar hy is.',u:'NIEMAND = onbepaalde voornaamwoord'}
-   ],
+   reels:['Persoonlik: ek, jy/u, hy, sy, dit, ons, julle, hulle','Besitlik: my, jou, sy, haar, ons, julle, hulle','Aanwysend: hierdie (naby), daardie (ver), dit','Betreklik: wat (dinge), wie (persone)','Vraend: wie? wat? watter? hoeveel?','Onbepaald: iemand, niemand, almal, elkeen','Wederkerend: myself, jouself, homself, haarself','Wederkerig: mekaar, mekaaronthalwe'],
+   voorb:[{s:'<u>Hy</u> speel rugby.',u:'HY = persoonlike voornaamwoord (vervang n mansnaam)'},{s:'Dit is <u>my</u> boek.',u:'MY = besitlike voornaamwoord'},{s:'Die hond <u>wat</u> byt, blaf nie.',u:'WAT = betreklike voornaamwoord'},{s:'<u>Niemand</u> weet waar hy is.',u:'NIEMAND = onbepaalde voornaamwoord'}],
    prog:'voornaamwoorde'},
   {id:'bywoord',nm:'Bywoord',ic:'📍',kl:'#14b8a6',kat:'woordsoort',
    verd:'n <strong>Bywoord</strong> verander n werkwoord, byvoeglike naamwoord of ander bywoord.',
-   reels:[
-     'Wyse (HOE?): vinnig, stadig, hard, sag, mooi',
-     'Tyd (WANNEER?): gister, more, nou, altyd, nooit, soms',
-     'Plek (WAAR?): hier, daar, buite, binne, naby, ver',
-     'Graad (HOEVEEL?): baie, redelik, te, nogal, genoeg',
-     'Truuk: Vra HOE? WANNEER? WAAR? HOEVEEL? oor die werkwoord'
-   ],
-   voorb:[
-     {s:'Die seun hardloop <u>vinnig</u>.',u:'VINNIG = bywoord van wyse (HOE?)'},
-     {s:'Ons gaan <u>more</u> see toe.',u:'MORE = bywoord van tyd (WANNEER?)'},
-     {s:'Die kat sit <u>buite</u>.',u:'BUITE = bywoord van plek (WAAR?)'},
-     {s:'Sy is <u>baie</u> slim.',u:'BAIE = bywoord van graad (HOEVEEL?)'}
-   ],
+   reels:['Wyse (HOE?): vinnig, stadig, hard, sag, mooi','Tyd (WANNEER?): gister, more, nou, altyd, nooit, soms','Plek (WAAR?): hier, daar, buite, binne, naby, ver','Graad (HOEVEEL?): baie, redelik, te, nogal, genoeg','Truuk: Vra HOE? WANNEER? WAAR? HOEVEEL? oor die werkwoord'],
+   voorb:[{s:'Die seun hardloop <u>vinnig</u>.',u:'VINNIG = bywoord van wyse (HOE?)'},{s:'Ons gaan <u>more</u> see toe.',u:'MORE = bywoord van tyd (WANNEER?)'},{s:'Die kat sit <u>buite</u>.',u:'BUITE = bywoord van plek (WAAR?)'},{s:'Sy is <u>baie</u> slim.',u:'BAIE = bywoord van graad (HOEVEEL?)'}],
    prog:'bywoorde'},
   {id:'voegwoord',nm:'Voegwoord',ic:'🔗',kl:'#ec4899',kat:'woordsoort',
    verd:'n <strong>Voegwoord</strong> verbind woorde, sinsdele of sinne saam.',
-   reels:[
-     'Groep 1 — Neweskikkend (verbind gelyke dele): en, maar, of, want, dog, nog, sowel...as',
-     'Groep 2 — Voegwoordelike bywoorde: dan, daarna, dus, gevolglik, nietemin, nogtans',
-     'Groep 3 — Onderskikkend (verbind hoofsin + bysin): dat, omdat, sodat, alhoewel, indien, terwyl, nadat, voordat, wanneer, toe',
-     'Onderskikkende voegwoord verander die woordorde — werkwoord skuif na die einde!'
-   ],
-   voorb:[
-     {s:'Jan <u>en</u> Piet speel rugby.',u:'EN = neweskikkend (verbind twee name)'},
-     {s:'Sy werk hard <u>maar</u> slaap nie.',u:'MAAR = neweskikkend (teenstelling)'},
-     {s:'Hy bly tuis <u>omdat</u> hy siek is.',u:'OMDAT = onderskikkend (rede)'},
-     {s:'Ek oefen <u>sodat</u> ek kan wen.',u:'SODAT = onderskikkend (doel)'}
-   ],
+   reels:['Groep 1 — Neweskikkend (verbind gelyke dele): en, maar, of, want, dog, nog, sowel...as','Groep 2 — Voegwoordelike bywoorde: dan, daarna, dus, gevolglik, nietemin, nogtans','Groep 3 — Onderskikkend (verbind hoofsin + bysin): dat, omdat, sodat, alhoewel, indien, terwyl, nadat, voordat, wanneer, toe','Onderskikkende voegwoord verander die woordorde — werkwoord skuif na die einde!'],
+   voorb:[{s:'Jan <u>en</u> Piet speel rugby.',u:'EN = neweskikkend (verbind twee name)'},{s:'Sy werk hard <u>maar</u> slaap nie.',u:'MAAR = neweskikkend (teenstelling)'},{s:'Hy bly tuis <u>omdat</u> hy siek is.',u:'OMDAT = onderskikkend (rede)'},{s:'Ek oefen <u>sodat</u> ek kan wen.',u:'SODAT = onderskikkend (doel)'}],
    prog:'voegwoorde'},
   {id:'voorsetsel',nm:'Voorsetsel',ic:'📌',kl:'#0ea5e9',kat:'woordsoort',
    verd:'n <strong>Voorsetsel</strong> wys die verhouding tussen woorde — plek, tyd of wyse.',
-   reels:[
-     'Plek: in, op, by, voor, agter, langs, tussen, bo, onder, na, van',
-     'Tyd: voor, na, gedurende, teen, om, sedert, tydens',
-     'Wyse: met, sonder, deur, volgens, namens, weens, danksy',
-     'Saamgestelde voorsetsels: ten spyte van, met behulp van, in plaas van'
-   ],
-   voorb:[
-     {s:'Die kat sit <u>op</u> die mat.',u:'OP = voorsetsel van plek'},
-     {s:'Die wedstryd begin <u>om</u> drie-uur.',u:'OM = voorsetsel van tyd'},
-     {s:'Sy skryf <u>met</u> n blou pen.',u:'MET = voorsetsel van wyse'},
-     {s:'Hy slaag <u>danksy</u> harde werk.',u:'DANKSY = saamgestelde voorsetsel'}
-   ],
+   reels:['Plek: in, op, by, voor, agter, langs, tussen, bo, onder, na, van','Tyd: voor, na, gedurende, teen, om, sedert, tydens','Wyse: met, sonder, deur, volgens, namens, weens, danksy','Saamgestelde voorsetsels: ten spyte van, met behulp van, in plaas van'],
+   voorb:[{s:'Die kat sit <u>op</u> die mat.',u:'OP = voorsetsel van plek'},{s:'Die wedstryd begin <u>om</u> drie-uur.',u:'OM = voorsetsel van tyd'},{s:'Sy skryf <u>met</u> n blou pen.',u:'MET = voorsetsel van wyse'},{s:'Hy slaag <u>danksy</u> harde werk.',u:'DANKSY = saamgestelde voorsetsel'}],
    prog:'voorsetsel'},
   {id:'lidwoord',nm:'Lidwoord',ic:'🏷️',kl:'#22c55e',kat:'woordsoort',
    verd:'n <strong>Lidwoord</strong> staan voor n naamwoord en vertel of ons weet watter een.',
-   reels:[
-     '"die" = bepaalde lidwoord (ons weet presies watter een): DIE kat, DIE skool',
-     '"n" = onbepaalde lidwoord (enige een): N kat, N skool',
-     'Verouderde vorme: de, der (in ou tekste)',
-     'Gebruik "die" vir spesifieke: Die man langs my.',
-     'Gebruik "n" vir enige een: Ek wil n appel hê.'
-   ],
-   voorb:[
-     {s:'<u>Die</u> hond byt my.',u:'DIE = bepaald (spesifieke hond)'},
-     {s:'Ek koop <u>n</u> boek.',u:'"N" = onbepaald (enige boek)'},
-     {s:'<u>Die</u> son skyn helder.',u:'DIE = die enigste son'},
-     {s:'Sy het <u>n</u> pragtige stem.',u:'"N" = onbepaald'}
-   ],
+   reels:['"die" = bepaalde lidwoord (ons weet presies watter een): DIE kat, DIE skool','"n" = onbepaalde lidwoord (enige een): N kat, N skool','Verouderde vorme: de, der (in ou tekste)','Gebruik "die" vir spesifieke: Die man langs my.','Gebruik "n" vir enige een: Ek wil n appel hê.'],
+   voorb:[{s:'<u>Die</u> hond byt my.',u:'DIE = bepaald (spesifieke hond)'},{s:'Ek koop <u>n</u> boek.',u:'"N" = onbepaald (enige boek)'},{s:'<u>Die</u> son skyn helder.',u:'DIE = die enigste son'},{s:'Sy het <u>n</u> pragtige stem.',u:'"N" = onbepaald'}],
    prog:'lidwoorde'},
   {id:'telwoord',nm:'Telwoord',ic:'🔢',kl:'#f97316',kat:'woordsoort',
    verd:'n <strong>Telwoord</strong> tel of rangskik dinge.',
-   reels:[
-     'Hooftelwoorde (HOEVEEL?): een, twee, drie, vier, vyf... honderd, duisend',
-     'Rangtelwoorde (WATTER PLEK?): eerste, tweede, derde, vierde, vyfde...',
-     'Bepaalde hooftelwoord: drie katte, tien leerders',
-     'Onbepaalde hooftelwoord: baie, verskeie, min, genoeg',
-     'Bepaalde rangtelwoord: die eerste, die tweede',
-     'Onbepaalde rangtelwoord: middelste, laaste, volgende'
-   ],
-   voorb:[
-     {s:'<u>Drie</u> katte sit op die mat.',u:'DRIE = hooftelwoord (HOEVEEL?)'},
-     {s:'Sy was die <u>tweede</u> in die ry.',u:'TWEEDE = rangtelwoord (WATTER PLEK?)'},
-     {s:'<u>Baie</u> kinders het gekom.',u:'BAIE = onbepaalde hooftelwoord'},
-     {s:'Die <u>laaste</u> stuk koek is weg.',u:'LAASTE = onbepaalde rangtelwoord'}
-   ],
+   reels:['Hooftelwoorde (HOEVEEL?): een, twee, drie, vier, vyf... honderd, duisend','Rangtelwoorde (WATTER PLEK?): eerste, tweede, derde, vierde, vyfde...','Bepaalde hooftelwoord: drie katte, tien leerders','Onbepaalde hooftelwoord: baie, verskeie, min, genoeg','Bepaalde rangtelwoord: die eerste, die tweede','Onbepaalde rangtelwoord: middelste, laaste, volgende'],
+   voorb:[{s:'<u>Drie</u> katte sit op die mat.',u:'DRIE = hooftelwoord (HOEVEEL?)'},{s:'Sy was die <u>tweede</u> in die ry.',u:'TWEEDE = rangtelwoord (WATTER PLEK?)'},{s:'<u>Baie</u> kinders het gekom.',u:'BAIE = onbepaalde hooftelwoord'},{s:'Die <u>laaste</u> stuk koek is weg.',u:'LAASTE = onbepaalde rangtelwoord'}],
    prog:'telwoorde'},
   {id:'sinsontleding',nm:'Sinsontleding',ic:'🔍',kl:'#6366f1',kat:'sinne',
    verd:'n Sin bestaan uit verskillende <strong>sinsdele</strong>. Ons ontleed die sin om te wys watter rol elke deel speel. Die STOMPI-metode help ons.',
-   reels:[
-     'Onderwerp (O): WIE of WAT doen die aksie? (onderstreep)',
-     'Gesegde (G): die WERKWOORD — wat word gedoen?',
-     'Voorwerp (V): WAT word gedoen? (direkte voorwerp)',
-     'STOMPI = Subjek, Tydsbepalings, O-gesegde, Middel, Plek, Indirekte voorwerp',
-     'Bepalings: Tyd (wanneer?), Plek (waar?), Wyse (hoe?)',
-     'Enkelvoudige sin: een hoofsin (een gesegde)',
-     'Veelvoudige sin: twee of meer hoofsinne verbind met voegwoord'
-   ],
-   voorb:[
-     {s:'Die seun skop die bal.',u:'Onderwerp: Die seun | Gesegde: skop | Voorwerp: die bal'},
-     {s:'Ma bak lekker koekies vir ons.',u:'Onderwerp: Ma | Gesegde: bak | Voorwerp: koekies'},
-     {s:'Jan sing en Piet dans.',u:'Veelvoudige sin — twee hoofsinne verbind met "en"'}
-   ],
+   reels:['Onderwerp (O): WIE of WAT doen die aksie? (onderstreep)','Gesegde (G): die WERKWOORD — wat word gedoen?','Voorwerp (V): WAT word gedoen? (direkte voorwerp)','STOMPI = Subjek, Tydsbepalings, O-gesegde, Middel, Plek, Indirekte voorwerp','Bepalings: Tyd (wanneer?), Plek (waar?), Wyse (hoe?)','Enkelvoudige sin: een hoofsin (een gesegde)','Veelvoudige sin: twee of meer hoofsinne verbind met voegwoord'],
+   voorb:[{s:'Die seun skop die bal.',u:'Onderwerp: Die seun | Gesegde: skop | Voorwerp: die bal'},{s:'Ma bak lekker koekies vir ons.',u:'Onderwerp: Ma | Gesegde: bak | Voorwerp: koekies'},{s:'Jan sing en Piet dans.',u:'Veelvoudige sin — twee hoofsinne verbind met "en"'}],
    prog:'sinsontleding'},
   {id:'ontkenning',nm:'Ontkennende Vorm',ic:'❌',kl:'#ef4444',kat:'sinne',
    verd:'In Afrikaans gebruik ons <strong>dubbele ontkenning</strong> — altyd TWEE "nie" in die sin.',
-   reels:[
-     'Die eerste "nie" kom direk na die werkwoord of gesegde',
-     'Die tweede "nie" kom altyd aan die EINDE van die sin',
-     'Ontkenningswoorde: nooit, nerens, niemand, niks, nog nooit, nog niks',
-     'As ontkenningswoord gebruik word, verander die tweede "nie" na "nie" ook',
-     'Bv: altyd → nooit...nie | iemand → niemand...nie | iets → niks...nie'
-   ],
-   voorb:[
-     {s:'Die seun speel rugby.',u:'→ Die seun speel NIE rugby NIE.'},
-     {s:'Sy eet die appel.',u:'→ Sy eet NIE die appel NIE.'},
-     {s:'Hy het die boek gelees.',u:'→ Hy het NIE die boek gelees NIE.'},
-     {s:'Hy kom altyd laat.',u:'→ Hy kom NOOIT laat NIE. (ontkenningswoord)'}
-   ],
+   reels:['Die eerste "nie" kom direk na die werkwoord of gesegde','Die tweede "nie" kom altyd aan die EINDE van die sin','Ontkenningswoorde: nooit, nerens, niemand, niks, nog nooit, nog niks','As ontkenningswoord gebruik word, verander die tweede "nie" na "nie" ook','Bv: altyd → nooit...nie | iemand → niemand...nie | iets → niks...nie'],
+   voorb:[{s:'Die seun speel rugby.',u:'→ Die seun speel NIE rugby NIE.'},{s:'Sy eet die appel.',u:'→ Sy eet NIE die appel NIE.'},{s:'Hy het die boek gelees.',u:'→ Hy het NIE die boek gelees NIE.'},{s:'Hy kom altyd laat.',u:'→ Hy kom NOOIT laat NIE. (ontkenningswoord)'}],
    prog:'ontkennende'},
   {id:'werkwoordtye',nm:'Werkwoordtye',ic:'⏰',kl:'#f59e0b',kat:'sinne',
    verd:'Werkwoordtye vertel ons WANNEER iets gebeur — in die verlede, hede of toekoms.',
-   reels:[
-     'Teenwoordige tyd (NOU/GEWOONLIK): Ek eet. Sy sing. Ons speel.',
-     'Verlede tyd (VROEËR): het + ge- + werkwoord',
-     'Verlede tyd voorbeelde: het geloop, het gesing, het gespeel, het geëet',
-     'Toekomende tyd (LATER): sal + werkwoord',
-     'Toekomende tyd voorbeelde: sal loop, sal sing, sal speel',
-     'Swak werkwoorde: kry ge- voor (loop → geloop)',
-     'Sterk werkwoorde: vokaal verander (skryf → geskryf)'
-   ],
-   voorb:[
-     {s:'Ek <u>eet</u> elke dag boterham.',u:'TEENWOORDIG — dit gebeur nou/gewoonlik'},
-     {s:'Ek <u>het</u> gister <u>geëet</u>.',u:'VERLEDE — het + ge- + werkwoord'},
-     {s:'Ek <u>sal</u> more <u>eet</u>.',u:'TOEKOMEND — sal + werkwoord'},
-     {s:'Sy <u>het</u> n mooi lied <u>gesing</u>.',u:'VERLEDE TYD — het + gesing'}
-   ],
+   reels:['Teenwoordige tyd (NOU/GEWOONLIK): Ek eet. Sy sing. Ons speel.','Verlede tyd (VROEËR): het + ge- + werkwoord','Verlede tyd voorbeelde: het geloop, het gesing, het gespeel, het geëet','Toekomende tyd (LATER): sal + werkwoord','Toekomende tyd voorbeelde: sal loop, sal sing, sal speel','Swak werkwoorde: kry ge- voor (loop → geloop)','Sterk werkwoorde: vokaal verander (skryf → geskryf)'],
+   voorb:[{s:'Ek <u>eet</u> elke dag boterham.',u:'TEENWOORDIG — dit gebeur nou/gewoonlik'},{s:'Ek <u>het</u> gister <u>geëet</u>.',u:'VERLEDE — het + ge- + werkwoord'},{s:'Ek <u>sal</u> more <u>eet</u>.',u:'TOEKOMEND — sal + werkwoord'},{s:'Sy <u>het</u> n mooi lied <u>gesing</u>.',u:'VERLEDE TYD — het + gesing'}],
    prog:'tye'},
   {id:'lydende',nm:'Lydende & Bedrywende Vorm',ic:'🔄',kl:'#14b8a6',kat:'sinne',
    verd:'Die <strong>bedrywende vorm</strong> is normaal. Die <strong>lydende vorm</strong> draai die sin om — die voorwerp word die onderwerp.',
-   reels:[
-     'Bedrywend: ONDERWERP + gesegde + voorwerp (normaal)',
-     'Lydend: VOORWERP word onderwerp + "word deur" + ou onderwerp',
-     'Hede lydend: word + deur + ge-werkwoord',
-     'Verlede lydend: is + deur + ge-werkwoord',
-     'Toekomend lydend: sal + deur + ge-werkwoord + word',
-     'Stappe: 1) Vind voorwerp 2) Maak dit onderwerp 3) Voeg "word deur" in'
-   ],
-   voorb:[
-     {s:'Die seun skop die bal. (bedrywend)',u:'→ Die bal word deur die seun geskop. (lydend)'},
-     {s:'Ma bak die koekies. (bedrywend)',u:'→ Die koekies word deur Ma gebak. (lydend)'},
-     {s:'Jan lees die boek. (bedrywend)',u:'→ Die boek word deur Jan gelees. (lydend)'}
-   ],
+   reels:['Bedrywend: ONDERWERP + gesegde + voorwerp (normaal)','Lydend: VOORWERP word onderwerp + "word deur" + ou onderwerp','Hede lydend: word + deur + ge-werkwoord','Verlede lydend: is + deur + ge-werkwoord','Toekomend lydend: sal + deur + ge-werkwoord + word','Stappe: 1) Vind voorwerp 2) Maak dit onderwerp 3) Voeg "word deur" in'],
+   voorb:[{s:'Die seun skop die bal. (bedrywend)',u:'→ Die bal word deur die seun geskop. (lydend)'},{s:'Ma bak die koekies. (bedrywend)',u:'→ Die koekies word deur Ma gebak. (lydend)'},{s:'Jan lees die boek. (bedrywend)',u:'→ Die boek word deur Jan gelees. (lydend)'}],
    prog:'lydende'},
   {id:'direkte_rede',nm:'Direkte & Indirekte Rede',ic:'💬',kl:'#a855f7',kat:'sinne',
    verd:'<strong>Direkte rede</strong> = iemand se presiese woorde in aanhalingstekens. <strong>Indirekte rede</strong> = woorde herskryf sonder aanhalingstekens.',
-   reels:[
-     'Direkte rede: "Ek is moeg," sê Jan. (aanhalingstekens + presiese woorde)',
-     'Indirekte rede: Jan sê dat hy moeg is. (geen aanhalingstekens + "dat")',
-     'Verander: ek → hy/sy | jy → hy/sy | ons → hulle',
-     'Verander: vandag → daardie dag | gister → die vorige dag | more → die volgende dag',
-     'Verander: hier → daar | nou → toe',
-     'Tyd BLY dieselfde in indirekte rede!'
-   ],
-   voorb:[
-     {s:'"Ek is baie moeg," sê Maria.',u:'→ Maria sê dat sy baie moeg is.'},
-     {s:'"Ons gaan more strand toe," sê Pa.',u:'→ Pa sê dat hulle die volgende dag strand toe gaan.'},
-     {s:'"Jy moet jou werk doen," sê Juffrou.',u:'→ Juffrou sê dat hy/sy sy/haar werk moet doen.'}
-   ],
+   reels:['Direkte rede: "Ek is moeg," sê Jan. (aanhalingstekens + presiese woorde)','Indirekte rede: Jan sê dat hy moeg is. (geen aanhalingstekens + "dat")','Verander: ek → hy/sy | jy → hy/sy | ons → hulle','Verander: vandag → daardie dag | gister → die vorige dag | more → die volgende dag','Verander: hier → daar | nou → toe','Tyd BLY dieselfde in indirekte rede!'],
+   voorb:[{s:'"Ek is baie moeg," sê Maria.',u:'→ Maria sê dat sy baie moeg is.'},{s:'"Ons gaan more strand toe," sê Pa.',u:'→ Pa sê dat hulle die volgende dag strand toe gaan.'},{s:'"Jy moet jou werk doen," sê Juffrou.',u:'→ Juffrou sê dat hy/sy sy/haar werk moet doen.'}],
    prog:'direkte_rede'},
   {id:'sinswyses',nm:'Sinsoorte & Sinswyses',ic:'📝',kl:'#6366f1',kat:'sinne',
    verd:'Sinne kan op verskillende maniere gebruik word. Die <strong>sinsoort</strong> bepaal die punt of uitroepteken.',
-   reels:[
-     'Stelsin: maak n stelling, eindig met punt. "Die hond slaap."',
-     'Vraagsin (Algemeen): Ja/Nee antwoord. "Is dit Maandag?"',
-     'Vraagsin (Spesifiek): spesifieke antwoord. "Watter dag is dit?"',
-     'Uitroepsin: emosie/bevel, eindig met uitroepteken. "Help! Die hond byt!"',
-     'Bevelsin: opdrag, eindig met uitroepteken. "Sit down! Staan op!"',
-     'Sinsaksent: klem op sekere woorde verander betekenis',
-     'Ontkenning: altyd dubbele "nie...nie"'
-   ],
-   voorb:[
-     {s:'Die blomme is mooi.',u:'STELSIN — stelling, eindig met punt'},
-     {s:'Waar is my boek?',u:'VRAAGSIN (spesifiek) — spesifieke antwoord verwag'},
-     {s:'Is dit jou pen?',u:'VRAAGSIN (algemeen) — ja/nee antwoord'},
-     {s:'Help! Die hond byt!',u:'UITROEPSIN — emosie/gevaar'}
-   ],
+   reels:['Stelsin: maak n stelling, eindig met punt. "Die hond slaap."','Vraagsin (Algemeen): Ja/Nee antwoord. "Is dit Maandag?"','Vraagsin (Spesifiek): spesifieke antwoord. "Watter dag is dit?"','Uitroepsin: emosie/bevel, eindig met uitroepteken. "Help! Die hond byt!"','Bevelsin: opdrag, eindig met uitroepteken. "Sit down! Staan op!"','Sinsaksent: klem op sekere woorde verander betekenis','Ontkenning: altyd dubbele "nie...nie"'],
+   voorb:[{s:'Die blomme is mooi.',u:'STELSIN — stelling, eindig met punt'},{s:'Waar is my boek?',u:'VRAAGSIN (spesifiek) — spesifieke antwoord verwag'},{s:'Is dit jou pen?',u:'VRAAGSIN (algemeen) — ja/nee antwoord'},{s:'Help! Die hond byt!',u:'UITROEPSIN — emosie/gevaar'}],
    prog:'sinswyses'},
   {id:'spelling',nm:'Spelling',ic:'✏️',kl:'#6366f1',kat:'spelling',
    verd:'Korrekte <strong>spelling</strong> beteken: wanneer ons praat, skryf ons wat ons hoor. Ken die 3 grondbeginsels.',
-   reels:[
-     '1. Klankleer: skryf wat jy hoor (standaard Afrikaans)',
-     '2. Lettergrepe: verdeel woorde in lettergrepe om te spel',
-     '3. Klankgrepe: OOP (eindig op vokaal) en GESLOTE (eindig op konsonant)',
-     'OOP lettergreep: bo-me, so-mer (vokaal eindig die greep)',
-     'GESLOTE lettergreep: som-mer, bok-ke (konsonant eindig die greep)',
-     'Oog lettergreep (OOP): vokaal word LANG uitgespreek',
-     'Geslote lettergreep: vokaal word KORT uitgespreek'
-   ],
-   voorb:[
-     {s:'bo-me (OOP)',u:'Vokaal "o" eindig die greep — bo word LANK uitgespreek'},
-     {s:'som-mer (GESLOTE)',u:'Konsonant "m" eindig eerste greep — kort uitgespreek'},
-     {s:'ver-jaar-dag',u:'3 lettergrepe: ver | jaar | dag'},
-     {s:'on-der-wy-ser',u:'4 lettergrepe: on | der | wy | ser'}
-   ],
+   reels:['1. Klankleer: skryf wat jy hoor (standaard Afrikaans)','2. Lettergrepe: verdeel woorde in lettergrepe om te spel','3. Klankgrepe: OOP (eindig op vokaal) en GESLOTE (eindig op konsonant)','OOP lettergreep: bo-me, so-mer (vokaal eindig die greep)','GESLOTE lettergreep: som-mer, bok-ke (konsonant eindig die greep)','Oog lettergreep (OOP): vokaal word LANG uitgespreek','Geslote lettergreep: vokaal word KORT uitgespreek'],
+   voorb:[{s:'bo-me (OOP)',u:'Vokaal "o" eindig die greep — bo word LANK uitgespreek'},{s:'som-mer (GESLOTE)',u:'Konsonant "m" eindig eerste greep — kort uitgespreek'},{s:'ver-jaar-dag',u:'3 lettergrepe: ver | jaar | dag'},{s:'on-der-wy-ser',u:'4 lettergrepe: on | der | wy | ser'}],
    prog:'spelling'},
   {id:'meervoude',nm:'Meervoude & Verkleining',ic:'📊',kl:'#22c55e',kat:'spelling',
    verd:'<strong>Meervoude</strong> = meer as een. <strong>Verkleinwoorde</strong> = kleiner of liefkosend.',
-   reels:[
-     'Meervoud -e: boom → bome, stoel → stoele, hand → hande',
-     'Meervoud verdubbel + -e: kat → katte, blom → blomme, man → manne',
-     'Meervoud -s (leenwoorde): motor → motors, skool → skole',
-     'Onreëlmatig: kind → kinders, lid → lede, stad → stede',
-     'Verkleining -tjie (na t,k,p): kat → katjie, boek → boekie',
-     'Verkleining -jie (na vokaal,l,r): arend → arendjie, perd → perdjie',
-     'Verkleining -etjie (na n,ng,m): blom → blommetjie, man → mannetjie'
-   ],
-   voorb:[
-     {s:'kat → katte',u:'Verdubbel "t" + -e (kort vokaal)'},
-     {s:'boom → bome',u:'"oo" → "o" + -e (oop lettergreep)'},
-     {s:'motor → motors',u:'Leenwoord kry -s'},
-     {s:'kat → katjie',u:'Na "t" kry -jie: katjie'}
-   ],
+   reels:['Meervoud -e: boom → bome, stoel → stoele, hand → hande','Meervoud verdubbel + -e: kat → katte, blom → blomme, man → manne','Meervoud -s (leenwoorde): motor → motors, skool → skole','Onreëlmatig: kind → kinders, lid → lede, stad → stede','Verkleining -tjie (na t,k,p): kat → katjie, boek → boekie','Verkleining -jie (na vokaal,l,r): arend → arendjie, perd → perdjie','Verkleining -etjie (na n,ng,m): blom → blommetjie, man → mannetjie'],
+   voorb:[{s:'kat → katte',u:'Verdubbel "t" + -e (kort vokaal)'},{s:'boom → bome',u:'"oo" → "o" + -e (oop lettergreep)'},{s:'motor → motors',u:'Leenwoord kry -s'},{s:'kat → katjie',u:'Na "t" kry -jie: katjie'}],
    prog:'meervoude'},
   {id:'leestekens',nm:'Leestekens & Skryftekens',ic:'❓',kl:'#ec4899',kat:'spelling',
    verd:'<strong>Leestekens</strong> help ons om sinne korrek te lees en die regte betekenis te verstaan.',
-   reels:[
-     'Punt (.): einde van stelsin of afkorting',
-     'Komma (,): pouse in sin, na naamreeks, na byroep',
-     'Vraagteken (?): einde van vraagsin',
-     'Uitroepteken (!): einde van uitroepsin of bevelsin',
-     'Aanhalingstekens (" "): direkte rede, titels',
-     'Koppelteken (-): verbind samestellings: rooi-rooi, dag-en-nag',
-     'Kommapunt (;): onderverdeling binne opsomming',
-     'Dubbelpunt (:): voor opsomming of verduideliking'
-   ],
-   voorb:[
-     {s:'Die seun, sy suster en hul ma gaan winkel.',u:'Kommas in naamreeks'},
-     {s:'"Kom hier!" roep Ma.',u:'Aanhalingstekens + uitroepteken (bevel)'},
-     {s:'Hy het drie goed gekoop: brood, melk en botter.',u:'Dubbelpunt voor lys'}
-   ],
+   reels:['Punt (.): einde van stelsin of afkorting','Komma (,): pouse in sin, na naamreeks, na byroep','Vraagteken (?): einde van vraagsin','Uitroepteken (!): einde van uitroepsin of bevelsin','Aanhalingstekens (" "): direkte rede, titels','Koppelteken (-): verbind samestellings: rooi-rooi, dag-en-nag','Kommapunt (;): onderverdeling binne opsomming','Dubbelpunt (:): voor opsomming of verduideliking'],
+   voorb:[{s:'Die seun, sy suster en hul ma gaan winkel.',u:'Kommas in naamreeks'},{s:'"Kom hier!" roep Ma.',u:'Aanhalingstekens + uitroepteken (bevel)'},{s:'Hy het drie goed gekoop: brood, melk en botter.',u:'Dubbelpunt voor lys'}],
    prog:'leestekens'},
   {id:'hoofletters',nm:'Hoofletters',ic:'🔠',kl:'#f97316',kat:'spelling',
    verd:'<strong>Hoofletters</strong> word gebruik vir spesifieke name en aan die begin van sinne.',
    reels:[
-     'Begin van n sin: Die kat slaap.',
-     'Eiename (persone): Jan, Sarie, Thabo, Amahle',
-     'Plekname: Pretoria, Kaapstad, Gauteng, Suid-Afrika',
-     'Titels: President, Meneer, Mevrou, Professor, Dr.',
-     'Taalname: Afrikaans, Engels, Zulu, Sotho',
-     'Feesdae: Kersfees, Nuwejaar, Paasnaweek',
-     'Publikasies: Die Burger, Volksblad, Huisgenoot'
-   ],
-   voorb:[
-     {s:'<u>S</u>arie woon in <u>P</u>retoria.',u:'Eienaam + Pleknaam kry hoofletter'},
-     {s:'<u>M</u>nre. <u>B</u>otha is ons <u>A</u>frikaans-onderwyser.',u:'Titel + naam + taalnaam'},
-     {s:'<u>H</u>y vier <u>K</u>ersfees in <u>K</u>aapstad.',u:'Begin sin + fees + plek'}
-   ],
+     reels:['Begin van n sin: Die kat slaap.','Eiename (persone): Jan, Sarie, Thabo, Amahle','Plekname: Pretoria, Kaapstad, Gauteng, Suid-Afrika','Titels: President, Meneer, Mevrou, Professor, Dr.','Taalname: Afrikaans, Engels, Zulu, Sotho','Feesdae: Kersfees, Nuwejaar, Paasnaweek','Publikasies: Die Burger, Volksblad, Huisgenoot'],
+   voorb:[{s:'<u>S</u>arie woon in <u>P</u>retoria.',u:'Eienaam + Pleknaam kry hoofletter'},{s:'<u>M</u>nre. <u>B</u>otha is ons <u>A</u>frikaans-onderwyser.',u:'Titel + naam + taalnaam'},{s:'<u>H</u>y vier <u>K</u>ersfees in <u>K</u>aapstad.',u:'Begin sin + fees + plek'}],
    prog:'hoofletters'},
   {id:'woordvorming',nm:'Woordvorming (Morfologie)',ic:'🔨',kl:'#a855f7',kat:'spelling',
    verd:'<strong>Woordvorming</strong> vertel ons hoe nuwe woorde gevorm word deur morfeme by te voeg.',
-   reels:[
-     'Simpleks (basisvorm): speel, leer, mooi, kind',
-     'Kompleks Afleiding: voor- en agtervoegsels by stam',
-     'Voorvoegsels: on- (onnodig), be- (beleer), ge- (geleer)',
-     'Agtervoegsels: -heid (skoonheid), -lik (vriendelik), -er (werker)',
-     'Samestelling: twee woorde saam: tafelpoot, reenboog, skooltas',
-     'Samestellende afleiding: skoolklere (skool+klere)',
-     'Metamorfose: vokaal verander: drink→dronk, vind→gevind'
-   ],
-   voorb:[
-     {s:'vriend + -lik = vriendelik',u:'AGTERVOEGSEL -lik bygevoeg'},
-     {s:'on- + nodig = onnodig',u:'VOORVOEGSEL on- bygevoeg'},
-     {s:'tafel + poot = tafelpoot',u:'SAMESTELLING — twee woorde saam'},
-     {s:'drink → dronk',u:'METAMORFOSE — vokaal verander'}
-   ],
+   reels:['Simpleks (basisvorm): speel, leer, mooi, kind','Kompleks Afleiding: voor- en agtervoegsels by stam','Voorvoegsels: on- (onnodig), be- (beleer), ge- (geleer)','Agtervoegsels: -heid (skoonheid), -lik (vriendelik), -er (werker)','Samestelling: twee woorde saam: tafelpoot, reenboog, skooltas','Samestellende afleiding: skoolklere (skool+klere)','Metamorfose: vokaal verander: drink→dronk, vind→gevind'],
+   voorb:[{s:'vriend + -lik = vriendelik',u:'AGTERVOEGSEL -lik bygevoeg'},{s:'on- + nodig = onnodig',u:'VOORVOEGSEL on- bygevoeg'},{s:'tafel + poot = tafelpoot',u:'SAMESTELLING — twee woorde saam'},{s:'drink → dronk',u:'METAMORFOSE — vokaal verander'}],
    prog:'woordvorming'},
   {id:'taalverskynsels',nm:'Betekenis & Taalverskynsels',ic:'🦊',kl:'#14b8a6',kat:'spelling',
    verd:'<strong>Betekenisleer</strong> bestudeer hoe woorde se betekenisse verwant is aan mekaar.',
-   reels:[
-     'Sinonieme: woorde met dieselfde/soortgelyke betekenis: bly=gelukkig, mooi=pragtig',
-     'Antonieme (teenoorgesteldes): groot↔klein, vinnig↔stadig, warm↔koud',
-     'Homonieme: klink dieselfde, verskil in betekenis: rys (eten) vs rys (prys)',
-     'Polisemie: een woord, verskillende betekenisse: bank (meubel/finansieel)',
-     'Idiome: figuurlike uitdrukkings: Die appel val nie ver van die boom',
-     'Pleonasme (fout!): onnodige herhaling: ronde sirkel, gratis verniet'
-   ],
-   voorb:[
-     {s:'bly = gelukkig = vrolik',u:'SINONIEME — selfde betekenis'},
-     {s:'groot ↔ klein | warm ↔ koud',u:'ANTONIEME — teenoorgesteldes'},
-     {s:'"n Kat in die donker knyp"',u:'IDIOOM — skelm iets doen'},
-     {s:'"ronde sirkel" (FOUT!)',u:'PLEONASME — alle sirkels is rond'}
-   ],
+   reels:['Sinonieme: woorde met dieselfde/soortgelyke betekenis: bly=gelukkig, mooi=pragtig','Antonieme (teenoorgesteldes): groot↔klein, vinnig↔stadig, warm↔koud','Homonieme: klink dieselfde, verskil in betekenis: rys (eten) vs rys (prys)','Polisemie: een woord, verskillende betekenisse: bank (meubel/finansieel)','Idiome: figuurlike uitdrukkings: Die appel val nie ver van die boom','Pleonasme (fout!): onnodige herhaling: ronde sirkel, gratis verniet'],
+   voorb:[{s:'bly = gelukkig = vrolik',u:'SINONIEME — selfde betekenis'},{s:'groot ↔ klein | warm ↔ koud',u:'ANTONIEME — teenoorgesteldes'},{s:'"n Kat in die donker knyp"',u:'IDIOOM — skelm iets doen'},{s:'"ronde sirkel" (FOUT!)',u:'PLEONASME — alle sirkels is rond'}],
    prog:'taalverskynsels'},
 ];
 function h2r(h,a){if(!h.startsWith('#'))return h;const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return`rgba(${r},${g},${b},${a})`;}
 function buildHome(){
-  const groepe=[
-    {nm:'🔤 Woordsoorte',kat:'woordsoort'},
-    {nm:'📝 Sinne',kat:'sinne'},
-    {nm:'✏️ Spelling & Taal',kat:'spelling'},
+  const kats=[
+    {id:'woordsoort',nm:'Woordsoorte',ic:'🔤',kl:'#6366f1',desc:'Selfstandige naamwoorde, werkwoorde, byvoeglike naamwoorde en meer',tel:AFDELINGS.filter(x=>x.kat==='woordsoort').length},
+    {id:'sinne',nm:'Sinne',ic:'📝',kl:'#a855f7',desc:'Sinsontleding, ontkenning, werkwoordtye, lydende en direkte rede',tel:AFDELINGS.filter(x=>x.kat==='sinne').length},
+    {id:'spelling',nm:'Spelling & Taal',ic:'✏️',kl:'#0d9488',desc:'Spelling, meervoude, leestekens, hoofletters en woordvorming',tel:AFDELINGS.filter(x=>x.kat==='spelling').length},
   ];
   let html='';
-  for(const gr of groepe){
-    html+=`<div class="stit">${gr.nm}</div>`;
-    for(const a of AFDELINGS.filter(x=>x.kat===gr.kat)){
-      const g=isGesluit(a.id);
-      const prog=ST.prog&&ST.prog[a.prog]||0;
-      const stars=g?'🔒':('⭐'.repeat(Math.min(Math.floor(prog/34),3))+'☆'.repeat(3-Math.min(Math.floor(prog/34),3)));
-      html+=`<button class="tbtn" onclick="${g?'toonPaywall()':'openAfd(\''+a.id+'\')'}" style="box-shadow:0 2px 12px ${h2r(a.kl,.15)}">
-        <div class="tb-slab" style="background:linear-gradient(160deg,${a.kl},${h2r(a.kl,.6)})${g?';opacity:.5':''}">
-          <span class="tb-slab-icon">${g?'🔒':a.ic}</span>
-          <span class="tb-slab-ex">Gr 4-7</span>
-        </div>
-        <div class="tb-body" style="border:1.5px solid ${h2r(a.kl,.25)};border-left:none">
-          <span class="tb-nm" style="color:${a.kl}">${a.nm}</span>
-          <span class="tb-desc">${a.verd.replace(/<[^>]+>/g,'').substring(0,55)}...</span>
-          <div class="tb-foot"><span class="tb-stars">${stars}</span><span class="tb-arr">›</span></div>
-        </div>
-      </button>`;
-    }
+  for(const k of kats){
+    html+=`<button onclick="openKat('${k.id}')" style="display:flex;align-items:stretch;width:100%;border:none;cursor:pointer;border-radius:18px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 20px ${h2r(k.kl,.2)};background:none;padding:0;text-align:left">
+      <div style="width:80px;flex-shrink:0;background:linear-gradient(160deg,${k.kl},${h2r(k.kl,.5)});display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:.6rem .3rem">
+        <span style="font-size:2.2rem;line-height:1">${k.ic}</span>
+        <span style="font-size:.6rem;font-weight:700;color:rgba(255,255,255,.8)">${k.tel} afdelings</span>
+      </div>
+      <div style="flex:1;background:var(--card);padding:1rem 1.1rem;border:1.5px solid ${h2r(k.kl,.2)};border-left:none;display:flex;flex-direction:column;justify-content:center">
+        <div style="font-family:'Baloo 2',sans-serif;font-size:1.2rem;font-weight:800;color:${k.kl};margin-bottom:4px">${k.nm}</div>
+        <div style="font-size:.78rem;color:var(--mut);line-height:1.4">${k.desc}</div>
+        <div style="margin-top:8px;font-size:.72rem;font-weight:700;color:${k.kl}">Kies afdeling ›</div>
+      </div>
+    </button>`;
   }
   document.getElementById('homeTopics').innerHTML=html;
 }
+function openKat(kat){
+  const el=document.getElementById('homeTopics');
+  const katInfo={woordsoort:{nm:'🔤 Woordsoorte',kl:'#6366f1'},sinne:{nm:'📝 Sinne',kl:'#a855f7'},spelling:{nm:'✏️ Spelling & Taal',kl:'#0d9488'}};
+  const k=katInfo[kat];
+  let html=`<button class="tuis-btn" onclick="buildHome()">🏠 Tuis</button>
+  <div style="font-family:'Baloo 2',sans-serif;font-size:16px;font-weight:800;color:${k.kl};margin-bottom:12px">${k.nm}</div>`;
+  for(const a of AFDELINGS.filter(x=>x.kat===kat)){
+    const g=isGesluit(a.id);
+    const prog=ST.prog&&ST.prog[a.prog]||0;
+    const stars=g?'🔒':('⭐'.repeat(Math.min(Math.floor(prog/34),3))+'☆'.repeat(3-Math.min(Math.floor(prog/34),3)));
+    html+=`<button class="tbtn" onclick="${g?'toonPaywall()':'openAfd(\''+a.id+'\')'}" style="box-shadow:0 2px 12px ${h2r(a.kl,.15)}">
+      <div class="tb-slab" style="background:linear-gradient(160deg,${a.kl},${h2r(a.kl,.6)})${g?';opacity:.5':''}">
+        <span class="tb-slab-icon">${g?'🔒':a.ic}</span>
+        <span class="tb-slab-ex">Gr 4-7</span>
+      </div>
+      <div class="tb-body" style="border:1.5px solid ${h2r(a.kl,.25)};border-left:none">
+        <span class="tb-nm" style="color:${a.kl}">${a.nm}</span>
+        <span class="tb-desc">${a.verd.replace(/<[^>]+>/g,'').substring(0,55)}...</span>
+        <div class="tb-foot"><span class="tb-stars">${stars}</span><span class="tb-arr">›</span></div>
+      </div>
+    </button>`;
+  }
+  el.innerHTML=html;
+  document.getElementById('scroll').scrollTop=0;
+}
 function openAfd(id){
   const a=AFDELINGS.find(x=>x.id===id);if(!a)return;
-  huidigAfd=a;
-  renderLeer(a);
-  go('leer');
+  huidigAfd=a;renderLeer(a);go('leer');
 }
 let huidigAfd=null,leerStap=0,vraagI=0,vraagLys=[],vraagAns=false;
 function renderLeer(a){
@@ -744,21 +503,30 @@ async function beginOefen(){
     <div class="ai-spin"></div>
     <span style="font-size:13px;font-weight:700;color:var(--grn)">AI maak 10 vars vrae oor ${a.nm}... 🌟</span>
   </div>`;
-  const prompt=`Jy is 'n Afrikaanse taalonderwyser vir Graad 4-7 CAPS.\n\nMaak presies 10 meervoudige-keuse vrae oor "${a.nm}" in Afrikaans.\n\nReëls:\n- CAPS kurrikulum Gr 4-7\n- Eenvoudige taal vir kinders\n- 4 keuses per vraag\n- Een korrekte antwoord (answer = indeks 0-3)\n- SA name en konteks\n- Elke vraag moet ANDERS wees\n\nRespond SLEGS met JSON array:\n[{"q":"vraag hier","options":["A","B","C","D"],"answer":1,"hint":"kort verduideliking"}]`;
+  const prompt=`Jy is 'n Afrikaanse taalonderwyser vir Graad 4-7 CAPS.\n\nMaak presies 10 meervoudige-keuse vrae oor "${a.nm}" in Afrikaans.\n\nReëls:\n- CAPS kurrikulum Gr 4-7\n- Eenvoudige taal vir kinders\n- 4 keuses per vraag\n- Een korrekte antwoord (answer = indeks 0-3)\n- SA name en konteks (Thabo, Amahle, Sipho)\n- Elke vraag moet ANDERS wees\n\nRespond SLEGS met JSON array, geen markdown:\n[{"q":"vraag hier","options":["A","B","C","D"],"answer":1,"hint":"kort verduideliking"}]`;
+  const apiBody=JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:prompt}]});
+  let vrae=null;
+  // Metode 1: CORS proxy
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    let txt=(data.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
-    vraagLys=JSON.parse(txt);
-    if(!Array.isArray(vraagLys)||!vraagLys.length)throw new Error('bad');
-    vraagI=0;vraagAns=false;
-    renderVraag();
-  }catch(e){
+    const proxyUrl='https://api.allorigins.win/post?url='+encodeURIComponent('https://api.anthropic.com/v1/messages');
+    const res=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:'https://api.anthropic.com/v1/messages',method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},body:apiBody})});
+    if(res.ok){const w=await res.json();const d=JSON.parse(w.contents);let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();const p=JSON.parse(t);if(Array.isArray(p)&&p.length)vrae=p;}
+  }catch(e1){console.log('Metode 1:',e1);}
+  // Metode 2: Direkte fetch
+  if(!vrae){
+    try{
+      const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:apiBody});
+      if(res.ok){const d=await res.json();let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();const p=JSON.parse(t);if(Array.isArray(p)&&p.length)vrae=p;}
+    }catch(e2){console.log('Metode 2:',e2);}
+  }
+  if(vrae&&vrae.length){
+    vraagLys=vrae;vraagI=0;vraagAns=false;renderVraag();
+  } else {
     document.getElementById('leerarea').innerHTML=`<button class="tuis-btn" onclick="go('home')">🏠 Tuis</button>
     <div style="background:#fee2e2;border-radius:13px;padding:16px;text-align:center">
-      <div style="font-size:24px;margin-bottom:6px">😬</div>
-      <div style="font-size:14px;font-weight:700;color:#7f1d1d">Kon nie vrae laai nie.</div>
-      <div style="font-size:12px;color:#7f1d1d;margin-top:4px">Kyk jou internet verbinding en probeer weer.</div>
+      <div style="font-size:22px;margin-bottom:6px">😬</div>
+      <div style="font-size:13px;font-weight:700;color:#7f1d1d">Kon nie AI vrae laai nie.</div>
+      <div style="font-size:12px;color:#7f1d1d;margin-top:4px">Kyk jou internet en probeer weer.</div>
     </div>
     <button style="width:100%;margin-top:10px;padding:12px;border-radius:12px;background:var(--ind);color:#fff;border:none;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit" onclick="beginOefen()">🔄 Probeer Weer</button>
     <button style="width:100%;margin-top:6px;padding:12px;border-radius:12px;background:var(--bg);border:1.5px solid var(--bor);font-size:13px;font-weight:800;cursor:pointer;font-family:inherit" onclick="renderLeer(huidigAfd)">📖 Terug na Verduideliking</button>`;
@@ -824,19 +592,28 @@ function restartT(){
 async function laaiToetsAI(){
   const afdelings=['Selfstandige naamwoord','Werkwoorde','Byvoeglike naamwoorde','Voornaamwoorde','Bywoorde','Voegwoorde','Voorsetsels','Lidwoorde','Telwoorde','Sinsontleding','Ontkennende vorm','Werkwoordtye','Lydende vorm','Meervoude'];
   const kiesAfds=afdelings.sort(()=>Math.random()-.5).slice(0,6).join(', ');
-  const prompt=`Jy is 'n Afrikaanse taalonderwyser vir Graad ${tG} CAPS.\n\nMaak presies 20 meervoudige-keuse vrae wat ALLE aspekte van Afrikaans dek:\n${kiesAfds} — en ander woordsoorte.\n\nReëls:\n- CAPS kurrikulum Gr ${tG}\n- Verskillende soorte vrae (nie almal oor dieselfde nie)\n- 4 keuses per vraag\n- Een korrekte antwoord (answer = indeks 0-3)\n- SA name: Thabo, Amahle, Sipho, Zanele\n- Eenvoudige taal vir kinders\n\nRespond SLEGS met JSON array:\n[{"q":"vraag","options":["A","B","C","D"],"answer":0,"hint":"wenk","kat":"kategorie"}]`;
+  const prompt=`Jy is 'n Afrikaanse taalonderwyser vir Graad ${tG} CAPS.\n\nMaak presies 20 meervoudige-keuse vrae wat ALLE aspekte van Afrikaans dek:\n${kiesAfds} — en ander woordsoorte.\n\nReëls:\n- CAPS kurrikulum Gr ${tG}\n- Verskillende soorte vrae\n- 4 keuses per vraag\n- Een korrekte antwoord (answer = indeks 0-3)\n- SA name: Thabo, Amahle, Sipho, Zanele\n- Eenvoudige taal vir kinders\n\nRespond SLEGS met JSON array, geen markdown:\n[{"q":"vraag","options":["A","B","C","D"],"answer":0,"hint":"wenk","kat":"kategorie"}]`;
+  const apiBody=JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:3500,messages:[{role:'user',content:prompt}]});
+  let vrae=null;
+  // Metode 1: CORS proxy
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:3500,messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    let txt=(data.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
-    tQs=JSON.parse(txt);
-    if(!Array.isArray(tQs)||!tQs.length)throw new Error('bad');
-    tI=0;renderT();
-  }catch(e){
+    const proxyUrl='https://api.allorigins.win/post?url='+encodeURIComponent('https://api.anthropic.com/v1/messages');
+    const res=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:'https://api.anthropic.com/v1/messages',method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},body:apiBody})});
+    if(res.ok){const w=await res.json();const d=JSON.parse(w.contents);let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();const p=JSON.parse(t);if(Array.isArray(p)&&p.length)vrae=p;}
+  }catch(e1){console.log('Metode 1:',e1);}
+  // Metode 2: Direkte fetch
+  if(!vrae){
+    try{
+      const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:apiBody});
+      if(res.ok){const d=await res.json();let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();const p=JSON.parse(t);if(Array.isArray(p)&&p.length)vrae=p;}
+    }catch(e2){console.log('Metode 2:',e2);}
+  }
+  if(vrae&&vrae.length){tQs=vrae;tI=0;renderT();}
+  else{
     document.getElementById('tarea').innerHTML=`<div style="background:#fee2e2;border-radius:13px;padding:16px;text-align:center;margin-bottom:10px">
       <div style="font-size:22px;margin-bottom:6px">😬</div>
-      <div style="font-size:14px;font-weight:700;color:#7f1d1d;">Kon nie vrae laai nie.</div>
-      <div style="font-size:12px;color:#7f1d1d;margin-top:4px">Kyk jou internet verbinding en probeer weer.</div>
+      <div style="font-size:13px;font-weight:700;color:#7f1d1d;">Kon nie vrae laai nie.</div>
+      <div style="font-size:12px;color:#7f1d1d;margin-top:4px">Kyk jou internet en probeer weer.</div>
     </div>
     <button style="width:100%;padding:12px;border-radius:12px;background:var(--ind);color:#fff;border:none;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit" onclick="restartT()">🔄 Probeer Weer</button>`;
   }
@@ -859,7 +636,7 @@ function renderT(){
     <div class="arow"><button class="nbtn" id="tnxt" onclick="tI++;renderT()">Volgende →</button></div>
   </div>`;
 }
-function pickT(picked,correct,hint){
+  function pickT(picked,correct,hint){
   if(tAns)return;tAns=true;
   const ok=picked===correct;
   document.querySelectorAll('[id^=tob]').forEach((b,i)=>{if(i===correct)b.classList.add('ok');else if(i===picked&&!ok)b.classList.add('bad');b.disabled=true;});
