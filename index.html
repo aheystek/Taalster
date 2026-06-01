@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="af">
 <head>
 <meta charset="UTF-8">
@@ -8,11 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{--ind:#6366f1;--ind-l:#eef2ff;--grn:#22c55e;--grn-l:#dcfce7;--red:#ef4444;--red-l:#fee2e2;--amb:#f59e0b;--amb-l:#fef3c7;--tel:#14b8a6;--pur:#a855f7;--org:#f97316;--bg:#f0f4ff;--card:#fff;--txt:#1e1b4b;--mut:#64748b;--bor:#e0e7ff}
+:root{--ind:#E91E8C;--ind-l:#fce7f3;--grn:#22c55e;--grn-l:#dcfce7;--red:#ef4444;--red-l:#fee2e2;--amb:#f59e0b;--amb-l:#fef3c7;--tel:#14b8a6;--pur:#c2185b;--org:#f97316;--bg:#f0f4ff;--card:#fff;--txt:#1e1b4b;--mut:#64748b;--bor:#e0e7ff}
 html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'Nunito',sans-serif;color:var(--txt)}
 body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow:0 0 40px rgba(0,0,0,.15);position:relative}
 /* PASSWORD */
-#s-pw{position:absolute;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:1.5rem;background:linear-gradient(135deg,#6366f1,#a855f7)}
+#s-pw{position:absolute;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:1.5rem;background:linear-gradient(135deg,#E91E8C,#c2185b)}
 .pw-wrap{background:#fff;border-radius:20px;padding:1.75rem;width:100%;max-width:340px}
 .pw-icon{font-size:3rem;display:block;text-align:center;margin-bottom:.5rem}
 .pw-title{font-family:'Baloo 2',sans-serif;font-size:1.7rem;font-weight:800;color:var(--ind);text-align:center;margin-bottom:.25rem}
@@ -28,7 +29,7 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 .pw-pay-s{font-size:.76rem;color:var(--mut);line-height:1.5;margin-bottom:.75rem}
 .pw-pay-btn{display:block;background:linear-gradient(135deg,var(--tel),var(--grn));color:#fff;border:none;padding:10px 20px;border-radius:50px;font-family:'Baloo 2',sans-serif;font-size:.9rem;font-weight:800;cursor:pointer;text-decoration:none;text-align:center;width:100%}
 /* HEADER */
-#hdr{background:var(--ind);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+#hdr{background:#E91E8C;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .logo{font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:#fff;display:flex;align-items:center;gap:6px}
 .logo-s{animation:spin 4s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -228,7 +229,7 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 <div class="scr" id="s-toets">
   <button class="tuis-btn" onclick="go('home')">🏠 Tuis</button>
   <div class="stit" style="margin-top:0">📝 Toets — Alle Afdelings</div>
-  <div style="background:linear-gradient(135deg,#6366f1,#a855f7);border-radius:13px;padding:12px;color:#fff;margin-bottom:12px;font-size:12px;font-weight:700;line-height:1.6">🤖 <strong>AI genereer 20 vars vrae</strong> elke keer — alle woordsoorte, sinne & meer gemeng!</div>
+  <div style="background:linear-gradient(135deg,#E91E8C,#c2185b);border-radius:13px;padding:12px;color:#fff;margin-bottom:12px;font-size:12px;font-weight:700;line-height:1.6">🤖 <strong>AI genereer 20 vars vrae</strong> elke keer — alle woordsoorte, sinne & meer gemeng!</div>
   <div class="grrow" id="grrow">
     <button class="grb on" onclick="setG(4,this)">Gr 4</button>
     <button class="grb" onclick="setG(5,this)">Gr 5</button>
@@ -380,6 +381,7 @@ function go(id){
   const se=document.getElementById('s-'+id);if(se)se.classList.add('on');
   const ne=document.getElementById('n-'+id);if(ne)ne.classList.add('on');
   document.getElementById('scroll').scrollTop=0;
+  if(id==='home')buildHome();
   if(id==='vord')buildVord();
   if(id==='hulp')initHulp();
   if(id==='toets')restartT();
@@ -843,19 +845,71 @@ async function beginOefen(){
   const apiBody=JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:prompt}]});
   let vrae=null;
 
-  // Metode 1: CORS proxy
+  // Metode 1: Direkte fetch met dangerous header
   try{
-    const proxyUrl='https://api.allorigins.win/post?url='+encodeURIComponent('https://api.anthropic.com/v1/messages');
-    const res=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:'https://api.anthropic.com/v1/messages',method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},body:apiBody})});
-    if(res.ok){const w=await res.json();const d=JSON.parse(w.contents);let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();const p=JSON.parse(t);if(Array.isArray(p)&&p.length)vrae=p;}
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:apiBody
+    });
+    if(res.ok){
+      const d=await res.json();
+      let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+      const p=JSON.parse(t);
+      if(Array.isArray(p)&&p.length)vrae=p;
+    }else{
+      const err=await res.json();
+      console.log('API fout:',err);
+    }
   }catch(e1){console.log('Metode 1:',e1);}
 
-  // Metode 2: Direkte fetch
+  // Metode 2: corsproxy.io
   if(!vrae){
     try{
-      const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:apiBody});
-      if(res.ok){const d=await res.json();let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();const p=JSON.parse(t);if(Array.isArray(p)&&p.length)vrae=p;}
+      const res=await fetch('https://corsproxy.io/?'+encodeURIComponent('https://api.anthropic.com/v1/messages'),{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'anthropic-version':'2023-06-01',
+          'anthropic-dangerous-direct-browser-access':'true'
+        },
+        body:apiBody
+      });
+      if(res.ok){
+        const d=await res.json();
+        let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+        const p=JSON.parse(t);
+        if(Array.isArray(p)&&p.length)vrae=p;
+      }
     }catch(e2){console.log('Metode 2:',e2);}
+  }
+
+  // Metode 3: allorigins proxy
+  if(!vrae){
+    try{
+      const proxyUrl='https://api.allorigins.win/post?url='+encodeURIComponent('https://api.anthropic.com/v1/messages');
+      const res=await fetch(proxyUrl,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          url:'https://api.anthropic.com/v1/messages',
+          method:'POST',
+          headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},
+          body:apiBody
+        })
+      });
+      if(res.ok){
+        const w=await res.json();
+        const d=JSON.parse(w.contents);
+        let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+        const p=JSON.parse(t);
+        if(Array.isArray(p)&&p.length)vrae=p;
+      }
+    }catch(e3){console.log('Metode 3:',e3);}
   }
 
   if(vrae&&vrae.length){
@@ -913,7 +967,7 @@ function renderOefen_Klaar(){
     </div>
     <button class="bbtn p" onclick="oefen_sc=0;beginOefen()">🔄 Nuwe AI Vrae</button>
     <button class="bbtn s" onclick="renderLeer(huidigAfd)">📖 Leer Weer</button>
-    <button class="bbtn s" onclick="go('home')">🏠 Tuis</button>
+    <button class="bbtn s" onclick="go('home');buildHome()">🏠 Tuis</button>
   </div>`;
   oefen_sc=0;
 }
@@ -940,7 +994,7 @@ async function laaiToetsAI(){
   // Metode 1: CORS proxy
   try{
     const proxyUrl='https://api.allorigins.win/post?url='+encodeURIComponent('https://api.anthropic.com/v1/messages');
-    const res=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:'https://api.anthropic.com/v1/messages',method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},body:apiBody})});
+    const res=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:'https://api.anthropic.com/v1/messages',method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:apiBody})});
     if(res.ok){const w=await res.json();const d=JSON.parse(w.contents);let t=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();const p=JSON.parse(t);if(Array.isArray(p)&&p.length)vrae=p;}
   }catch(e1){console.log('Metode 1:',e1);}
 
