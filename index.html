@@ -165,53 +165,7 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
     </div>
   </div>
 </div>
-<div id="hdr">
-  <div class="logo"><span class="logo-s">⭐</span>TaalSter</div>
-  <div><span class="hchip">⚡<span id="xpv">0</span></span><span class="hchip">🔥<span id="strv">0</span></span></div>
-</div>
-<div id="pbar">
-  <div class="av" id="avbtn" onclick="openProfiles()">🦁</div>
-  <div class="pmeta">
-    <div style="display:flex;align-items:center;gap:6px">
-      <div class="pname" id="pname">TaalSter!</div>
-      <button onclick="openProfiles()" style="font-size:10px;padding:2px 6px;border-radius:7px;background:var(--ind-l);color:var(--ind);border:none;font-weight:800;cursor:pointer;font-family:inherit">Wissel ▾</button>
-    </div>
-    <div class="lvrow">
-      <div class="lvbadge" id="lvb">Vlak 1</div>
-      <div class="lvbar"><div class="lvfill" id="lvf" style="width:5%"></div></div>
-      <div class="lvtxt" id="lvt">0/200</div>
-    </div>
-  </div>
-</div>
-<div id="scroll">
-<div class="scr on" id="s-home">
-  <div class="wvd"><div class="wvd-l">Woord van die Dag</div><div class="wvd-w" id="wvdW">behendig</div><div class="wvd-d" id="wvdD">Vaardig en slim</div><div class="wvd-e" id="wvdE">"Die behendig atleet wen altyd."</div></div>
-  <div id="homeTopics"></div>
-</div>
-<div class="scr" id="s-leer">
-  <div id="leerarea"></div>
-</div>
-<div class="scr" id="s-toets">
-  <button class="tuis-btn" onclick="go('home')">🏠 Tuis</button>
-  <div class="stit" style="margin-top:0">📝 Toets — Alle Afdelings</div>
-  <div style="background:linear-gradient(135deg,#6366f1,#a855f7);border-radius:13px;padding:12px;color:#fff;margin-bottom:12px;font-size:12px;font-weight:700;line-height:1.6">🤖 <strong>AI genereer 20 vars vrae</strong> elke keer — alle woordsoorte, sinne & meer gemeng!</div>
-  <div class="grrow" id="grrow">
-    <button class="grb on" onclick="setG(4,this)">Gr 4</button>
-    <button class="grb" onclick="setG(5,this)">Gr 5</button>
-    <button class="grb" onclick="setG(6,this)">Gr 6</button>
-    <button class="grb" onclick="setG(7,this)">Gr 7</button>
-  </div>
-  <div id="tarea"></div>
-</div>
-<div class="scr" id="s-hulp">
-  <button class="tuis-btn" onclick="go('home')">🏠 Tuis</button>
-  <div style="background:linear-gradient(135deg,var(--tel),var(--grn));border-radius:15px;padding:14px;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:10px">
-    <div style="font-size:28px">🤖</div>
-    <div><div style="font-family:'Baloo 2',sans-serif;font-size:16px;font-weight:800">Mees — Taalhelper</div><div style="font-size:11px;opacity:.9">Vra my enigiets oor Afrikaans!</div></div>
-  </div>
-  <div class="qpills" id="qpills"></div>
-  <div class="chat" id="chatwin"></div>
-  <div class="crow"><input class="cinp" id="cinp" placeholder="Vra iets..." onkeydown="if(event.key==='Enter')sendChat()"><button class="sbtn" onclick="sendChat()">▶</button></div>
+<div class="crow"><input class="cinp" id="cinp" placeholder="Vra iets..." onkeydown="if(event.key==='Enter')sendChat()"><button class="sbtn" onclick="sendChat()">▶</button></div>
 </div>
 <div class="scr" id="s-vord">
   <button class="tuis-btn" onclick="go('home')">🏠 Tuis</button>
@@ -248,14 +202,36 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 const KODES={'TS#9mK2@xL7q':'2099-12-31','DEMO#4rT9wX':'2099-12-31','Afr#7kN2mQ9w':'2025-12-31','Tq8#Wr5kN2mX':'2026-01-31','Pm3#Xt9kR7nW':'2026-02-28','Wn6#Kp4mT2rX':'2026-03-31','Rk9#Nm7wP5xL':'2026-04-30','Xt2#Lq8kW3nM':'2026-05-31','Mw5#Pr6nK9xT':'2026-06-30','Nq7#Xk3mL8wR':'2026-07-31','Kp4#Wm9rX6nL':'2026-08-31','Tr8#Nq2xM5kW':'2026-09-30','Wx3#Lk7pN4rQ':'2026-10-31','Qm6#Tn2wK8xP':'2026-11-30','Lk9#Rx5mW3nQ':'2026-12-31'};
 const DEMO_KATS=['selfstandige','werkwoord'];
 function chkPw(){
-  const inp=document.getElementById('pwInp'),err=document.getElementById('pwErr'),k=inp.value.trim();
+  const inp=document.getElementById('pwInp'),err=document.getElementById('pwErr'),k=(inp.value||'').trim();
+  if(!k){err.textContent='❌ Voer asseblief n kode in.';err.classList.add('show');return;}
   if(KODES[k]){
     const exp=new Date(KODES[k]),v=new Date();v.setHours(0,0,0,0);
-    if(v<=exp){localStorage.setItem('ts_k',k);localStorage.setItem('ts_d','false');document.getElementById('s-pw').style.display='none';buildHome();toast('Welkom by TaalSter! 🎉');}
-    else{inp.classList.add('err');err.textContent='❌ Kode verval. Hernu intekening.';err.classList.add('show');setTimeout(()=>inp.classList.remove('err'),500);}
-  }else{inp.classList.add('err');err.textContent='❌ Verkeerde kode.';err.classList.add('show');setTimeout(()=>inp.classList.remove('err'),500);}
+    if(v<=exp){
+      localStorage.setItem('ts_k',k);
+      localStorage.setItem('ts_d','false');
+      document.getElementById('s-pw').style.display='none';
+      buildHome();
+      toast('Welkom by TaalSter! 🎉');
+    }else{
+      inp.classList.add('err');
+      err.textContent='❌ Kode verval. Hernu intekening.';
+      err.classList.add('show');
+      setTimeout(()=>inp.classList.remove('err'),600);
+    }
+  }else{
+    inp.classList.add('err');
+    err.textContent='❌ Verkeerde kode. Probeer weer.';
+    err.classList.add('show');
+    setTimeout(()=>inp.classList.remove('err'),600);
+  }
 }
-function startDemo(){localStorage.setItem('ts_d','true');localStorage.removeItem('ts_k');document.getElementById('s-pw').style.display='none';buildHome();toast('Demo: 2 gratis afdelings! ✨');}
+function startDemo(){
+  localStorage.setItem('ts_d','true');
+  localStorage.removeItem('ts_k');
+  document.getElementById('s-pw').style.display='none';
+  buildHome();
+  toast('Demo modus — 2 gratis afdelings! ✨');
+}
 function isGesluit(id){return localStorage.getItem('ts_d')==='true'&&!DEMO_KATS.includes(id);}
 function toonPaywall(){toast('🔒 Teken in vir volle toegang!');setTimeout(()=>document.getElementById('s-pw').style.display='flex',1500);}
 function doUitlog(){if(confirm('Uitlog?')){localStorage.removeItem('ts_k');localStorage.removeItem('ts_d');document.getElementById('s-pw').style.display='flex';}}
@@ -299,8 +275,7 @@ function openAddKid(){closeM();nkAv='🦁';document.getElementById('newkid-name'
 function closeAddKid(){document.getElementById('addkid-ov').style.display='none';}
 function pickNkAv(a){nkAv=a;document.getElementById('newkid-av').textContent=a;document.querySelectorAll('#newkid-avgrid .avo').forEach(e=>e.classList.toggle('on',e.textContent===a));}
 function saveNewKid(){const nm=(document.getElementById('newkid-name').value||'').trim();if(!nm){alert('Naam asseblief.');return;}const p=EP();p.name=nm;p.av=nkAv;PROFS.push(p);cP=PROFS.length-1;ST=PROFS[cP];saveAll();updP();closeAddKid();buildHome();toast('Welkom '+nm+'! 🎉');}
-function addXP(n,sek){ST.xp+=n;if(sek){ST.prog=ST.prog||{};ST.prog[sek]=Math.min(100,(ST.prog[sek]||0)+Math.round(n/2));}saveAll();const lx=ST.level*200;if(ST.xp>=lx){ST.level++;toast('Vlak '+ST.level+' bereik! 🎉');}updP();}
-  function updP(){document.getElementById('xpv').textContent=ST.xp;document.getElementById('strv').textContent=ST.streak;document.getElementById('avbtn').textContent=ST.av;document.getElementById('pname').textContent=ST.name;document.getElementById('lvb').textContent='Vlak '+ST.level;const lx=ST.level*200,cur=ST.xp%lx;document.getElementById('lvf').style.width=Math.min(100,Math.round(cur/lx*100))+'%';document.getElementById('lvt').textContent=cur+'/'+lx;}
+function addXP(n,sek){ST.xp+=n;if(sek){ST.prog=ST.prog||{};ST.prog[sek]=Math.min(100,(ST.prog[sek]||0)+Math.round(n/2));}saveAll();const lx=ST.level*200;if(ST.xp>=lx){ST.level++;toast('Vlak '+ST.level+' bereik! 🎉');}updP();}  function updP(){document.getElementById('xpv').textContent=ST.xp;document.getElementById('strv').textContent=ST.streak;document.getElementById('avbtn').textContent=ST.av;document.getElementById('pname').textContent=ST.name;document.getElementById('lvb').textContent='Vlak '+ST.level;const lx=ST.level*200,cur=ST.xp%lx;document.getElementById('lvf').style.width=Math.min(100,Math.round(cur/lx*100))+'%';document.getElementById('lvt').textContent=cur+'/'+lx;}
 function pickAv(a){ST.av=a;saveAll();updP();document.querySelectorAll('#avgrid .avo').forEach(e=>e.classList.toggle('on',e.textContent===a));document.getElementById('avbtn').textContent=a;}
 function closeM(){document.getElementById('mov').classList.remove('on');}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2500);}
