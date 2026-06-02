@@ -180,7 +180,7 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 <body>
 
 <!-- LOGIN -->
-<div id="pw-screen">
+<div id="pw-screen" style="display:flex">
   <div class="pw-box">
     <span class="pw-icon">⭐</span>
     <div class="pw-title">TaalSter</div>
@@ -368,6 +368,15 @@ const AVATARS=['🦁','🐯','🦊','🐼','🦋','🦄','🐬','🦅','🐸','�
 function nuutProfiel(naam,av){
   return {naam:naam||'Kind',av:av||'🦁',xp:0,vlak:1,prog:{}};
 }
+function repairProf(p){
+  if(!p)return nuutProfiel();
+  p.naam=p.naam||'Kind';
+  p.av=p.av||'🦁';
+  p.xp=parseInt(p.xp)||0;
+  p.vlak=parseInt(p.vlak)||Math.max(1,Math.floor(p.xp/200)+1);
+  p.prog=p.prog||{};
+  return p;
+}
 
 let PROFS,huidigProf;
 try{
@@ -378,7 +387,9 @@ if(!Array.isArray(PROFS)||!PROFS.length){
   PROFS=[nuutProfiel('Kind 1','🦁')];
   huidigProf=0;
 }
-if(huidigProf>=PROFS.length)huidigProf=0;
+// Herstel enige korrupte profiele
+PROFS=PROFS.map(p=>repairProf(p));
+if(huidigProf>=PROFS.length||huidigProf<0)huidigProf=0;
 let ST=PROFS[huidigProf];
 
 function stoor(){
@@ -401,11 +412,14 @@ function addXP(n,progId){
 }
 
 function updProfiel(){
+  if(!ST){ST=nuutProfiel('Kind 1','🦁');}
+  ST.xp=parseInt(ST.xp)||0;
+  ST.vlak=parseInt(ST.vlak)||Math.max(1,Math.floor(ST.xp/200)+1);
   document.getElementById('xpv').textContent=ST.xp;
-  document.getElementById('av-btn').textContent=ST.av;
-  document.getElementById('pname').textContent=ST.naam;
-  document.getElementById('lv-badge').textContent='Vlak '+ST.vlak;
-  const lxp=ST.vlak*200,cur=ST.xp%lxp;
+  document.getElementById('av-btn').textContent=ST.av||'🦁';
+  document.getElementById('pname').textContent=ST.naam||'Kind';
+  document.getElementById('lv-badge').textContent='Vlak '+(ST.vlak||1);
+  const lxp=(ST.vlak||1)*200,cur=ST.xp%lxp;
   document.getElementById('lv-fill').style.width=Math.min(100,Math.round(cur/lxp*100))+'%';
   document.getElementById('lv-txt').textContent=cur+'/'+lxp;
 }
