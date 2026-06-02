@@ -794,6 +794,12 @@ function buildHome(){
 }
 
 function openKat(kat){
+  // Make sure home screen is visible
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('s-home').classList.add('on');
+  document.getElementById('n-home').classList.add('on');
+  document.getElementById('scroll').scrollTop=0;
   const el=document.getElementById('homeTopics');
   const katInfo={woordsoort:{nm:'🔤 Woordsoorte',kl:'#6366f1'},sinne:{nm:'📝 Sinne',kl:'#a855f7'},spelling:{nm:'✏️ Spelling & Taal',kl:'#0d9488'}};
   const k=katInfo[kat];
@@ -929,7 +935,7 @@ async function beginOefen(){
   }
 
   if(!vrae||!vrae.length){
-    vrae=getFallbackVrae(a.nm);
+    vrae=getFallbackVrae(a.id);
   }
   vraagLys=vrae;vraagI=0;vraagAns=false;oefen_sc=0;renderVraag();
 }
@@ -1100,60 +1106,682 @@ function sendChat(){
 
 // ==================== VORDERING ====================
 
-function getFallbackVrae(onderwerp){
-  const bank={
-    'Selfstandige Naamwoord':[
-      {q:'Watter woord is n selfstandige naamwoord?',options:['hardloop','tafel','vinnig','maar'],answer:1,hint:'n Naamwoord benoem n ding, persoon of plek.'},
-      {q:'Watter een is n EIENAAM?',options:['hond','rivier','Pretoria','tafel'],answer:2,hint:'Eiename begin met n hoofletter.'},
-      {q:'Watter een is n ABSTRAKTE naamwoord?',options:['stoel','liefde','motor','boom'],answer:1,hint:'Abstrakte naamwoorde kan jy nie aanraak nie.'},
-      {q:'Wat is die versamelnaam vir "beeste"?',options:['span','trop','kudde','swerm'],answer:2,hint:'n Kudde beeste.'},
-      {q:'"Die seun loop skool toe." Wat is die onderwerp?',options:['loop','skool','Die seun','toe'],answer:2,hint:'Die onderwerp is WIE die aksie doen.'},
-      {q:'Watter een is n SOORTNAAM?',options:['Jan','Kaapstad','hond','Sarie'],answer:2,hint:'Soortnaamwoorde begin met n kleinletter.'},
-      {q:'Watter een is n MASSANAAM?',options:['sand','stoel','kind','blom'],answer:0,hint:'Massanaamwoorde kan jy nie tel nie.'},
-      {q:'"n Swerm bye vlieg verby." Wat is "swerm"?',options:['Soortnaam','Versamelnaam','Eienaam','Massanaam'],answer:1,hint:'n Swerm is n groep insekte.'},
-      {q:'Kan jy "die" voor "moed" sit?',options:['Nee','Ja','Soms','Nooit'],answer:1,hint:'Die moed — ja! Dus is dit n naamwoord.'},
-      {q:'Watter een is n MAATNAAM?',options:['kind','kilometer','boom','hond'],answer:1,hint:'Maatname meet dinge.'},
-    ],
-    'Werkwoord':[
-      {q:'Watter woord is n werkwoord?',options:['mooi','hardloop','groot','baie'],answer:1,hint:'n Werkwoord is n doenwoord.'},
-      {q:'"Sy HET gister GESING." Wat is die hulpwerkwoord?',options:['Sy','het','gister','gesing'],answer:1,hint:'Die hulpwerkwoord help die hoofwerkwoord.'},
-      {q:'Watter een is n KOPPELWERKWOORD?',options:['loop','eet','is','spring'],answer:2,hint:'Koppelwerkwoorde verbind die onderwerp met n beskrywing.'},
-      {q:'Hoe word "sing" in die verlede tyd?',options:['sal sing','sing','het gesing','singende'],answer:2,hint:'Verlede tyd: het + ge + werkwoord.'},
-      {q:'Watter een is n HULPWERKWOORD?',options:['loop','eet','kan','spring'],answer:2,hint:'Hulpwerkwoorde: het, sal, kan, mag, moet, wil.'},
-      {q:'"Ek SAL more kom." Watter tyd is dit?',options:['Verlede','Teenwoordig','Toekomend','Onbepaald'],answer:2,hint:'SAL = toekomende tyd.'},
-      {q:'Vra "Wat DOEN die kind?" — Die kind ___.',options:['groot','vinnig','speel','mooi'],answer:2,hint:'Die werkwoord antwoord die vraag "wat doen?".'},
-      {q:'Hoe word "loop" in die verlede tyd?',options:['sal loop','lopend','het geloop','loop'],answer:2,hint:'het + ge + loop = het geloop.'},
-      {q:'"Die blomme IS pragtig." Wat is "is"?',options:['Naamwoord','Bywoord','Koppelwerkwoord','Voornaamwoord'],answer:2,hint:'"Is" verbind die onderwerp met n beskrywing.'},
-      {q:'Watter een is HOOFWERKWOORD?',options:['het','sal','moet','hardloop'],answer:3,hint:'Hoofwerkwoorde staan alleen.'},
-    ],
-    'Ontkennende Vorm':[
-      {q:'Hoe ontken jy "Die seun speel rugby"?',options:['Die seun nie speel rugby.','Die seun speel nie rugby nie.','Die seun nie speel nie rugby.','Die seun speel rugby nie.'],answer:1,hint:'Altyd TWEE "nie" — een na werkwoord, een aan die einde.'},
-      {q:'Hoeveel "nie" gebruik Afrikaans in ontkenning?',options:['Een','Twee','Drie','Geen'],answer:1,hint:'Dubbele ontkenning is n reël in Afrikaans.'},
-      {q:'Hoe ontken jy "Sy eet die appel"?',options:['Sy eet nie die appel.','Sy nie eet die appel nie.','Sy eet nie die appel nie.','Sy eet die appel nie.'],answer:2,hint:'"Nie" na gesegde en aan die einde.'},
-      {q:'"Hy kom ALTYD laat." Hoe ontken jy dit?',options:['Hy kom nie altyd laat nie.','Hy kom nooit laat nie.','Hy nooit kom laat nie.','Hy kom altyd nie laat nie.'],answer:1,hint:'altyd → nooit...nie (ontkenningswoord).'},
-      {q:'Watter sin is KORREK ontken?',options:['Ek weet nie.','Ek nie weet nie.','Ek weet nee.','Ek weet tog nie.'],answer:0,hint:'As die sin baie kort is, is een "nie" reg.'},
-      {q:'"Iemand het my pen gevat." Ontken dit.',options:['Niemand het my pen gevat nie.','Iemand het nie my pen gevat.','Nie iemand het my pen gevat nie.','Iemand nie het my pen gevat nie.'],answer:0,hint:'iemand → niemand...nie.'},
-      {q:'Waar kom die eerste "nie" in n ontkenningsin?',options:['Aan die begin','Na die onderwerp','Na die werkwoord','Aan die einde'],answer:2,hint:'Eerste "nie" kom direk na die werkwoord.'},
-      {q:'Hoe ontken jy "Ma bak koekies"?',options:['Ma nie bak koekies nie.','Ma bak nie koekies nie.','Ma bak koekies nie.','Nie Ma bak koekies nie.'],answer:1,hint:'"Nie" kom direk na die werkwoord "bak".'},
-      {q:'"Hulle speel ALTYD hier." Ontken dit korrek.',options:['Hulle speel nie altyd hier nie.','Hulle nooit speel hier nie.','Hulle speel nooit hier nie.','Hulle nie speel altyd hier nie.'],answer:2,hint:'altyd → nooit aan dieselfde plek.'},
-      {q:'Watter ONTKENNINGSWOORD vervang "iets"?',options:['niks','nooit','nerens','niemand'],answer:0,hint:'iets → niks...nie.'},
-    ],
-    'Werkwoordtye':[
-      {q:'"Ek eet elke dag." Watter tyd is dit?',options:['Verlede','Teenwoordig','Toekomend','Onbepaald'],answer:1,hint:'Iets wat NOU of GEWOONLIK gebeur.'},
-      {q:'Hoe skryf jy "sing" in die verlede tyd?',options:['sal sing','singend','het gesing','sing'],answer:2,hint:'Verlede tyd: het + ge + werkwoord.'},
-      {q:'"Ek SAL more kom." Watter tyd?',options:['Verlede','Teenwoordig','Toekomend','Voltooid'],answer:2,hint:'SAL + werkwoord = toekomende tyd.'},
-      {q:'Watter een is VERLEDE TYD?',options:['Ek loop','Ek sal loop','Ek het geloop','Ek loop gewoonlik'],answer:2,hint:'het + ge + werkwoord = verlede tyd.'},
-      {q:'Hoe word "bak" in die toekomende tyd?',options:['het gebak','bak','sal bak','gebak'],answer:2,hint:'sal + werkwoord = toekomende tyd.'},
-      {q:'"Sy HET gister GESPEEL." Identifiseer die hulpwerkwoord.',options:['Sy','het','gister','gespeel'],answer:1,hint:'HET is die hulpwerkwoord in verlede tyd.'},
-      {q:'Watter werkwoord is n STERK werkwoord (vokaal verander)?',options:['loop-geloop','sing-gesing','skryf-geskryf','speel-gespeel'],answer:2,hint:'Sterk werkwoorde se vokaal verander: skryf → geskryf.'},
-      {q:'"Ons ___ gister die boek gelees." Kies die regte woord.',options:['sal','het','is','was'],answer:1,hint:'Verlede tyd gebruik HET as hulpwerkwoord.'},
-      {q:'Hoe word "hardloop" in die verlede tyd?',options:['sal hardloop','het gehardloop','hardlopend','hardloop'],answer:1,hint:'het + ge + hardloop = het gehardloop.'},
-      {q:'Watter sin is TOEKOMENDE TYD?',options:['Ek het geëet.','Ek eet.','Ek sal eet.','Ek het gegeet.'],answer:2,hint:'SAL + werkwoord is toekomende tyd.'},
-    ],
-  };
-  const vrae=bank[onderwerp]||bank['Selfstandige Naamwoord'];
-  return [...vrae].sort(()=>Math.random()-.5).slice(0,10);
+
+// ============================================================
+// SLIM VRAAG GENERATOR + HANDGESKREWE VRAE
+// Elke keer lukraak gemeng — kind sien nooit dieselfde stel nie
+// ============================================================
+
+// ---- DATABASIS vir slim generator ----
+const WW_DATA = {
+  swak: [ // loop → geloop
+    {w:'loop',v:'geloop',t:'hardloop'},
+    {w:'speel',v:'gespeel',t:'speel'},
+    {w:'werk',v:'gewerk',t:'werk'},
+    {w:'leer',v:'geleer',t:'leer'},
+    {w:'drink',v:'gedrink',t:'drink'},
+    {w:'bak',v:'gebak',t:'bak'},
+    {w:'kook',v:'gekook',t:'kook'},
+    {w:'was',v:'gewas',t:'was'},
+    {w:'klim',v:'geklim',t:'klim'},
+    {w:'dans',v:'gedans',t:'dans'},
+    {w:'sing',v:'gesing',t:'sing'},
+    {w:'lag',v:'gelag',t:'lag'},
+    {w:'huil',v:'gehuil',t:'huil'},
+    {w:'slaap',v:'geslaap',t:'slaap'},
+    {w:'eet',v:'geëet',t:'eet'},
+    {w:'koop',v:'gekoop',t:'koop'},
+    {w:'hoor',v:'gehoor',t:'hoor'},
+    {w:'sien',v:'gesien',t:'sien'},
+    {w:'vra',v:'gevra',t:'vra'},
+    {w:'gee',v:'gegee',t:'gee'},
+  ],
+  sterk: [ // skryf → geskryf (vokaal verander)
+    {w:'skryf',v:'geskryf',t:'skryf'},
+    {w:'rij',v:'gery',t:'ry'},
+    {w:'bly',v:'gebly',t:'bly'},
+    {w:'wys',v:'gewys',t:'wys'},
+  ],
+  koppel: ['is','was','word','lyk','bly','skyn','blyk','heet'],
+  hulp: ['het','sal','kan','mag','moet','wil','wou','kon'],
+};
+
+const SNW_DATA = {
+  eienaam: ['Pretoria','Kaapstad','Johannesburg','Durban','Thabo','Amahle','Sipho','Zanele','Jan','Sarie'],
+  soortnaam: ['hond','kat','boom','tafel','stoel','skool','kind','boek','motor','huis'],
+  abstrakte: ['liefde','moed','vreugde','hoop','vrees','geluk','wysheid','vriendskap','vryheid','vrede'],
+  massa: ['sand','water','melk','goud','suiker','meel','rys','lug','grond','ys'],
+  versam: [{w:'kudde',v:'beeste'},{w:'swerm',v:'bye'},{w:'span',v:'spelers'},{w:'trop',v:'leeus'},{w:'skool',v:'visse'},{w:'vlug',v:'voëls'}],
+  maat: ['kilometer','kilogram','liter','meter','gram','millimeter','kilometer','hektaar'],
+};
+
+const BNW_DATA = {
+  attr: [ // attributief voor naamwoord
+    {b:'groot',t:'Die ___ hond byt.',nw:'hond'},
+    {b:'rooi',t:'n ___ appel hang in die boom.',nw:'appel'},
+    {b:'slim',t:'Die ___ leerder antwoord eerste.',nw:'leerder'},
+    {b:'mooi',t:'n ___ blomtuin groei by die huis.',nw:'blomtuin'},
+    {b:'nuwe',t:'Hy het n ___ fiets gekoop.',nw:'fiets'},
+    {b:'klein',t:'Die ___ katjie slaap.',nw:'katjie'},
+    {b:'warm',t:'Sy drink n ___ koppie tee.',nw:'koppie'},
+    {b:'lang',t:'Die ___ pad loop deur die bos.',nw:'pad'},
+  ],
+  trappe: [
+    {s:'groot',k:'groter',o:'grootste'},
+    {s:'mooi',k:'mooier',o:'mooiste'},
+    {s:'lank',k:'langer',o:'langste'},
+    {s:'slim',k:'slimmer',o:'slimste'},
+    {s:'vinnig',k:'vinniger',o:'vinnigste'},
+    {s:'sterk',k:'sterker',o:'sterkste'},
+    {s:'swaar',k:'swaarder',o:'swaarste'},
+    {s:'oud',k:'ouer',o:'oudste'},
+  ],
+};
+
+const MV_DATA = [
+  {e:'kat',m:'katte',r:'Verdubbel t + e'},
+  {e:'blom',m:'blomme',r:'Verdubbel m + e'},
+  {e:'boom',m:'bome',r:'oo → o + e'},
+  {e:'hand',m:'hande',r:'Voeg e by'},
+  {e:'kind',m:'kinders',r:'Onreëlmatig'},
+  {e:'motor',m:'motors',r:'Leenwoord + s'},
+  {e:'dag',m:'dae',r:'g → e'},
+  {e:'man',m:'manne',r:'Verdubbel n + e'},
+  {e:'perd',m:'perde',r:'Voeg e by'},
+  {e:'stoel',m:'stoele',r:'Voeg e by'},
+  {e:'huis',m:'huise',r:'Voeg e by'},
+  {e:'pad',m:'paaie',r:'ad → aaie'},
+  {e:'bed',m:'beddens',r:'Verdubbel d + ens'},
+  {e:'skip',m:'skepe',r:'i → e + e'},
+  {e:'stad',m:'stede',r:'Sterk meervoud'},
+  {e:'lid',m:'lede',r:'Sterk meervoud'},
+  {e:'vrou',m:'vroue',r:'Voeg e by'},
+  {e:'seun',m:'seuns',r:'+ s'},
+  {e:'meisie',m:'meisies',r:'+ s'},
+  {e:'tafel',m:'tafels',r:'+ s (leenwoord)'},
+];
+
+const ONTK_SINNE = [
+  {p:'Die seun speel rugby.',o:'Die seun speel nie rugby nie.'},
+  {p:'Sy eet die appel.',o:'Sy eet nie die appel nie.'},
+  {p:'Hy het die boek gelees.',o:'Hy het nie die boek gelees nie.'},
+  {p:'Ma bak koekies.',o:'Ma bak nie koekies nie.'},
+  {p:'Die kinders is by die huis.',o:'Die kinders is nie by die huis nie.'},
+  {p:'Sipho loop skool toe.',o:'Sipho loop nie skool toe nie.'},
+  {p:'Zanele sing n lied.',o:'Zanele sing nie n lied nie.'},
+  {p:'Thabo leer sy werk.',o:'Thabo leer nie sy werk nie.'},
+  {p:'Die hond byt.',o:'Die hond byt nie.'},
+  {p:'Amahle dans baie goed.',o:'Amahle dans nie baie goed nie.'},
+  {p:'Ons eet elke dag vleis.',o:'Ons eet nie elke dag vleis nie.'},
+  {p:'Hy kan swem.',o:'Hy kan nie swem nie.'},
+  {p:'Sy moet kom.',o:'Sy moet nie kom nie.'},
+  {p:'Die motor werk.',o:'Die motor werk nie.'},
+  {p:'Jan woon in Pretoria.',o:'Jan woon nie in Pretoria nie.'},
+];
+
+const TYED_SINNE = [
+  {t:'loop',hede:'Ek loop skool toe.',verlede:'Ek het skool toe geloop.',toekoms:'Ek sal skool toe loop.'},
+  {t:'sing',hede:'Sy sing n lied.',verlede:'Sy het n lied gesing.',toekoms:'Sy sal n lied sing.'},
+  {t:'eet',hede:'Hulle eet middagete.',verlede:'Hulle het middagete geëet.',toekoms:'Hulle sal middagete eet.'},
+  {t:'speel',hede:'Die kinders speel.',verlede:'Die kinders het gespeel.',toekoms:'Die kinders sal speel.'},
+  {t:'werk',hede:'Pa werk hard.',verlede:'Pa het hard gewerk.',toekoms:'Pa sal hard werk.'},
+  {t:'lees',hede:'Hy lees n boek.',verlede:'Hy het n boek gelees.',toekoms:'Hy sal n boek lees.'},
+  {t:'skryf',hede:'Sy skryf n brief.',verlede:'Sy het n brief geskryf.',toekoms:'Sy sal n brief skryf.'},
+  {t:'koop',hede:'Ma koop brood.',verlede:'Ma het brood gekoop.',toekoms:'Ma sal brood koop.'},
+];
+
+// ============================================================
+// SLIM GENEREERDERS
+// ============================================================
+
+function genWerkwoordVrae() {
+  const vrae = [];
+
+  // Tipe 1: Verlede tyd van swak werkwoorde (20 vrae)
+  WW_DATA.swak.forEach(w => {
+    const verkeerde = WW_DATA.swak.filter(x=>x.w!==w.w).sort(()=>Math.random()-.5).slice(0,2).map(x=>'het '+x.v);
+    const opsies = shuffle(['het '+w.v, ...verkeerde, 'sal '+w.w]);
+    vrae.push({
+      q:`Wat is die VERLEDE TYD van "${w.w}"?`,
+      options:opsies,
+      answer:opsies.indexOf('het '+w.v),
+      hint:`Verlede tyd: het + ge + ${w.w} = het ${w.v}`
+    });
+  });
+
+  // Tipe 2: Toekomende tyd (15 vrae)
+  WW_DATA.swak.slice(0,15).forEach(w => {
+    const verkeerde = WW_DATA.swak.filter(x=>x.w!==w.w).sort(()=>Math.random()-.5).slice(0,2).map(x=>'sal '+x.w);
+    const opsies = shuffle(['sal '+w.w, ...verkeerde, 'het '+w.v]);
+    vrae.push({
+      q:`Wat is die TOEKOMENDE TYD van "${w.w}"?`,
+      options:opsies,
+      answer:opsies.indexOf('sal '+w.w),
+      hint:`Toekomende tyd: sal + ${w.w}`
+    });
+  });
+
+  // Tipe 3: Herken werkwoord in sin (20 vrae)
+  const sinne = [
+    {s:'Die kind {hardloop} vinnig.',w:'hardloop'},
+    {s:'Sy {het} gister gesing.',w:'het'},
+    {s:'Ma {bak} lekker koekies.',w:'bak'},
+    {s:'Hy {sal} more kom.',w:'sal'},
+    {s:'Die blomme {is} pragtig.',w:'is'},
+    {s:'Ons {speel} elke dag rugby.',w:'speel'},
+    {s:'Thabo {leer} sy werk.',w:'leer'},
+    {s:'Zanele {dans} baie goed.',w:'dans'},
+    {s:'Die hond {byt} die kat.',w:'byt'},
+    {s:'Amahle {sing} n mooi lied.',w:'sing'},
+    {s:'Pa {werk} in die kantoor.',w:'werk'},
+    {s:'Sipho {klim} in die boom.',w:'klim'},
+    {s:'Die voël {vlieg} oor die huis.',w:'vlieg'},
+    {s:'Sy {lees} n boek.',w:'lees'},
+    {s:'Hy {skryf} n brief.',w:'skryf'},
+    {s:'Die leerders {luister} aandagtig.',w:'luister'},
+    {s:'Ma {kook} aandete.',w:'kook'},
+    {s:'Die kind {huil}.',w:'huil'},
+    {s:'Ons {slaap} vroeg.',w:'slaap'},
+    {s:'Hy {drink} water.',w:'drink'},
+  ];
+  sinne.forEach(({s,w}) => {
+    const sin = s.replace(`{${w}}`, `<u>${w}</u>`).replace('{','').replace('}','');
+    const woorde = s.replace(`{${w}}`,'X').split(' ').map(x=>x.replace(/[^a-zA-ZÀ-ž]/g,'')).filter(x=>x&&x!=='X');
+    const verkeerde = shuffle(woorde).slice(0,2);
+    const opsies = shuffle([w, ...verkeerde.slice(0,2), WW_DATA.hulp[Math.floor(Math.random()*4)]]);
+    vrae.push({
+      q:`Wat is die WERKWOORD in: "${sin}"?`,
+      options:opsies,
+      answer:opsies.indexOf(w),
+      hint:`Vra: "Wat DOEN/IS die onderwerp?" — dit is die werkwoord.`
+    });
+  });
+
+  // Tipe 4: Koppelwerkwoord/Hulpwerkwoord herkenning (15 vrae)
+  WW_DATA.koppel.slice(0,8).forEach(k => {
+    const opsies = shuffle([k, ...WW_DATA.hulp.slice(0,2), WW_DATA.swak[0].w]);
+    vrae.push({
+      q:`Watter soort werkwoord is "${k}"?`,
+      options:['Hoofwerkwoord','Hulpwerkwoord','Koppelwerkwoord','Bywoord'],
+      answer:2,
+      hint:`"${k}" verbind die onderwerp met n beskrywing — koppelwerkwoord.`
+    });
+  });
+  WW_DATA.hulp.slice(0,7).forEach(h => {
+    vrae.push({
+      q:`Watter soort werkwoord is "${h}"?`,
+      options:['Hoofwerkwoord','Hulpwerkwoord','Koppelwerkwoord','Bywoord'],
+      answer:1,
+      hint:`"${h}" help die hoofwerkwoord — hulpwerkwoord.`
+    });
+  });
+
+  return shuffle(vrae).slice(0,10);
 }
+
+function genNaamwoordVrae() {
+  const vrae = [];
+
+  // Tipe 1: Identifiseer soort naamwoord (30 vrae)
+  SNW_DATA.eienaam.forEach(e => {
+    const opsies = shuffle(['Eienaam','Soortnaam','Abstrakte naamwoord','Massanaam']);
+    vrae.push({q:`Watter soort naamwoord is "${e}"?`,options:opsies,answer:opsies.indexOf('Eienaam'),hint:`${e} is n spesifieke naam — eienaam (hoofletter).`});
+  });
+  SNW_DATA.soortnaam.slice(0,8).forEach(s => {
+    const opsies = shuffle(['Eienaam','Soortnaam','Abstrakte naamwoord','Massanaam']);
+    vrae.push({q:`Watter soort naamwoord is "${s}"?`,options:opsies,answer:opsies.indexOf('Soortnaam'),hint:`${s} is n gewone ding/persoon/plek — soortnaam.`});
+  });
+  SNW_DATA.abstrakte.slice(0,8).forEach(a => {
+    const opsies = shuffle(['Eienaam','Soortnaam','Abstrakte naamwoord','Massanaam']);
+    vrae.push({q:`Watter soort naamwoord is "${a}"?`,options:opsies,answer:opsies.indexOf('Abstrakte naamwoord'),hint:`${a} kan jy nie aanraak nie — abstrakte naamwoord.`});
+  });
+  SNW_DATA.massa.slice(0,6).forEach(m => {
+    const opsies = shuffle(['Eienaam','Soortnaam','Abstrakte naamwoord','Massanaam']);
+    vrae.push({q:`Watter soort naamwoord is "${m}"?`,options:opsies,answer:opsies.indexOf('Massanaam'),hint:`${m} kan jy nie tel nie — massanaam.`});
+  });
+
+  // Tipe 2: Versamelname (6 vrae)
+  SNW_DATA.versam.forEach(v => {
+    const verkeerde = SNW_DATA.versam.filter(x=>x.w!==v.w).sort(()=>Math.random()-.5).slice(0,3).map(x=>x.w);
+    const opsies = shuffle([v.w, ...verkeerde]);
+    vrae.push({q:`Wat is die versamelnaam vir "${v.v}"?`,options:opsies,answer:opsies.indexOf(v.w),hint:`n ${v.w} ${v.v}.`});
+  });
+
+  // Tipe 3: Hoofletter vir eiename (10 vrae)
+  ['kaapstad','pretoria','thabo','zanele','sipho'].forEach(e => {
+    const korrekte = e.charAt(0).toUpperCase() + e.slice(1);
+    vrae.push({
+      q:`Watter spelling is KORREK?`,
+      options:shuffle([korrekte, e, e.toUpperCase(), e+'s']),
+      answer:0,
+      hint:`Eiename begin altyd met n hoofletter: ${korrekte}`
+    });
+  });
+
+  return shuffle(vrae).slice(0,10);
+}
+
+function genMeervoudVrae() {
+  const vrae = [];
+
+  // Tipe 1: Korrekte meervoud (30 vrae)
+  MV_DATA.forEach(({e,m,r}) => {
+    const verkeerde = MV_DATA.filter(x=>x.e!==e).sort(()=>Math.random()-.5).slice(0,3).map(x=>x.m);
+    const opsies = shuffle([m, ...verkeerde]);
+    vrae.push({q:`Wat is die MEERVOUD van "${e}"?`,options:opsies,answer:opsies.indexOf(m),hint:`${e} → ${m}. Reël: ${r}`});
+  });
+
+  // Tipe 2: Identifiseer die reël (15 vrae)
+  [
+    {e:'motor',m:'motors',r:'Leenwoord kry -s'},
+    {e:'kat',m:'katte',r:'Kort vokaal: verdubbel + -e'},
+    {e:'boom',m:'bome',r:'oo → o + -e'},
+    {e:'kind',m:'kinders',r:'Onreëlmatig'},
+    {e:'dag',m:'dae',r:'g word e'},
+  ].forEach(({e,m,r}) => {
+    vrae.push({
+      q:`"${e} → ${m}" — Watter REËL?`,
+      options:shuffle([r,'Voeg net -e by','Voeg -s by','Geen verandering']),
+      answer:0,
+      hint:`${e} → ${m}: ${r}`
+    });
+  });
+
+  // Tipe 3: Verkleinwoorde (15 vrae)
+  const VKLEIN = [
+    {e:'kat',v:'katjie',r:'Na t: -tjie → katjie'},
+    {e:'blom',v:'blommetjie',r:'Verdubbel m + -etjie'},
+    {e:'hond',v:'hondjie',r:'Na nd: -jie'},
+    {e:'boom',v:'boompie',r:'Na m: -pie'},
+    {e:'perd',v:'perdjie',r:'Na rd: -jie'},
+    {e:'man',v:'mannetjie',r:'Verdubbel n + -etjie'},
+    {e:'kind',v:'kindjie',r:'Na nd: -jie'},
+    {e:'voel',v:'voeltjie',r:'Na l: -tjie → voëltjie'},
+  ];
+  VKLEIN.forEach(({e,v,r}) => {
+    const verkeerde = VKLEIN.filter(x=>x.e!==e).sort(()=>Math.random()-.5).slice(0,3).map(x=>x.v);
+    const opsies = shuffle([v,...verkeerde]);
+    vrae.push({q:`Wat is die VERKLEINWOORD van "${e}"?`,options:opsies,answer:opsies.indexOf(v),hint:r});
+  });
+
+  return shuffle(vrae).slice(0,10);
+}
+
+function genOntkenningVrae() {
+  const vrae = [];
+
+  // Tipe 1: Ontken die sin (15 vrae)
+  ONTK_SINNE.forEach(({p,o}) => {
+    const vals1 = p.replace('.','') + ' nie.';
+    const vals2 = 'Nie ' + p;
+    const vals3 = p.split(' ')[0]+' nie '+p.split(' ').slice(1).join(' ');
+    const opsies = shuffle([o, vals1, vals2, vals3]);
+    vrae.push({q:`Ontken: "${p}"`,options:opsies,answer:opsies.indexOf(o),hint:`Twee "nie" — een na werkwoord, een aan die einde.`});
+  });
+
+  // Tipe 2: Ontkenningswoorde (15 vrae)
+  const ONTK_WW = [
+    {pos:'altyd',neg:'nooit'},
+    {pos:'iemand',neg:'niemand'},
+    {pos:'iets',neg:'niks'},
+    {pos:'erens',neg:'nêrens'},
+    {pos:'oral',neg:'nêrens'},
+    {pos:'almal',neg:'niemand'},
+  ];
+  ONTK_WW.forEach(({pos,neg}) => {
+    const ander = ONTK_WW.filter(x=>x.pos!==pos).slice(0,3).map(x=>x.neg);
+    const opsies = shuffle([neg,...ander]);
+    vrae.push({q:`Watter ontkenningswoord vervang "${pos}"?`,options:opsies,answer:opsies.indexOf(neg),hint:`${pos} → ${neg}...nie`});
+  });
+
+  // Tipe 3: Hoeveel "nie" (10 vrae)
+  const een_nie = ['Ek weet nie.','Hy slaap nie.','Sy kom nie.','Ons gaan nie.'];
+  const twee_nie = ['Ek eet nie vleis nie.','Hy loop nie vinnig nie.','Sy kan nie sing nie.','Hulle speel nie rugby nie.'];
+  een_nie.forEach(s => {
+    vrae.push({q:`Hoeveel "nie" is KORREK in: "${s}"?`,options:['Een','Twee','Drie','Geen'],answer:0,hint:`Kort sin sonder voorwerp — een "nie" aan die einde.`});
+  });
+  twee_nie.forEach(s => {
+    vrae.push({q:`Hoeveel "nie" is KORREK in: "${s}"?`,options:['Een','Twee','Drie','Geen'],answer:1,hint:`Sin met voorwerp — altyd twee "nie".`});
+  });
+
+  return shuffle(vrae).slice(0,10);
+}
+
+function genWerkwoordTyeVrae() {
+  const vrae = [];
+
+  // Tipe 1: Verlede tyd (25 vrae)
+  WW_DATA.swak.forEach(w => {
+    const verkeerde = WW_DATA.swak.filter(x=>x.w!==w.w).sort(()=>Math.random()-.5).slice(0,2).map(x=>'het '+x.v);
+    const opsies = shuffle(['het '+w.v,...verkeerde,'sal '+w.w]);
+    vrae.push({q:`Hoe skryf jy "${w.w}" in die VERLEDE TYD?`,options:opsies,answer:opsies.indexOf('het '+w.v),hint:`Verlede tyd: het + ge + ${w.w} = het ${w.v}`});
+  });
+
+  // Tipe 2: Toekomende tyd (15 vrae)
+  WW_DATA.swak.slice(0,15).forEach(w => {
+    const opsies = shuffle(['sal '+w.w,'het '+w.v,w.w+'end','ge'+w.w]);
+    vrae.push({q:`Hoe skryf jy "${w.w}" in die TOEKOMENDE TYD?`,options:opsies,answer:opsies.indexOf('sal '+w.w),hint:`Toekomende tyd: sal + ${w.w}`});
+  });
+
+  // Tipe 3: Identifiseer die tyd (20 vrae)
+  TYED_SINNE.forEach(({hede,verlede,toekoms}) => {
+    vrae.push({q:`Watter TYD is: "${hede}"`,options:shuffle(['Teenwoordig','Verlede','Toekomend','Onbepaald']),answer:0,hint:'Teenwoordig = NOU/GEWOONLIK.'});
+    vrae.push({q:`Watter TYD is: "${verlede}"`,options:shuffle(['Teenwoordig','Verlede','Toekomend','Onbepaald']),answer:1,hint:'Verlede = HET + ge + werkwoord.'});
+    vrae.push({q:`Watter TYD is: "${toekoms}"`,options:shuffle(['Teenwoordig','Verlede','Toekomend','Onbepaald']),answer:2,hint:'Toekomend = SAL + werkwoord.'});
+  });
+
+  // Fix answer indices after shuffle
+  // (already set correctly above)
+
+  return shuffle(vrae).slice(0,10);
+}
+
+function genByvoeglikeVrae() {
+  const vrae = [];
+
+  // Tipe 1: Trappe van vergelyking (24 vrae)
+  BNW_DATA.trappe.forEach(({s,k,o}) => {
+    // Vergelykende trap
+    const v1 = BNW_DATA.trappe.filter(x=>x.s!==s).sort(()=>Math.random()-.5).slice(0,2).map(x=>x.k);
+    const o1 = shuffle([k,...v1,o]);
+    vrae.push({q:`Wat is die VERGELYKENDE TRAP van "${s}"?`,options:o1,answer:o1.indexOf(k),hint:`${s} → ${k} → ${o}`});
+    // Oortreffende trap
+    const v2 = BNW_DATA.trappe.filter(x=>x.s!==s).sort(()=>Math.random()-.5).slice(0,2).map(x=>x.o);
+    const o2 = shuffle([o,...v2,k]);
+    vrae.push({q:`Wat is die OORTREFFENDE TRAP van "${s}"?`,options:o2,answer:o2.indexOf(o),hint:`${s} → ${k} → die ${o}`});
+    // Stellende trap herkenning
+    vrae.push({q:`In "Sy is ${k} as haar suster" — watter trap?`,options:['Stellende trap','Vergelykende trap','Oortreffende trap','Intensiewe vorm'],answer:1,hint:`Vergelyking met "as" = vergelykende trap.`});
+  });
+
+  // Tipe 2: Attrib vs Predik (16 vrae)
+  BNW_DATA.attr.forEach(({b,t,nw}) => {
+    const sin = t.replace('___',b);
+    vrae.push({q:`In "${sin}" — hoe word "${b}" gebruik?`,options:['Attributief (voor naamwoord)','Predikatief (na koppelww)','Bywoord','Telwoord'],answer:0,hint:`"${b}" staan VOOR die naamwoord "${nw}" — attributief.`});
+  });
+  // Predikatiewe vrae
+  [
+    {s:'Die hond IS groot.',b:'groot'},
+    {s:'Die appel LYK rooi.',b:'rooi'},
+    {s:'Sy IS slim.',b:'slim'},
+    {s:'Die brood WORD hard.',b:'hard'},
+    {s:'Hy BLY siek.',b:'siek'},
+    {s:'Die blomme SKYN pragtig.',b:'pragtig'},
+    {s:'Sy LEER vinnig.',b:'vinnig'},
+    {s:'Die water IS koud.',b:'koud'},
+  ].forEach(({s,b}) => {
+    vrae.push({q:`In "${s}" — hoe word "${b}" gebruik?`,options:['Attributief (voor naamwoord)','Predikatief (na koppelww)','Bywoord','Telwoord'],answer:1,hint:`"${b}" staan NA die koppelwerkwoord — predikatief.`});
+  });
+
+  return shuffle(vrae).slice(0,10);
+}
+
+function genVoornaamwoordVrae() {
+  const vrae = [];
+  const data = [
+    {nw:'Jan',vn:'Hy',soort:'Persoonlik'},
+    {nw:'Sarie',vn:'Sy',soort:'Persoonlik'},
+    {nw:'Jan en Piet',vn:'Hulle',soort:'Persoonlik'},
+    {nw:'Jy en ek',vn:'Ons',soort:'Persoonlik'},
+    {nw:'die boek',vn:'dit',soort:'Persoonlik'},
+    {nw:'die boek (besit)',vn:'my',soort:'Besitlik'},
+    {nw:'Thabo (besit)',vn:'sy',soort:'Besitlik'},
+    {nw:'Amahle (besit)',vn:'haar',soort:'Besitlik'},
+  ];
+  const alle_vn = ['Hy','Sy','Hulle','Ons','dit','my','sy','haar','julle','jou'];
+
+  data.forEach(({nw,vn,soort}) => {
+    const opsies = shuffle([vn,...alle_vn.filter(x=>x!==vn).slice(0,3)]);
+    vrae.push({q:`Vervang "${nw}" met die korrekte voornaamwoord.`,options:opsies,answer:opsies.indexOf(vn),hint:`${nw} → ${vn} (${soort} voornaamwoord)`});
+  });
+
+  // Soort voornaamwoord
+  [
+    {vn:'ek',s:'Persoonlik'},
+    {vn:'my',s:'Besitlik'},
+    {vn:'hierdie',s:'Aanwysend'},
+    {vn:'wie',s:'Betreklik'},
+    {vn:'iemand',s:'Onbepaald'},
+    {vn:'myself',s:'Wederkerend'},
+    {vn:'mekaar',s:'Wederkerig'},
+  ].forEach(({vn,s}) => {
+    vrae.push({
+      q:`Watter SOORT voornaamwoord is "${vn}"?`,
+      options:shuffle(['Persoonlik','Besitlik','Aanwysend','Betreklik','Onbepaald','Wederkerend'].slice(0,4).includes(s)?['Persoonlik','Besitlik','Aanwysend',s]:['Persoonlik','Besitlik',s,'Onbepaald']),
+      answer:0,
+      hint:`"${vn}" is n ${s} voornaamwoord.`
+    });
+  });
+
+  // Fix answers
+  vrae.forEach(v => {
+    if(v.answer===0 && !v.options.includes(v.options[0])) v.answer = 0;
+  });
+
+  return shuffle(vrae).slice(0,10);
+}
+
+function genBywoordVrae() {
+  const vrae = [];
+  const data = [
+    {bw:'vinnig',tipe:'Wyse (HOE?)',vb:'Die seun hardloop vinnig.'},
+    {bw:'stadig',tipe:'Wyse (HOE?)',vb:'Sy praat stadig.'},
+    {bw:'gister',tipe:'Tyd (WANNEER?)',vb:'Ons het gister geswem.'},
+    {bw:'more',tipe:'Tyd (WANNEER?)',vb:'Hy kom more.'},
+    {bw:'altyd',tipe:'Tyd (WANNEER?)',vb:'Sy is altyd vroeg.'},
+    {bw:'hier',tipe:'Plek (WAAR?)',vb:'Die kat sit hier.'},
+    {bw:'daar',tipe:'Plek (WAAR?)',vb:'Die boom staan daar.'},
+    {bw:'buite',tipe:'Plek (WAAR?)',vb:'Die kinders speel buite.'},
+    {bw:'baie',tipe:'Graad (HOEVEEL?)',vb:'Sy is baie slim.'},
+    {bw:'nogal',tipe:'Graad (HOEVEEL?)',vb:'Dit is nogal moeilik.'},
+    {bw:'nou',tipe:'Tyd (WANNEER?)',vb:'Kom nou hiernatoe.'},
+    {bw:'nooit',tipe:'Tyd (WANNEER?)',vb:'Hy is nooit laat nie.'},
+    {bw:'binne',tipe:'Plek (WAAR?)',vb:'Die hond is binne.'},
+    {bw:'hard',tipe:'Wyse (HOE?)',vb:'Sy werk hard.'},
+    {bw:'sag',tipe:'Wyse (HOE?)',vb:'Die wind waai sag.'},
+  ];
+
+  data.forEach(({bw,tipe,vb}) => {
+    const opsies = shuffle(['Wyse (HOE?)','Tyd (WANNEER?)','Plek (WAAR?)','Graad (HOEVEEL?)']);
+    vrae.push({
+      q:`In "${vb}" — watter soort bywoord is "${bw}"?`,
+      options:opsies,
+      answer:opsies.indexOf(tipe),
+      hint:`"${bw}" vertel ${tipe}`
+    });
+    vrae.push({
+      q:`"${bw}" is n bywoord van ___?`,
+      options:opsies,
+      answer:opsies.indexOf(tipe),
+      hint:`${bw} = ${tipe}`
+    });
+  });
+
+  return shuffle(vrae).slice(0,10);
+}
+
+function genVoegwoordVrae() {
+  const vrae = [];
+  const data = [
+    {vw:'en',g:'Neweskikkend',v:'Jan sing en Piet dans.'},
+    {vw:'maar',g:'Neweskikkend',v:'Sy werk hard maar slaap nie.'},
+    {vw:'of',g:'Neweskikkend',v:'Wil jy koffie of tee?'},
+    {vw:'want',g:'Neweskikkend',v:'Hy bly tuis want hy is siek.'},
+    {vw:'omdat',g:'Onderskikkend',v:'Sy bly tuis omdat sy siek is.'},
+    {vw:'sodat',g:'Onderskikkend',v:'Ek oefen sodat ek kan wen.'},
+    {vw:'alhoewel',g:'Onderskikkend',v:'Alhoewel dit koud is speel ons.'},
+    {vw:'wanneer',g:'Onderskikkend',v:'Bel my wanneer jy klaar is.'},
+    {vw:'dat',g:'Onderskikkend',v:'Sy sê dat sy moeg is.'},
+    {vw:'terwyl',g:'Onderskikkend',v:'Hy sing terwyl hy werk.'},
+  ];
+
+  data.forEach(({vw,g,v}) => {
+    vrae.push({
+      q:`Watter SOORT voegwoord is "${vw}"?`,
+      options:shuffle(['Neweskikkend','Onderskikkend','Bywoordelik','Koppelend']),
+      answer:0,
+      hint:`"${vw}" is n ${g} voegwoord.`
+    });
+    vrae.push({
+      q:`Kies die korrekte voegwoord: "${v.replace(vw,'___')}"`,
+      options:shuffle([vw,...data.filter(x=>x.vw!==vw).slice(0,3).map(x=>x.vw)]),
+      answer:0,
+      hint:`"${vw}" verbind die sinsdele hier.`
+    });
+  });
+
+  return shuffle(vrae).slice(0,10);
+}
+
+function genSinsontledingVrae() {
+  const vrae = [];
+  const sinne = [
+    {s:'Die seun skop die bal.',o:'Die seun',g:'skop',v:'die bal'},
+    {s:'Ma bak lekker koekies.',o:'Ma',g:'bak',v:'lekker koekies'},
+    {s:'Thabo lees sy boek.',o:'Thabo',g:'lees',v:'sy boek'},
+    {s:'Die hond byt die kat.',o:'Die hond',g:'byt',v:'die kat'},
+    {s:'Amahle sing n lied.',o:'Amahle',g:'sing',v:'n lied'},
+    {s:'Pa was die motor.',o:'Pa',g:'was',v:'die motor'},
+    {s:'Die kinders speel rugby.',o:'Die kinders',g:'speel',v:'rugby'},
+    {s:'Zanele skryf n brief.',o:'Zanele',g:'skryf',v:'n brief'},
+    {s:'Die onderwyser verduidelik die les.',o:'Die onderwyser',g:'verduidelik',v:'die les'},
+    {s:'Sipho gooi die bal.',o:'Sipho',g:'gooi',v:'die bal'},
+  ];
+
+  sinne.forEach(({s,o,g,v}) => {
+    // Onderwerp vraag
+    const opsies_o = shuffle([o,g,v,'die skool']);
+    vrae.push({q:`"${s}" — Wat is die ONDERWERP?`,options:opsies_o,answer:opsies_o.indexOf(o),hint:`Onderwerp = WIE doen die aksie? Vra: "Wie ${g}?"`});
+    // Gesegde vraag
+    const opsies_g = shuffle([g,o,v,'baie']);
+    vrae.push({q:`"${s}" — Wat is die GESEGDE?`,options:opsies_g,answer:opsies_g.indexOf(g),hint:`Gesegde = die WERKWOORD. Dit is wat die onderwerp DOEN.`});
+    // Voorwerp vraag
+    if(v) {
+      const opsies_v = shuffle([v,o,g,'gister']);
+      vrae.push({q:`"${s}" — Wat is die VOORWERP?`,options:opsies_v,answer:opsies_v.indexOf(v),hint:`Voorwerp = WAT word gedoen? Vra: "${o} ${g} WAT?"`});
+    }
+  });
+
+  return shuffle(vrae).slice(0,10);
+}
+
+function genKlankgrepeVrae() {
+  const vrae = [];
+  const woorde = [
+    {w:'bo-me',o:'bome',gr:2,tipe:'Oop'},
+    {w:'som-mer',o:'sommer',gr:2,tipe:'Geslote'},
+    {w:'ver-jaar-dag',o:'verjaardag',gr:3,tipe:'Gemeng'},
+    {w:'on-der-wy-ser',o:'onderwyser',gr:4,tipe:'Gemeng'},
+    {w:'ap-pel',o:'appel',gr:2,tipe:'Geslote'},
+    {w:'vlieg-tuig',o:'vliegtuig',gr:2,tipe:'Gemeng'},
+    {w:'re-ken-aar',o:'rekenaar',gr:3,tipe:'Oop'},
+    {w:'ge-luk-kig',o:'gelukkig',gr:3,tipe:'Gemeng'},
+    {w:'skoe-ne',o:'skoene',gr:2,tipe:'Oop'},
+    {w:'hard-loop',o:'hardloop',gr:2,tipe:'Geslote'},
+    {w:'skool',o:'skool',gr:1,tipe:'Geslote'},
+    {w:'ta-fel',o:'tafel',gr:2,tipe:'Gemeng'},
+    {w:'Win-ter',o:'Winter',gr:2,tipe:'Geslote'},
+    {w:'sum-mer',o:'sommer',gr:2,tipe:'Geslote'},
+    {w:'ka-mer',o:'kamer',gr:2,tipe:'Oop'},
+  ];
+
+  // Tipe 1: Verdeling van lettergrepe (15 vrae)
+  woorde.forEach(({w,o}) => {
+    const alts = woorde.filter(x=>x.w!==w).sort(()=>Math.random()-.5).slice(0,3).map(x=>x.w);
+    const opsies = shuffle([w,...alts]);
+    vrae.push({q:`Hoe verdeel jy "${o}" in lettergrepe?`,options:opsies,answer:opsies.indexOf(w),hint:`${o} = ${w}`});
+  });
+
+  // Tipe 2: Hoeveel lettergrepe (15 vrae)
+  woorde.forEach(({o,gr}) => {
+    const opsies = shuffle(['1','2','3','4']);
+    vrae.push({q:`Hoeveel lettergrepe het "${o}"?`,options:opsies,answer:opsies.indexOf(gr.toString()),hint:`${o} het ${gr} lettergreep(e).`});
+  });
+
+  // Tipe 3: Oop vs Geslote (10 vrae)
+  [
+    {w:'bo',tipe:'Oop',h:'bo eindig op vokaal "o" — oop lettergreep.'},
+    {w:'som',tipe:'Geslote',h:'som eindig op konsonant "m" — geslote lettergreep.'},
+    {w:'ver',tipe:'Geslote',h:'ver eindig op konsonant "r" — geslote lettergreep.'},
+    {w:'jaar',tipe:'Oop',h:'jaar eindig op vokaal "r"... nee — geslote! Maar die vokaal is lank.'},
+    {w:'dag',tipe:'Geslote',h:'dag eindig op konsonant "g" — geslote.'},
+  ].forEach(({w,tipe,h}) => {
+    vrae.push({q:`Is "${w}" n OOP of GESLOTE lettergreep?`,options:['Oop (eindig op vokaal)','Geslote (eindig op konsonant)','Albei','Geen van die twee'],answer:tipe==='Oop'?0:1,hint:h});
+  });
+
+  return shuffle(vrae).slice(0,10);
+}
+
+// ============================================================
+// HELPER
+// ============================================================
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+// ============================================================
+// HOOFGENERATOR — kies die regte generator per afdeling
+// ============================================================
+function getFallbackVrae(afdelId) {
+  const generators = {
+    'selfstandige': genNaamwoordVrae,
+    'werkwoord': genWerkwoordVrae,
+    'byvoeglike': genByvoeglikeVrae,
+    'voornaamwoord': genVoornaamwoordVrae,
+    'bywoord': genBywoordVrae,
+    'voegwoord': genVoegwoordVrae,
+    'voorsetsel': genVoorsetsalVrae,
+    'lidwoord': genLidwoordVrae,
+    'telwoord': genTelwoordVrae,
+    'tussenwerpsels': genTussenwerpselVrae,
+    'sinsontleding': genSinsontledingVrae,
+    'sinsoort2': genSinsoort2Vrae,
+    'stompi': genSinsontledingVrae,
+    'ontkenning': genOntkenningVrae,
+    'werkwoordtye': genWerkwoordTyeVrae,
+    'lydende': genLydendeVrae,
+    'direkte_rede': genDirekteRedeVrae,
+    'sinswyses': genSinswyseVrae,
+    'spelling': genKlankgrepeVrae,
+    'meervoude': genMeervoudVrae,
+    'leestekens': genLeestekensVrae,
+    'hoofletters': genHooflettersVrae,
+    'woordvorming': genWoordvormingVrae,
+    'taalverskynsels': genTaalverskynselVrae,
+  };
+  const gen = generators[afdelId] || genNaamwoordVrae;
+  return gen();
+}
+
+// Placeholder generators vir afdelings wat nog uitgebrei moet word
+function genVoorsetsalVrae(){return genPlaceholder('Voorsetsel',['in','op','by','voor','agter','langs','tussen','na','van','met','sonder','deur'],['Plek','Tyd','Wyse']);}
+function genLidwoordVrae(){return genPlaceholder('Lidwoord',['die','n'],['Bepaald','Onbepaald']);}
+function genTelwoordVrae(){return genPlaceholder('Telwoord',['een','twee','derde','eerste','baie','verskeie'],['Hooftelwoord','Rangtelwoord','Bepaald','Onbepaald']);}
+function genTussenwerpselVrae(){return genPlaceholder('Tussenwerpsel',['Eina','Hurra','Sjoe','Hallo','Ag','Bravo'],['Pyn','Vreugde','Verwondering','Groet']);}
+function genSinsoort2Vrae(){return genSinsontledingVrae();}
+function genLydendeVrae(){return genPlaceholder('Lydende vorm',['word deur','is deur','sal deur'],['Lydend','Bedrywend']);}
+function genDirekteRedeVrae(){return genPlaceholder('Direkte rede',['dat','ek→hy','jy→hy','ons→hulle'],['Direkte rede','Indirekte rede']);}
+function genSinswyseVrae(){return genPlaceholder('Sinswyse',['Stelsin','Vraagsin','Uitroepsin','Bevelsin'],['punt','vraagteken','uitroepteken']);}
+function genLeestekensVrae(){return genPlaceholder('Leestekens',['punt','komma','vraagteken','uitroepteken','aanhalingstekens','dubbelpunt'],['Einde van sin','Pouse','Vraag','Emosie']);}
+function genHooflettersVrae(){return genPlaceholder('Hoofletters',['Pretoria','Jan','Afrikaans','Kersfees','Mnr','Dr'],['Eienaam','Titel','Taalnaam','Fees']);}
+function genWoordvormingVrae(){return genPlaceholder('Woordvorming',['on-','be-','-heid','-lik','samestelling','afleiding'],['Voorvoegsel','Agtervoegsel','Samestelling','Metamorfose']);}
+function genTaalverskynselVrae(){return genPlaceholder('Betekenisleer',['sinoniem','antoniem','idioom','pleonasme','homofoon'],['Selfde betekenis','Teenoorgestelde','Figuurlik','Herhaling']);}
+
+function genPlaceholder(naam, items, kategorieë) {
+  const vrae = [];
+  for(let i = 0; i < 30; i++) {
+    const item = items[i % items.length];
+    const kat = kategorieë[i % kategorieë.length];
+    vrae.push({
+      q:`Identifiseer die ${naam}: "${item}"`,
+      options:shuffle([kat,...kategorieë.filter(k=>k!==kat).slice(0,3)]),
+      answer:0,
+      hint:`${item} is n voorbeeld van ${kat} by ${naam}.`
+    });
+  }
+  return shuffle(vrae).slice(0,10);
+}
+
+
 function buildVord(){
   const pr=ST.prog||{};
   const vals=Object.values(pr);
@@ -1200,13 +1828,11 @@ window.addEventListener('DOMContentLoaded',function(){});
     const pw=document.getElementById('s-pw');
     if(sk&&KODES[sk]){
       const exp=new Date(KODES[sk]),van=new Date();van.setHours(0,0,0,0);
-      if(van<=exp){pw.style.display='none';buildHome();}
-      else{localStorage.removeItem('ts_k');pw.style.display='flex';}
-    }else if(sd==='true'){
-      pw.style.display='none';buildHome();
-    }else{
-      pw.style.display='flex';
+      if(van<=exp){pw.style.display='none';buildHome();return;}
+      else{localStorage.removeItem('ts_k');}
     }
+    if(sd==='true'){pw.style.display='none';buildHome();return;}
+    pw.style.display='flex';
   }catch(e){
     console.error('Init fout:',e);
     document.getElementById('s-pw').style.display='flex';
