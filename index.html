@@ -393,8 +393,9 @@ function addXP(n,progId){
     ST.prog=ST.prog||{};
     ST.prog[progId]=Math.min(100,(ST.prog[progId]||0)+Math.round(n/2));
   }
-  const lxp=ST.vlak*200;
-  if(ST.xp>=lxp){ST.vlak++;toast('🎉 Vlak '+ST.vlak+' bereik!');}
+  // Vlak: 1=0-199, 2=200-399, 3=400-599 ens.
+  const nuutVlak=Math.floor(ST.xp/200)+1;
+  if(nuutVlak>ST.vlak){ST.vlak=nuutVlak;toast('🎉 Vlak '+ST.vlak+' bereik!');}
   stoor();
   updProfiel();
 }
@@ -1100,18 +1101,397 @@ function genVrae(afdelId){
       break;
     }
 
-    default:{
-      // Generiese vrae vir ander afdelings
+    case 'voornaamwoord':{
+      const vn=[
+        {nw:'Jan',v:'Hy'},{nw:'Sarie',v:'Sy'},{nw:'Jan en Piet',v:'Hulle'},
+        {nw:'Jy en ek',v:'Ons'},{nw:'die boek',v:'dit'},{nw:'Amahle',v:'Sy'},
+        {nw:'Thabo en Sipho',v:'Hulle'},{nw:'die hond',v:'dit'},
+      ];
+      const soorte=[
+        {vn:'ek',s:'Persoonlik'},{vn:'my',s:'Besitlik'},{vn:'hierdie',s:'Aanwysend'},
+        {vn:'wat',s:'Betreklik'},{vn:'iemand',s:'Onbepaald'},{vn:'myself',s:'Wederkerend'},
+        {vn:'niemand',s:'Onbepaald'},{vn:'almal',s:'Onbepaald'},{vn:'jou',s:'Besitlik'},
+        {vn:'hulle',s:'Persoonlik'},{vn:'daardie',s:'Aanwysend'},{vn:'wie',s:'Betreklik'},
+      ];
+      const alle_vn=['Hy','Sy','Hulle','Ons','dit','my','haar','julle','jou','hom'];
+      // Tipe 1: Vervang naamwoord
+      shuf(vn).slice(0,6).forEach(({nw,v})=>{
+        const ander=alle_vn.filter(x=>x!==v);
+        vrae.push(maakV(`Vervang "${nw}" met die korrekte voornaamwoord.`,v,kies(ander,3),`${nw} → ${v}`));
+      });
+      // Tipe 2: Soort voornaamwoord
+      shuf(soorte).slice(0,8).forEach(({vn,s})=>{
+        const ander=['Persoonlik','Besitlik','Aanwysend','Betreklik','Onbepaald','Wederkerend'].filter(x=>x!==s);
+        vrae.push(maakV(`Watter soort voornaamwoord is "${vn}"?`,s,kies(ander,3),`"${vn}" is n ${s} voornaamwoord.`));
+      });
+      // Tipe 3: Gebruik in sin
+      [{s:'Die hond ___ byt, blaf nie.',r:'wat',h:'"wat" is betreklik — verwys na ding.'},
+       {s:'___ gaan more see toe. (Jan en ek)',r:'Ons',h:'"Jan en ek" → Ons.'},
+       {s:'___ het gister gesing? (Die meisie)',r:'Sy',h:'Die meisie is vroulik → Sy.'},
+       {s:'Hy het ___ self gewas.',r:'hom',h:'Wederkerend: hy het dit self gedoen → hom.'},
+       {s:'___ boek is dit? (jou)',r:'Wie',h:'"Wie se boek?" — vraende voornaamwoord.'},
+      ].forEach(({s,r,h})=>{
+        const ander=['Hy','Sy','Ons','dit','wat','hom','haar','Wie'].filter(x=>x!==r);
+        vrae.push(maakV(`Kies die korrekte voornaamwoord: "${s}"`,r,kies(ander,3),h));
+      });
+      break;
+    }
+
+    case 'bywoord':{
+      const data=[
+        {bw:'vinnig',tipe:'Wyse (HOE?)',s:'Die seun hardloop vinnig.'},
+        {bw:'stadig',tipe:'Wyse (HOE?)',s:'Sy praat stadig.'},
+        {bw:'hard',tipe:'Wyse (HOE?)',s:'Pa werk hard.'},
+        {bw:'mooi',tipe:'Wyse (HOE?)',s:'Amahle sing mooi.'},
+        {bw:'gister',tipe:'Tyd (WANNEER?)',s:'Ons het gister geswem.'},
+        {bw:'more',tipe:'Tyd (WANNEER?)',s:'Hy kom more.'},
+        {bw:'altyd',tipe:'Tyd (WANNEER?)',s:'Sy is altyd vroeg.'},
+        {bw:'nou',tipe:'Tyd (WANNEER?)',s:'Kom nou hiernatoe.'},
+        {bw:'hier',tipe:'Plek (WAAR?)',s:'Die kat sit hier.'},
+        {bw:'daar',tipe:'Plek (WAAR?)',s:'Die boom staan daar.'},
+        {bw:'buite',tipe:'Plek (WAAR?)',s:'Die kinders speel buite.'},
+        {bw:'binne',tipe:'Plek (WAAR?)',s:'Die hond is binne.'},
+        {bw:'baie',tipe:'Graad (HOEVEEL?)',s:'Sy is baie slim.'},
+        {bw:'nogal',tipe:'Graad (HOEVEEL?)',s:'Dit is nogal moeilik.'},
+        {bw:'redelik',tipe:'Graad (HOEVEEL?)',s:'Hy is redelik goed.'},
+      ];
+      const tipes=['Wyse (HOE?)','Tyd (WANNEER?)','Plek (WAAR?)','Graad (HOEVEEL?)'];
+      // Tipe 1: Watter soort bywoord
+      shuf(data).slice(0,8).forEach(({bw,tipe,s})=>{
+        const ander=tipes.filter(t=>t!==tipe);
+        vrae.push(maakV(`In "${s}" — watter soort bywoord is "${bw}"?`,tipe,ander,`"${bw}" antwoord die vraag ${tipe}`));
+      });
+      // Tipe 2: Herken die bywoord in die sin
+      shuf(data).slice(0,7).forEach(({bw,s})=>{
+        const woorde=s.replace('.','').split(' ').filter(w=>w!==bw);
+        vrae.push(maakV(`Watter woord is die BYWOORD in: "${s}"?`,bw,kies(woorde,3),`"${bw}" vertel HOE/WANNEER/WAAR — dit is die bywoord.`));
+      });
+      break;
+    }
+
+    case 'voegwoord':{
+      const vwData=[
+        {vw:'en',g:'Neweskikkend',s:'Jan sing ___ Piet dans.',h:'"en" voeg twee sinne saam.'},
+        {vw:'maar',g:'Neweskikkend',s:'Sy werk hard ___ slaap nie.',h:'"maar" toon teenstelling.'},
+        {vw:'of',g:'Neweskikkend',s:'Wil jy koffie ___ tee?',h:'"of" bied n keuse.'},
+        {vw:'want',g:'Neweskikkend',s:'Hy bly tuis ___ hy is siek.',h:'"want" gee n rede.'},
+        {vw:'omdat',g:'Onderskikkend',s:'Sy bly tuis ___ sy siek is.',h:'"omdat" lei n bysin in.'},
+        {vw:'sodat',g:'Onderskikkend',s:'Ek oefen ___ ek kan wen.',h:'"sodat" wys doel.'},
+        {vw:'alhoewel',g:'Onderskikkend',s:'___ dit koud is, speel ons.',h:'"alhoewel" toon toegewing.'},
+        {vw:'wanneer',g:'Onderskikkend',s:'Bel my ___ jy klaar is.',h:'"wanneer" wys tyd.'},
+        {vw:'dat',g:'Onderskikkend',s:'Sy sê ___ sy moeg is.',h:'"dat" lei n bysin in.'},
+        {vw:'terwyl',g:'Onderskikkend',s:'Hy sing ___ hy werk.',h:'"terwyl" wys gelyktydigheid.'},
+      ];
+      // Tipe 1: Soort voegwoord
+      shuf(vwData).slice(0,6).forEach(({vw,g,h})=>{
+        vrae.push(maakV(`Watter soort voegwoord is "${vw}"?`,g,['Neweskikkend','Onderskikkend'].filter(x=>x!==g).concat(['Bywoord','Lidwoord']),h));
+      });
+      // Tipe 2: Vul die voegwoord in
+      shuf(vwData).slice(0,7).forEach(({vw,s,h})=>{
+        const ander=vwData.filter(x=>x.vw!==vw).map(x=>x.vw);
+        vrae.push(maakV(`Kies die korrekte voegwoord: "${s}"`,vw,kies(ander,3),h));
+      });
+      break;
+    }
+
+    case 'voorsetsel':{
+      const data=[
+        {vs:'in',s:'Die kat sit ___ die boks.',h:'"in" = plek (binne iets)'},
+        {vs:'op',s:'Die boek lê ___ die tafel.',h:'"op" = plek (bo-op iets)'},
+        {vs:'by',s:'Hy wag ___ die skool.',h:'"by" = plek (naby)'},
+        {vs:'voor',s:'Sy staan ___ die deur.',h:'"voor" = plek'},
+        {vs:'agter',s:'Die hond is ___ die huis.',h:'"agter" = plek'},
+        {vs:'langs',s:'Hy sit ___ sy vriend.',h:'"langs" = plek'},
+        {vs:'met',s:'Sy skryf ___ n pen.',h:'"met" = wyse'},
+        {vs:'sonder',s:'Hy kom ___ sy boeke.',h:'"sonder" = wyse'},
+        {vs:'om',s:'Die wedstryd begin ___ drie.',h:'"om" = tyd'},
+        {vs:'na',s:'Sy gaan ___ die skool.',h:'"na" = rigting'},
+        {vs:'deur',s:'Hy loop ___ die deur.',h:'"deur" = plek/wyse'},
+        {vs:'tussen',s:'Die hond sit ___ die stoele.',h:'"tussen" = plek'},
+      ];
+      const tipes=['Plek','Tyd','Wyse'];
+      const tipeMap={in:'Plek',op:'Plek',by:'Plek',voor:'Plek',agter:'Plek',langs:'Plek',met:'Wyse',sonder:'Wyse',om:'Tyd',na:'Plek',deur:'Plek',tussen:'Plek'};
+      shuf(data).slice(0,6).forEach(({vs,s,h})=>{
+        const ander=data.filter(x=>x.vs!==vs).map(x=>x.vs);
+        vrae.push(maakV(`Kies die korrekte voorsetsel: "${s}"`,vs,kies(ander,3),h));
+      });
+      shuf(data).slice(0,5).forEach(({vs,h})=>{
+        const t=tipeMap[vs]||'Plek';
+        const ander=tipes.filter(x=>x!==t);
+        vrae.push(maakV(`Watter soort voorsetsel is "${vs}"?`,t,ander,h));
+      });
+      break;
+    }
+
+    case 'lidwoord':{
+      const data=[
+        {sin:'___ hond byt.',l:'Die',h:'"Die" = bepaald — spesifieke hond.'},
+        {sin:'Ek koop ___ boek.',l:'n',h:'"n" = onbepaald — enige boek.'},
+        {sin:'___ son skyn helder.',l:'Die',h:'"Die" = bepaald — die enigste son.'},
+        {sin:'Sy het ___ pragtige stem.',l:'n',h:'"n" = onbepaald.'},
+        {sin:'___ kinders speel buite.',l:'Die',h:'"Die" = bepaald — spesifieke kinders.'},
+        {sin:'Hy eet ___ appel.',l:'n',h:'"n" = onbepaald — enige appel.'},
+        {sin:'___ onderwyser verduidelik.',l:'Die',h:'"Die" = bepaald.'},
+        {sin:'Ons het ___ groot probleem.',l:'n',h:'"n" = onbepaald.'},
+      ];
+      shuf(data).forEach(({sin,l,h})=>{
+        vrae.push(maakV(`Kies die korrekte lidwoord: "${sin}"`,l,l==='Die'?['n','die','n']:['Die','die','Die'],h));
+      });
+      // Bepaald vs Onbepaald
+      [{w:'Die',t:'Bepaald'},{w:'n',t:'Onbepaald'},{w:'die',t:'Bepaald'},{w:'n',t:'Onbepaald'}].forEach(({w,t})=>{
+        vrae.push(maakV(`Is "${w}" n bepaalde of onbepaalde lidwoord?`,t,['Bepaald','Onbepaald'].filter(x=>x!==t).concat(['Werkwoord','Bywoord']),
+          t==='Bepaald'?'"die" = ons weet presies watter een.':'"n" = enige een van daardie soort.'));
+      });
+      break;
+    }
+
+    case 'telwoord':{
+      const hoof=['een','twee','drie','vier','vyf','ses','sewe','agt','nege','tien','honderd'];
+      const rang=['eerste','tweede','derde','vierde','vyfde','sesde','sewende'];
+      const onbep=['baie','verskeie','min','genoeg','laaste','volgende'];
+      shuf(hoof).slice(0,5).forEach(t=>{
+        vrae.push(maakV(`Watter soort telwoord is "${t}"?`,'Hooftelwoord (HOEVEEL?)',['Rangtelwoord (WATTER PLEK?)','Onbepaalde telwoord','Bywoord'],`"${t}" vertel HOEVEEL — hooftelwoord.`));
+      });
+      shuf(rang).slice(0,5).forEach(t=>{
+        vrae.push(maakV(`Watter soort telwoord is "${t}"?`,'Rangtelwoord (WATTER PLEK?)',['Hooftelwoord (HOEVEEL?)','Onbepaalde telwoord','Lidwoord'],`"${t}" vertel WATTER PLEK — rangtelwoord.`));
+      });
+      shuf(onbep).slice(0,4).forEach(t=>{
+        vrae.push(maakV(`Watter soort telwoord is "${t}"?`,'Onbepaalde telwoord',['Hooftelwoord (HOEVEEL?)','Rangtelwoord (WATTER PLEK?)','Bywoord'],`"${t}" is onbepaald — ons weet nie presies hoeveel nie.`));
+      });
+      // In sin
+      [{s:'Ek het DRIE appels gekoop.',t:'drie',soort:'Hooftelwoord'},
+       {s:'Sy was TWEEDE in die ry.',t:'tweede',soort:'Rangtelwoord'},
+       {s:'BAIE kinders het gekom.',t:'baie',soort:'Onbepaalde telwoord'},
+      ].forEach(({s,t,soort})=>{
+        vrae.push(maakV(`Watter soort telwoord is "${t}" in: "${s}"?`,soort,['Hooftelwoord (HOEVEEL?)','Rangtelwoord (WATTER PLEK?)','Onbepaalde telwoord'].filter(x=>x!==soort),`"${t}" is n ${soort}.`));
+      });
+      break;
+    }
+
+    case 'sinsoort2':{
+      [{s:'Die kat slaap.',t:'Enkelvoudig'},{s:'Jan sing en Piet dans.',t:'Veelvoudig'},
+       {s:'Sy bly tuis omdat sy siek is.',t:'Saamgesteld'},{s:'Hy eet.',t:'Enkelvoudig'},
+       {s:'Ma kook en Pa was af.',t:'Veelvoudig'},{s:'Ek oefen sodat ek kan wen.',t:'Saamgesteld'},
+       {s:'Die voël vlieg.',t:'Enkelvoudig'},{s:'Thabo sing maar Amahle dans.',t:'Veelvoudig'},
+      ].forEach(({s,t})=>{
+        vrae.push(maakV(`Watter soort sin is: "${s}"`,t,['Enkelvoudig','Veelvoudig','Saamgesteld'].filter(x=>x!==t),
+          t==='Enkelvoudig'?'Een hoofsin — enkelvoudig.':t==='Veelvoudig'?'Twee hoofsinne verbind — veelvoudig.':'Hoofsin + bysin — saamgesteld.'));
+      });
+      // Voegwoord identifiseer
+      [{s:'Jan sing en Piet dans.',vw:'en'},{s:'Sy bly tuis omdat sy siek is.',vw:'omdat'},
+       {s:'Ek oefen sodat ek kan wen.',vw:'sodat'},
+      ].forEach(({s,vw})=>{
+        vrae.push(maakV(`Watter woord VERBIND die sinsdele in: "${s}"?`,vw,['maar','want','alhoewel','dan'].filter(x=>x!==vw).slice(0,3),`"${vw}" verbind die sinsdele.`));
+      });
+      break;
+    }
+
+    case 'stompi':{
+      const sinne=[
+        {s:'Ek eet elke dag by die huis.',stompi:{S:'Ek',T:'elke dag',O:'eet',P:'by die huis'}},
+        {s:'Sy het gister vinnig geloop.',stompi:{S:'Sy',T:'gister',O:'het',M:'vinnig',I:'geloop'}},
+        {s:'Thabo werk hard by die skool.',stompi:{S:'Thabo',T:'',O:'werk',M:'hard',P:'by die skool'}},
+        {s:'Ons sal more strand toe gaan.',stompi:{S:'Ons',T:'more',O:'sal',P:'strand toe',I:'gaan'}},
+      ];
+      shuf(sinne).forEach(({s,stompi})=>{
+        if(stompi.S) vrae.push(maakV(`In "${s}" — wat is die SUBJEK (S)?`,stompi.S,['die huis','gister','eet','vinnig'].filter(x=>x!==stompi.S).slice(0,3),`S = Subjek/Onderwerp`));
+        if(stompi.T) vrae.push(maakV(`In "${s}" — wat is die TYD (T)?`,stompi.T,['Ek','hard','loop','here'].filter(x=>x!==stompi.T).slice(0,3),`T = Tyd (WANNEER?)`));
+        if(stompi.P) vrae.push(maakV(`In "${s}" — wat is die PLEK (P)?`,stompi.P,['Ek','gister','hard','eet'].filter(x=>x!==stompi.P).slice(0,3),`P = Plek (WAAR?)`));
+      });
+      vrae.push(maakV('Wat beteken die "O" in STOMPI?','Objek-gesegde (werkwoord)',['Onderwerp','Omgewing','Opsomming'],'"O" in STOMPI = die werkwoord/gesegde.'));
+      vrae.push(maakV('Wat beteken die "M" in STOMPI?','Manier (HOE?)',['Middel','Meer','Meervoud'],'"M" in STOMPI = Manier (HOE iets gedoen word).'));
+      vrae.push(maakV('Waarheen gaan die werkwoord in n bysin?','Aan die einde',['Aan die begin','Na die onderwerp','Enige plek'],'Na n onderskikkende voegwoord gaan die werkwoord na die EINDE.'));
+      break;
+    }
+
+    case 'lydende':{
+      const data=[
+        {b:'Die seun skop die bal.',l:'Die bal word deur die seun geskop.'},
+        {b:'Ma bak die koekies.',l:'Die koekies word deur Ma gebak.'},
+        {b:'Jan lees die boek.',l:'Die boek word deur Jan gelees.'},
+        {b:'Die onderwyser merk die toetse.',l:'Die toetse word deur die onderwyser gemerk.'},
+        {b:'Sipho gooi die bal.',l:'Die bal word deur Sipho gegooi.'},
+      ];
+      shuf(data).forEach(({b,l})=>{
+        vrae.push(maakV(`Verander na LYDENDE VORM: "${b}"`,l,
+          [b,b.split(' ').reverse().join(' '),'word '+b],
+          'Lydend: voorwerp word nuwe onderwerp + "word deur".'));
+      });
+      vrae.push(maakV('Watter sin is in die BEDRYWENDE VORM?',
+        'Die seun skop die bal.',
+        ['Die bal word geskop.','Die bal is geskop.','Geskop word die bal.'],
+        'Bedrywend: onderwerp + werkwoord + voorwerp (normaal).'));
+      vrae.push(maakV('Watter sin is in die LYDENDE VORM?',
+        'Die bal word deur die seun geskop.',
+        ['Die seun skop die bal.','Die seun het geskop.','Skop die bal.'],
+        'Lydend gebruik "word deur".'));
+      vrae.push(maakV('Watter hulpwerkwoord gebruik die HEDE lydende vorm?','word',['is','het','sal'],'Hede lydend: "word deur".'));
+      vrae.push(maakV('Watter hulpwerkwoord gebruik die VERLEDE lydende vorm?','is',['word','het','sal'],'Verlede lydend: "is deur".'));
+      break;
+    }
+
+    case 'direkte_rede':{
+      const data=[
+        {d:'"Ek is baie moeg," sê Maria.',i:'Maria sê dat sy baie moeg is.'},
+        {d:'"Ons gaan more strand toe," sê Pa.',i:'Pa sê dat hulle die volgende dag strand gaan.'},
+        {d:'"Jy moet jou werk doen," sê Juffrou.',i:'Juffrou sê dat hy/sy sy/haar werk moet doen.'},
+        {d:'"Ek wil n nuwe fiets hê," sê Sipho.',i:'Sipho sê dat hy n nuwe fiets wil hê.'},
+      ];
+      shuf(data).forEach(({d,i})=>{
+        vrae.push(maakV(`Watter sin is DIREKTE rede?`,d,[i,i.replace('dat','want'),i.replace('dat','of')],'Direkte rede het aanhalingstekens.'));
+        vrae.push(maakV(`Watter sin is INDIREKTE rede?`,i,[d,d.replace('"',''),d.replace('sê','vertel')],'Indirekte rede het geen aanhalingstekens en gebruik "dat".'));
+      });
+      vrae.push(maakV('Hoe verander "ek" in indirekte rede?','hy/sy',['ons','julle','dit'],'ek → hy/sy in indirekte rede.'));
+      vrae.push(maakV('Hoe verander "ons" in indirekte rede?','hulle',['hy/sy','julle','dit'],'ons → hulle in indirekte rede.'));
+      vrae.push(maakV('Hoe verander "vandag" in indirekte rede?','daardie dag',['die vorige dag','more','gister'],'vandag → daardie dag.'));
+      vrae.push(maakV('Watter woord begin indirekte rede?','dat',['want','maar','of'],'"...sê DAT hy..." — "dat" lei die indirekte rede in.'));
+      break;
+    }
+
+    case 'sinswyses':{
+      [{s:'Die blomme is mooi.',t:'Stelsin'},{s:'Waar is my boek?',t:'Vraagsin'},
+       {s:'Help! Die hond byt!',t:'Uitroepsin'},{s:'Sit asseblief.',t:'Bevelsin'},
+       {s:'Is dit jou pen?',t:'Vraagsin'},{s:'Fantasties! Ons het gewen!',t:'Uitroepsin'},
+       {s:'Die son skyn helder.',t:'Stelsin'},{s:'Staan op!',t:'Bevelsin'},
+      ].forEach(({s,t})=>{
+        vrae.push(maakV(`Watter soort sin is: "${s}"`,t,['Stelsin','Vraagsin','Uitroepsin','Bevelsin'].filter(x=>x!==t),
+          `${t}: ${t==='Stelsin'?'stelling + punt':t==='Vraagsin'?'vraag + vraagteken':t==='Uitroepsin'?'emosie + !':'opdrag + !'}`));
+      });
+      vrae.push(maakV('Watter leesteken eindig n stelsin?','Punt (.)',['Vraagteken (?)','Uitroepteken (!)','Komma (,)'],'Stelsin = stelling, eindig met punt.'));
+      vrae.push(maakV('Watter leesteken eindig n vraagsin?','Vraagteken (?)',['Punt (.)','Uitroepteken (!)','Kommapunt (;)'],'Vraagsin eindig altyd met ?'));
+      break;
+    }
+
+    case 'spelling':{
+      const lg=[
+        {w:'bo-me',o:'bome',gr:2,tipe:'Oop'},{w:'som-mer',o:'sommer',gr:2,tipe:'Geslote'},
+        {w:'ver-jaar-dag',o:'verjaardag',gr:3},{w:'on-der-wy-ser',o:'onderwyser',gr:4},
+        {w:'ap-pel',o:'appel',gr:2},{w:'vlieg-tuig',o:'vliegtuig',gr:2},
+        {w:'re-ken-aar',o:'rekenaar',gr:3},{w:'ge-luk-kig',o:'gelukkig',gr:3},
+        {w:'ta-fel',o:'tafel',gr:2},{w:'win-ter',o:'winter',gr:2},
+        {w:'ka-mer',o:'kamer',gr:2},{w:'skool',o:'skool',gr:1},
+        {w:'hard-loop',o:'hardloop',gr:2},{w:'le-we',o:'lewe',gr:2},
+        {w:'huis',o:'huis',gr:1},{w:'boom',o:'boom',gr:1},
+      ];
+      shuf(lg).slice(0,6).forEach(({w,o})=>{
+        const ander=lg.filter(x=>x.w!==w).map(x=>x.w);
+        vrae.push(maakV(`Hoe verdeel jy "${o}" in lettergrepe?`,w,kies(ander,3),`${o} = ${w}`));
+      });
+      shuf(lg).slice(0,6).forEach(({o,gr})=>{
+        vrae.push(maakV(`Hoeveel lettergrepe het "${o}"?`,gr.toString(),['1','2','3','4'].filter(x=>x!==gr.toString()),`${o} het ${gr} lettergreep(e).`));
+      });
+      [{w:'bo',t:'Oop'},{w:'som',t:'Geslote'},{w:'ver',t:'Geslote'},{w:'ka',t:'Oop'},{w:'dag',t:'Geslote'},{w:'me',t:'Oop'}].forEach(({w,t})=>{
+        vrae.push(maakV(`Is "${w}" n OOP of GESLOTE lettergreep?`,
+          t==='Oop'?'Oop (eindig op vokaal)':'Geslote (eindig op konsonant)',
+          [t==='Oop'?'Geslote (eindig op konsonant)':'Oop (eindig op vokaal)','Neutrale lettergreep','Dubbele lettergreep'],
+          t==='Oop'?`"${w}" eindig op n vokaal — OOP.`:`"${w}" eindig op n konsonant — GESLOTE.`));
+      });
+      break;
+    }
+
+    case 'leestekens':{
+      const data=[
+        {s:'Die seun speel rugby___',l:'.',h:'Stelsin eindig met punt.'},
+        {s:'Waar is my boek___',l:'?',h:'Vraagsin eindig met vraagteken.'},
+        {s:'Help___ Die hond byt___',l:'!',h:'Uitroepsin eindig met uitroepteken.'},
+        {s:'Ek koop appels___ pere en piesangs.',l:',',h:'Komma in naamreeks voor "en".'},
+        {s:'Hy het drie dinge gekoop___ brood, melk en botter.',l:':',h:'Dubbelpunt voor n opsomming.'},
+      ];
+      shuf(data).forEach(({s,l,h})=>{
+        vrae.push(maakV(`Kies die korrekte leesteken vir "___" in: "${s}"`,l,['.','!','?',',',':'].filter(x=>x!==l).slice(0,3),h));
+      });
+      [{t:'Stelsin',l:'Punt (.)'},{t:'Vraagsin',l:'Vraagteken (?)'},{t:'Uitroepsin',l:'Uitroepteken (!)'}].forEach(({t,l})=>{
+        vrae.push(maakV(`Watter leesteken eindig n ${t}?`,l,['Punt (.)','Vraagteken (?)','Uitroepteken (!)','Komma (,)'].filter(x=>x!==l),`${t} eindig met ${l}.`));
+      });
+      break;
+    }
+
+    case 'hoofletters':{
+      const eien=['Pretoria','Thabo','Kaapstad','Amahle','Suid-Afrika','Sipho'];
+      const soort=['hond','boom','stoel','tafel','kind','motor'];
+      shuf(eien).forEach(e=>{
+        vrae.push(maakV(`Moet "${e.toLowerCase()}" met n hoofletter skryf?`,'Ja, altyd (dit is n eienaam)',['Nee, nooit','Slegs aan begin van sin','Soms'],`${e} is n eienaam — ALTYD hoofletter!`));
+      });
+      shuf(soort).forEach(s=>{
+        vrae.push(maakV(`Moet "${s}" met n hoofletter skryf?`,'Slegs aan die begin van n sin',['Ja, altyd','Nee, nooit','Net in titels'],`${s} is n soortnaam — slegs hoofletter aan begin van sin.`));
+      });
+      vrae.push(maakV('Watter woord MOET n hoofletter hê?','Pretoria',['hond','boom','motor'],'Pretoria is n eienaam (pleknaam) — altyd hoofletter.'));
+      vrae.push(maakV('Watter taalnaam kry n hoofletter?','Afrikaans',['afrikaans','AFRIKAANS','aFrikaans'],'Taalname begin altyd met n hoofletter: Afrikaans.'));
+      break;
+    }
+
+    case 'woordvorming':{
+      const data=[
+        {woord:'onnodig',deel:'on-',tipe:'Voorvoegsel'},{woord:'skoonheid',deel:'-heid',tipe:'Agtervoegsel'},
+        {woord:'vriendelik',deel:'-lik',tipe:'Agtervoegsel'},{woord:'tafelpoot',dele:['tafel','poot'],tipe:'Samestelling'},
+        {woord:'drinkglas',dele:['drink','glas'],tipe:'Samestelling'},{woord:'beleer',deel:'be-',tipe:'Voorvoegsel'},
+        {woord:'werker',deel:'-er',tipe:'Agtervoegsel'},
+      ];
+      data.forEach(({woord,deel,dele,tipe})=>{
+        if(deel){
+          vrae.push(maakV(`"${deel}" in "${woord}" is n ___?`,tipe,['Voorvoegsel','Agtervoegsel','Samestelling'].filter(x=>x!==tipe),`"${deel}" is n ${tipe}.`));
+        }
+        if(dele){
+          vrae.push(maakV(`"${woord}" is saamgestel uit?`,dele.join(' + '),['een woord','voor + agtervoegsel',dele.reverse().join(' + ')],`${woord} = ${dele.join(' + ')} — samestelling.`));
+        }
+      });
+      [{van:'drink',na:'dronk'},{van:'sing',na:'sang'},{van:'vind',na:'gevind'}].forEach(({van,na})=>{
+        vrae.push(maakV(`"${van} → ${na}" is n voorbeeld van?`,'Metamorfose (vokaal verander)',['Samestelling','Afleiding','Verdubbeling'],`Metamorfose: die vokaal verander — ${van} → ${na}.`));
+      });
+      break;
+    }
+
+    case 'taalverskynsels':{
+      const sin=[{w:'bly',s:'gelukkig'},{w:'vinnig',s:'gou'},{w:'groot',s:'reusagtig'},{w:'mooi',s:'pragtig'}];
+      const ant=[{w:'groot',a:'klein'},{w:'warm',a:'koud'},{w:'vinnig',a:'stadig'},{w:'bly',a:'hartseer'}];
+      sin.forEach(({w,s})=>{
+        vrae.push(maakV(`Watter woord is n SINONIEM van "${w}"?`,s,ant.map(x=>x.w).filter(x=>x!==s).slice(0,3),`${w} = ${s} (selfde betekenis).`));
+      });
+      ant.forEach(({w,a})=>{
+        vrae.push(maakV(`Watter woord is n ANTONIEM van "${w}"?`,a,sin.map(x=>x.w).filter(x=>x!==a).slice(0,3),`${w} ↔ ${a} (teenoorgesteldes).`));
+      });
+      [{idioom:'Die appel val nie ver van die boom',bet:'Kinders lyk soos hul ouers'},
+       {idioom:'n Kat in die donker knyp',bet:'Iets skelm doen'},
+       {idioom:'Gooi jou oog',bet:'Kyk noukeurig'},
+      ].forEach(({idioom,bet})=>{
+        vrae.push(maakV(`Wat beteken die idioom: "${idioom}"?`,bet,['Gooi n kat','Loop vinnig','Maak n fout'],`"${idioom}" = ${bet}`));
+      });
+      vrae.push(maakV('Wat is n PLEONASME?','Onnodige herhaling (bv. ronde sirkel)',['Selfde betekenis','Teenoorgestelde','Figuurlike taal'],'Pleonasme = oorbodige herhaling — alle sirkels is rond!'));
+      break;
+    }
+
+    case 'tussenwerpsels':
+    case 'deelwoorde':
+    case 'infinitief':{
       const afd=AFDELINGS.find(a=>a.id===afdelId);
-      if(afd){
-        afd.reels.forEach((r,i)=>{
-          vrae.push(maakV(`Wat beskryf hierdie reël? "${r.substring(0,60)}"`,
-            afd.nm,
-            ['Werkwoorde','Sinne','Spelling'],
-            `Hierdie is n reël van ${afd.nm}.`
-          ));
+      afd.voorb.forEach(({s,u})=>{
+        const nm=afd.nm;
+        const ander=AFDELINGS.filter(a=>a.id!==afdelId).map(a=>a.nm);
+        vrae.push(maakV(`In "${s.replace(/<\/?u>/g,'')}" — watter grammatika-konsep word gebruik?`,nm,kies(ander,3),u));
+      });
+      // Bykomende vrae per afdeling
+      if(afdelId==='tussenwerpsels'){
+        [{t:'Eina!',e:'Pyn'},{t:'Hurra!',e:'Vreugde'},{t:'Sjoe!',e:'Verwondering'},{t:'Hallo!',e:'Groet'}].forEach(({t,e})=>{
+          vrae.push(maakV(`"${t}" druk watter GEVOEL uit?`,e,['Pyn','Vreugde','Verwondering','Groet'].filter(x=>x!==e),`"${t}" = ${e}`));
         });
       }
+      if(afdelId==='deelwoorde'){
+        [{w:'lopend',t:'Teenwoordig'},{w:'gebak',t:'Verlede'},{w:'singend',t:'Teenwoordig'},{w:'geloop',t:'Verlede'}].forEach(({w,t})=>{
+          vrae.push(maakV(`Watter soort deelwoord is "${w}"?`,t+' deelwoord',['Teenwoordig deelwoord','Verlede deelwoord'].filter(x=>!x.startsWith(t)),`${w} = ${t} deelwoord.`));
+        });
+      }
+      if(afdelId==='infinitief'){
+        [{s:'Ek wil leer.',i:'leer'},{s:'Sy kan sing.',i:'sing'},{s:'Hy moet kom.',i:'kom'}].forEach(({s,i})=>{
+          const woorde=s.replace('.','').split(' ').filter(w=>w!==i);
+          vrae.push(maakV(`Watter woord is die INFINITIEF in: "${s}"`,i,kies(woorde,3),`Na hulpwerkwoord: "${i}" is die infinitief.`));
+        });
+      }
+      break;
+    }
+
+    default:{
+      // Slegs as niks anders pas
+      vrae.push(maakV('Wat is die naam van hierdie afdeling?',afdelId,['werkwoord','spelling','sinne'],'Kies die regte afdeling.'));
       break;
     }
   }
