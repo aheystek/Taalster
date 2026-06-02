@@ -541,24 +541,37 @@ const AFDELINGS=[
      {s:'Die <u>laaste</u> stuk koek is weg.',u:'LAASTE = onbepaalde rangtelwoord'}
    ],
    prog:'telwoorde'},
+  {id:'tussenwerpsels',nm:'Tussenwerpsels',ic:'😲',kl:'#f59e0b',kat:'woordsoort',
+   verd:'n <strong>Tussenwerpsel</strong> druk n gevoel of emosie uit. Dit staan apart van die res van die sin.',
+   reels:['Vreugde: Hurra! Fantasties! Sjoe!','Pyn/skok: Eina! Ag! Jammer!','Verwondering: Wow! Sjoe! Hemeltjie!','Groete: Hallo! Totsiens! Goeiemore!','Goedkeuring: Goed! Bravo! Uitstekend!','Staan gewoonlik aan die begin van die sin met n uitroepteken'],
+   voorb:[{s:'<u>Eina!</u> Die hond het my gebyt.',u:'EINA = tussenwerpsel van pyn'},{s:'<u>Hurra!</u> Ons het gewen!',u:'HURRA = tussenwerpsel van vreugde'},{s:'<u>Sjoe!</u> Dit is warm vandag.',u:'SJOE = tussenwerpsel van verwondering'}],
+   prog:'tussenwerpsels'},
+  {id:'deelwoorde',nm:'Deelwoorde',ic:'🔀',kl:'#8b5cf6',kat:'woordsoort',
+   verd:'n <strong>Deelwoord</strong> is n werkwoord wat as byvoeglike naamwoord gebruik word.',
+   reels:['Teenwoordige deelwoord: werkwoord + -end (lopend, singend, slapend)','Verlede deelwoord: ge- + werkwoord (geloop, gesing, gespeel)','Gebruik as byvoeglike naamwoord: Die <u>lopende</u> water.','Swak deelwoorde: ge- voor stam (speel → gespeel)','Sterk deelwoorde: vokaal verander (skryf → geskryf)'],
+   voorb:[{s:'Die <u>singende</u> voël sit in die boom.',u:'SINGEND = teenwoordige deelwoord'},{s:'Die <u>gebakte</u> koekies ruik lekker.',u:'GEBAK = verlede deelwoord'},{s:'n <u>Hardlopende</u> kind val maklik.',u:'HARDLOPEND = teenwoordige deelwoord'}],
+   prog:'deelwoorde'},
+  {id:'infinitief',nm:'Infinitief',ic:'🔁',kl:'#06b6d4',kat:'woordsoort',
+   verd:'Die <strong>infinitief</strong> is die basiese vorm van die werkwoord — gebruik met "om...te".',
+   reels:['Vorm: om + werkwoord + te (om te loop, om te sing)','Na sekere werkwoorde: wil, kan, moet, mag, sal','Infinitiewe bysin: om...te + werkwoord aan die einde','Onderskeid: loop (infinitief) vs geloop (verlede tyd)'],
+   voorb:[{s:'Ek wil <u>leer</u> hoe om te swem.',u:'LEER = infinitief na "wil"'},{s:'Sy probeer <u>om</u> harder <u>te</u> werk.',u:'OM...TE = infinitief konstruksie'},{s:'Hy moet môre <u>kom</u>.',u:'KOM = infinitief na "moet"'}],
+   prog:'infinitief'},
   // SINNE
-  {id:'sinsontleding',nm:'Sinsontleding',ic:'🔍',kl:'#6366f1',kat:'sinne',
-   verd:'n Sin bestaan uit verskillende <strong>sinsdele</strong>. Ons ontleed die sin om te wys watter rol elke deel speel. Die STOMPI-metode help ons.',
-   reels:[
-     'Onderwerp (O): WIE of WAT doen die aksie? (onderstreep)',
-     'Gesegde (G): die WERKWOORD — wat word gedoen?',
-     'Voorwerp (V): WAT word gedoen? (direkte voorwerp)',
-     'STOMPI = Subjek, Tydsbepalings, O-gesegde, Middel, Plek, Indirekte voorwerp',
-     'Bepalings: Tyd (wanneer?), Plek (waar?), Wyse (hoe?)',
-     'Enkelvoudige sin: een hoofsin (een gesegde)',
-     'Veelvoudige sin: twee of meer hoofsinne verbind met voegwoord'
-   ],
-   voorb:[
-     {s:'Die seun skop die bal.',u:'Onderwerp: Die seun | Gesegde: skop | Voorwerp: die bal'},
-     {s:'Ma bak lekker koekies vir ons.',u:'Onderwerp: Ma | Gesegde: bak | Voorwerp: koekies'},
-     {s:'Jan sing en Piet dans.',u:'Veelvoudige sin — twee hoofsinne verbind met "en"'}
-   ],
+  {id:'sinsontleding',nm:'Onderwerp, Voorwerp & Gesegde',ic:'🔍',kl:'#6366f1',kat:'sinne',
+   verd:'Elke sin het <strong>sinsdele</strong>. Die drie hoofsinsdele is die Onderwerp, Gesegde en Voorwerp.',
+   reels:['Onderwerp (O): WIE of WAT doen die aksie?','Gesegde (G): Die WERKWOORD — die hart van die sin','Voorwerp (V): WAT word gedoen?','Direkte voorwerp: ontvang die aksie direk','Indirekte voorwerp: ontvang die voordeel (vir Jan)','Bepaling: Tyd, Plek of Wyse inligting'],
+   voorb:[{s:'Die seun skop die bal.',u:'O: Die seun | G: skop | V: die bal'},{s:'Ma bak lekker koekies.',u:'O: Ma | G: bak | V: koekies'},{s:'Thabo gee vir Amahle die boek.',u:'O: Thabo | G: gee | V: die boek'}],
    prog:'sinsontleding'},
+  {id:'sinsoort2',nm:'Enkelvoudige & Veelvoudige Sinne',ic:'📋',kl:'#7c3aed',kat:'sinne',
+   verd:'Sinne kan <strong>enkelvoudig</strong> of <strong>veelvoudig</strong> wees na gelang van hoeveel gesegdes hulle het.',
+   reels:['Enkelvoudige sin: EEN hoofsin, EEN gesegde','Veelvoudige sin: TWEE of meer hoofsinne verbind met voegwoord','Neweskikkend: en, maar, of, want','Saamgestelde sin: hoofsin + bysin','Bysin begin met: dat, omdat, sodat, wanneer, alhoewel'],
+   voorb:[{s:'Die kat slaap.',u:'ENKELVOUDIG — een hoofsin'},{s:'Jan sing en Piet dans.',u:'VEELVOUDIG — twee hoofsinne'},{s:'Sy bly tuis omdat sy siek is.',u:'SAAMGESTELD — hoofsin + bysin'}],
+   prog:'sinsoort2'},
+  {id:'stompi',nm:'Woordorde in Sinne (STOMPI)',ic:'📐',kl:'#0891b2',kat:'sinne',
+   verd:'Die <strong>woordorde</strong> in Afrikaanse sinne volg vaste reëls. STOMPI help ons om die korrekte volgorde te onthou.',
+   reels:['S = Subjek (onderwerp)','T = Tyd (wanneer?)','O = Objek-gesegde (werkwoord 1)','M = Manier (hoe?)','P = Plek (waar?)','I = Infinitief/werkwoord 2','Die werkwoord SPLITS in lang sinne!','Na voegwoord: werkwoord gaan na die EINDE van bysin'],
+   voorb:[{s:'Ek eet elke dag by die huis.',u:'S=Ek | T=elke dag | O=eet | P=by die huis'},{s:'Sy het gister vinnig by die skool geloop.',u:'S=Sy | T=gister | O=het | M=vinnig | P=skool | I=geloop'},{s:'Hy se dat hy more sal kom.',u:'Bysin: "sal kom" aan die einde'}],
+   prog:'stompi'},
   {id:'ontkenning',nm:'Ontkennende Vorm',ic:'❌',kl:'#ef4444',kat:'sinne',
    verd:'In Afrikaans gebruik ons <strong>dubbele ontkenning</strong> — altyd TWEE "nie" in die sin.',
    reels:[
@@ -644,7 +657,7 @@ const AFDELINGS=[
    ],
    prog:'sinswyses'},
   // SPELLING & TAAL
-  {id:'spelling',nm:'Spelling',ic:'✏️',kl:'#6366f1',kat:'spelling',
+  {id:'spelling',nm:'Klankgrepe & Lettergrepe',ic:'🔤',kl:'#6366f1',kat:'spelling',
    verd:'Korrekte <strong>spelling</strong> beteken: wanneer ons praat, skryf ons wat ons hoor. Ken die 3 grondbeginsels.',
    reels:[
      '1. Klankleer: skryf wat jy hoor (standaard Afrikaans)',
@@ -761,7 +774,7 @@ function buildHome(){
   const kats=[
     {id:'woordsoort',nm:'Woordsoorte',ic:'🔤',kl:'#6366f1',desc:'Selfstandige naamwoorde, werkwoorde, byvoeglike naamwoorde en meer',tel:AFDELINGS.filter(x=>x.kat==='woordsoort').length},
     {id:'sinne',nm:'Sinne',ic:'📝',kl:'#a855f7',desc:'Sinsontleding, ontkenning, werkwoordtye, lydende en direkte rede',tel:AFDELINGS.filter(x=>x.kat==='sinne').length},
-    {id:'spelling',nm:'Spelling & Taal',ic:'✏️',kl:'#0d9488',desc:'Spelling, meervoude, leestekens, hoofletters en woordvorming',tel:AFDELINGS.filter(x=>x.kat==='spelling').length},
+    {id:'spelling',nm:'Klankgrepe & Lettergrepe',ic:'🔤',kl:'#0d9488',desc:'Klankgrepe, lettergrepe, meervoude, leestekens, hoofletters en woordvorming',tel:AFDELINGS.filter(x=>x.kat==='spelling').length},
   ];
   let html='';
   for(const k of kats){
@@ -806,18 +819,21 @@ function openKat(kat){
   document.getElementById('scroll').scrollTop=0;
 }
 
-function openAfd(id){
+function openAfd(id,vanKat){
   const a=AFDELINGS.find(x=>x.id===id);if(!a)return;
   huidigAfd=a;
+  huidigKat=vanKat||a.kat;
   renderLeer(a);
   go('leer');
 }
-let huidigAfd=null,leerStap=0,vraagI=0,vraagLys=[],vraagAns=false;
+let huidigAfd=null,huidigKat='woordsoort',leerStap=0,vraagI=0,vraagLys=[],vraagAns=false;
 function renderLeer(a){
   const el=document.getElementById('leerarea');if(!el)return;
   leerStap=0;vraagI=0;vraagLys=[];vraagAns=false;
   const kl=a.kl;
-  let html=`<div style="background:linear-gradient(135deg,${kl},${h2r(kl,.6)});border-radius:15px;padding:16px;color:#fff;margin-bottom:12px">
+  const katNm={woordsoort:'🔤 Woordsoorte',sinne:'📝 Sinne',spelling:'✏️ Spelling & Taal'};
+  let html=`<button class="tuis-btn" onclick="openKat('${huidigKat||a.kat}')">◀ Terug na ${katNm[huidigKat||a.kat]||'Tuis'}</button>
+  <div style="background:linear-gradient(135deg,${kl},${h2r(kl,.6)});border-radius:15px;padding:16px;color:#fff;margin-bottom:12px">
     <div style="font-size:32px;margin-bottom:6px">${a.ic}</div>
     <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;margin-bottom:6px">${a.nm}</div>
     <div style="font-size:13px;line-height:1.7;opacity:.95">${a.verd}</div>
@@ -830,7 +846,7 @@ function renderLeer(a){
     <div class="stit" style="margin-top:0">📖 Voorbeelde</div>
     ${a.voorb.map(v=>`<div class="voorb-item"><div class="voorb-sin">${v.s}</div><div class="voorb-uit" style="color:${kl}">💡 ${v.u}</div></div>`).join('')}
   </div>
-  <button style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,var(--tel),var(--grn));color:#fff;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:8px" onclick="beginOefen()">🤖 Begin AI Oefenvrae</button>`;
+  <button style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,var(--tel),var(--grn));color:#fff;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:8px" onclick="beginOefen()">🤖 Begin Oefenvrae</button>`;
   el.innerHTML=html;
 }
 async function beginOefen(){
@@ -912,25 +928,17 @@ async function beginOefen(){
     }catch(e3){console.log('Metode 3:',e3);}
   }
 
-  if(vrae&&vrae.length){
-    vraagLys=vrae;vraagI=0;vraagAns=false;renderVraag();
-  } else {
-    document.getElementById('leerarea').innerHTML=`<button class="tuis-btn" onclick="go('home')">🏠 Tuis</button>
-    <div style="background:#fee2e2;border-radius:13px;padding:16px;text-align:center">
-      <div style="font-size:22px;margin-bottom:6px">😬</div>
-      <div style="font-size:13px;font-weight:700;color:#7f1d1d">Kon nie AI vrae laai nie.</div>
-      <div style="font-size:12px;color:#7f1d1d;margin-top:4px">Kyk jou internet en probeer weer.</div>
-    </div>
-    <button style="width:100%;margin-top:10px;padding:12px;border-radius:12px;background:var(--ind);color:#fff;border:none;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit" onclick="beginOefen()">🔄 Probeer Weer</button>
-    <button style="width:100%;margin-top:6px;padding:12px;border-radius:12px;background:var(--bg);border:1.5px solid var(--bor);font-size:13px;font-weight:800;cursor:pointer;font-family:inherit" onclick="renderLeer(huidigAfd)">📖 Terug na Verduideliking</button>`;
+  if(!vrae||!vrae.length){
+    vrae=getFallbackVrae(a.nm);
   }
+  vraagLys=vrae;vraagI=0;vraagAns=false;oefen_sc=0;renderVraag();
 }
 function renderVraag(){
   const el=document.getElementById('leerarea');if(!el||!vraagLys.length)return;
   if(vraagI>=vraagLys.length){renderOefen_Klaar();return;}
   const q=vraagLys[vraagI];vraagAns=false;
   const pct=Math.round(vraagI/vraagLys.length*100);
-  el.innerHTML=`<button class="tuis-btn" onclick="go('home')">🏠 Tuis</button>
+  el.innerHTML=`<button class="tuis-btn" onclick="openKat(huidigKat)">◀ Terug</button>
   <div class="qcard">
     <div class="qmeta">
       <span class="qbadge" style="background:linear-gradient(135deg,var(--tel),var(--grn));color:#fff">🤖 AI Vraag — ${huidigAfd?huidigAfd.nm:''}</span>
@@ -1091,6 +1099,61 @@ function sendChat(){
 }
 
 // ==================== VORDERING ====================
+
+function getFallbackVrae(onderwerp){
+  const bank={
+    'Selfstandige Naamwoord':[
+      {q:'Watter woord is n selfstandige naamwoord?',options:['hardloop','tafel','vinnig','maar'],answer:1,hint:'n Naamwoord benoem n ding, persoon of plek.'},
+      {q:'Watter een is n EIENAAM?',options:['hond','rivier','Pretoria','tafel'],answer:2,hint:'Eiename begin met n hoofletter.'},
+      {q:'Watter een is n ABSTRAKTE naamwoord?',options:['stoel','liefde','motor','boom'],answer:1,hint:'Abstrakte naamwoorde kan jy nie aanraak nie.'},
+      {q:'Wat is die versamelnaam vir "beeste"?',options:['span','trop','kudde','swerm'],answer:2,hint:'n Kudde beeste.'},
+      {q:'"Die seun loop skool toe." Wat is die onderwerp?',options:['loop','skool','Die seun','toe'],answer:2,hint:'Die onderwerp is WIE die aksie doen.'},
+      {q:'Watter een is n SOORTNAAM?',options:['Jan','Kaapstad','hond','Sarie'],answer:2,hint:'Soortnaamwoorde begin met n kleinletter.'},
+      {q:'Watter een is n MASSANAAM?',options:['sand','stoel','kind','blom'],answer:0,hint:'Massanaamwoorde kan jy nie tel nie.'},
+      {q:'"n Swerm bye vlieg verby." Wat is "swerm"?',options:['Soortnaam','Versamelnaam','Eienaam','Massanaam'],answer:1,hint:'n Swerm is n groep insekte.'},
+      {q:'Kan jy "die" voor "moed" sit?',options:['Nee','Ja','Soms','Nooit'],answer:1,hint:'Die moed — ja! Dus is dit n naamwoord.'},
+      {q:'Watter een is n MAATNAAM?',options:['kind','kilometer','boom','hond'],answer:1,hint:'Maatname meet dinge.'},
+    ],
+    'Werkwoord':[
+      {q:'Watter woord is n werkwoord?',options:['mooi','hardloop','groot','baie'],answer:1,hint:'n Werkwoord is n doenwoord.'},
+      {q:'"Sy HET gister GESING." Wat is die hulpwerkwoord?',options:['Sy','het','gister','gesing'],answer:1,hint:'Die hulpwerkwoord help die hoofwerkwoord.'},
+      {q:'Watter een is n KOPPELWERKWOORD?',options:['loop','eet','is','spring'],answer:2,hint:'Koppelwerkwoorde verbind die onderwerp met n beskrywing.'},
+      {q:'Hoe word "sing" in die verlede tyd?',options:['sal sing','sing','het gesing','singende'],answer:2,hint:'Verlede tyd: het + ge + werkwoord.'},
+      {q:'Watter een is n HULPWERKWOORD?',options:['loop','eet','kan','spring'],answer:2,hint:'Hulpwerkwoorde: het, sal, kan, mag, moet, wil.'},
+      {q:'"Ek SAL more kom." Watter tyd is dit?',options:['Verlede','Teenwoordig','Toekomend','Onbepaald'],answer:2,hint:'SAL = toekomende tyd.'},
+      {q:'Vra "Wat DOEN die kind?" — Die kind ___.',options:['groot','vinnig','speel','mooi'],answer:2,hint:'Die werkwoord antwoord die vraag "wat doen?".'},
+      {q:'Hoe word "loop" in die verlede tyd?',options:['sal loop','lopend','het geloop','loop'],answer:2,hint:'het + ge + loop = het geloop.'},
+      {q:'"Die blomme IS pragtig." Wat is "is"?',options:['Naamwoord','Bywoord','Koppelwerkwoord','Voornaamwoord'],answer:2,hint:'"Is" verbind die onderwerp met n beskrywing.'},
+      {q:'Watter een is HOOFWERKWOORD?',options:['het','sal','moet','hardloop'],answer:3,hint:'Hoofwerkwoorde staan alleen.'},
+    ],
+    'Ontkennende Vorm':[
+      {q:'Hoe ontken jy "Die seun speel rugby"?',options:['Die seun nie speel rugby.','Die seun speel nie rugby nie.','Die seun nie speel nie rugby.','Die seun speel rugby nie.'],answer:1,hint:'Altyd TWEE "nie" — een na werkwoord, een aan die einde.'},
+      {q:'Hoeveel "nie" gebruik Afrikaans in ontkenning?',options:['Een','Twee','Drie','Geen'],answer:1,hint:'Dubbele ontkenning is n reël in Afrikaans.'},
+      {q:'Hoe ontken jy "Sy eet die appel"?',options:['Sy eet nie die appel.','Sy nie eet die appel nie.','Sy eet nie die appel nie.','Sy eet die appel nie.'],answer:2,hint:'"Nie" na gesegde en aan die einde.'},
+      {q:'"Hy kom ALTYD laat." Hoe ontken jy dit?',options:['Hy kom nie altyd laat nie.','Hy kom nooit laat nie.','Hy nooit kom laat nie.','Hy kom altyd nie laat nie.'],answer:1,hint:'altyd → nooit...nie (ontkenningswoord).'},
+      {q:'Watter sin is KORREK ontken?',options:['Ek weet nie.','Ek nie weet nie.','Ek weet nee.','Ek weet tog nie.'],answer:0,hint:'As die sin baie kort is, is een "nie" reg.'},
+      {q:'"Iemand het my pen gevat." Ontken dit.',options:['Niemand het my pen gevat nie.','Iemand het nie my pen gevat.','Nie iemand het my pen gevat nie.','Iemand nie het my pen gevat nie.'],answer:0,hint:'iemand → niemand...nie.'},
+      {q:'Waar kom die eerste "nie" in n ontkenningsin?',options:['Aan die begin','Na die onderwerp','Na die werkwoord','Aan die einde'],answer:2,hint:'Eerste "nie" kom direk na die werkwoord.'},
+      {q:'Hoe ontken jy "Ma bak koekies"?',options:['Ma nie bak koekies nie.','Ma bak nie koekies nie.','Ma bak koekies nie.','Nie Ma bak koekies nie.'],answer:1,hint:'"Nie" kom direk na die werkwoord "bak".'},
+      {q:'"Hulle speel ALTYD hier." Ontken dit korrek.',options:['Hulle speel nie altyd hier nie.','Hulle nooit speel hier nie.','Hulle speel nooit hier nie.','Hulle nie speel altyd hier nie.'],answer:2,hint:'altyd → nooit aan dieselfde plek.'},
+      {q:'Watter ONTKENNINGSWOORD vervang "iets"?',options:['niks','nooit','nerens','niemand'],answer:0,hint:'iets → niks...nie.'},
+    ],
+    'Werkwoordtye':[
+      {q:'"Ek eet elke dag." Watter tyd is dit?',options:['Verlede','Teenwoordig','Toekomend','Onbepaald'],answer:1,hint:'Iets wat NOU of GEWOONLIK gebeur.'},
+      {q:'Hoe skryf jy "sing" in die verlede tyd?',options:['sal sing','singend','het gesing','sing'],answer:2,hint:'Verlede tyd: het + ge + werkwoord.'},
+      {q:'"Ek SAL more kom." Watter tyd?',options:['Verlede','Teenwoordig','Toekomend','Voltooid'],answer:2,hint:'SAL + werkwoord = toekomende tyd.'},
+      {q:'Watter een is VERLEDE TYD?',options:['Ek loop','Ek sal loop','Ek het geloop','Ek loop gewoonlik'],answer:2,hint:'het + ge + werkwoord = verlede tyd.'},
+      {q:'Hoe word "bak" in die toekomende tyd?',options:['het gebak','bak','sal bak','gebak'],answer:2,hint:'sal + werkwoord = toekomende tyd.'},
+      {q:'"Sy HET gister GESPEEL." Identifiseer die hulpwerkwoord.',options:['Sy','het','gister','gespeel'],answer:1,hint:'HET is die hulpwerkwoord in verlede tyd.'},
+      {q:'Watter werkwoord is n STERK werkwoord (vokaal verander)?',options:['loop-geloop','sing-gesing','skryf-geskryf','speel-gespeel'],answer:2,hint:'Sterk werkwoorde se vokaal verander: skryf → geskryf.'},
+      {q:'"Ons ___ gister die boek gelees." Kies die regte woord.',options:['sal','het','is','was'],answer:1,hint:'Verlede tyd gebruik HET as hulpwerkwoord.'},
+      {q:'Hoe word "hardloop" in die verlede tyd?',options:['sal hardloop','het gehardloop','hardlopend','hardloop'],answer:1,hint:'het + ge + hardloop = het gehardloop.'},
+      {q:'Watter sin is TOEKOMENDE TYD?',options:['Ek het geëet.','Ek eet.','Ek sal eet.','Ek het gegeet.'],answer:2,hint:'SAL + werkwoord is toekomende tyd.'},
+    ],
+  };
+  const vrae=bank[onderwerp]||bank['Selfstandige Naamwoord'];
+  return [...vrae].sort(()=>Math.random()-.5).slice(0,10);
+}
 function buildVord(){
   const pr=ST.prog||{};
   const vals=Object.values(pr);
