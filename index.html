@@ -1820,7 +1820,9 @@ function toast(m){
 // INIT — wys login eerste
 // ============================================================
 (function init(){
-  // Wys login eerste — altyd
+  // Vee ou TaalSter kodes uit (ou app gebruik ts_k/ts_d)
+  ['ts_k','ts_d'].forEach(k=>localStorage.removeItem(k));
+  // Wys login skerm
   document.getElementById('pw-screen').style.display='flex';
   // Kyk of geldige kode gestoor is
   const k=localStorage.getItem('ts_kode');
@@ -1832,7 +1834,8 @@ function toast(m){
     else localStorage.removeItem('ts_kode');
   }
   if(d==='1'){sluitLogin();return;}
-  // Bly op login skerm
+  // Bly op login skerm — wys dit
+  document.getElementById('pw-screen').style.display='flex';
 })();
 
 </script>
